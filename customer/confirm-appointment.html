@@ -229,7 +229,7 @@
       const customerId = (currentUser && currentUser.userid) || parseInt((window.AuthService && window.AuthService.getCookie('bwt_user_id')) || '1', 10) || 1;
       const email = savedEmail || (currentUser ? currentUser.emailid : 'aarav.patel@gmail.com');
 
-      const providerId = parseInt(sessionStorage.getItem('LastBookingProviderId') || '1', 10);
+      const providerId = parseInt(sessionStorage.getItem('LastBookingProvId') || '1', 10);
       const slotId = parseInt(sessionStorage.getItem('LastBookingSlotId') || '1', 10);
       const bookingDate = sessionStorage.getItem('LastBookingDate') || new Date().toISOString().split('T')[0];
       const timeStr = sessionStorage.getItem('LastBookingTime') || '10:30 AM';

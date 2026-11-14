@@ -35,7 +35,7 @@ class SiteFooter extends HTMLElement {
                 <div class="header-brand-icon-box" style="width: 32px; height: 32px; font-size: 0.95rem;">
                   <i class="bi bi-calendar-check-fill"></i>
                 </div>
-                <span>BookingPro</span>
+                <span>BookWith.tech</span>
               </a>
               <p>
                 The intelligent appointment infrastructure connecting service providers, customers, and administrative teams with real-time slot synchronization, automated reminders, and instant digital payments.
@@ -79,8 +79,8 @@ class SiteFooter extends HTMLElement {
                 <li><a href="${prefix}index.html#contact" class="footer-link">Contact Support</a></li>
                 <li><a href="${prefix}login.html" class="footer-link">Account Access</a></li>
                 <li><a href="${prefix}index.html#contact" class="footer-link">Enterprise Inquiries</a></li>
-                <li><a href="#" class="footer-link" onclick="event.preventDefault(); alert('BookingPro Privacy Policy: All customer booking details are encrypted with TLS 1.3.');">Privacy Policy</a></li>
-                <li><a href="#" class="footer-link" onclick="event.preventDefault(); alert('BookingPro Terms of Service: Cancellations are handled in accordance with provider policies.');">Terms of Service</a></li>
+                <li><a href="#" class="footer-link" onclick="event.preventDefault(); alert('BookWith.tech Privacy Policy: All customer booking details are encrypted with TLS 1.3.');">Privacy Policy</a></li>
+                <li><a href="#" class="footer-link" onclick="event.preventDefault(); alert('BookWith.tech Terms of Service: Cancellations are handled in accordance with provider policies.');">Terms of Service</a></li>
               </ul>
             </div>
           </div>
@@ -88,7 +88,7 @@ class SiteFooter extends HTMLElement {
           <!-- Bottom Bar -->
           <div class="footer-bottom-bar">
             <div>
-              &copy; ${currentYear} BookingPro Technologies Inc. All rights reserved. Handcrafted with modern web standards.
+              &copy; ${currentYear} BookWith.tech. All rights reserved. Handcrafted with modern web standards.
             </div>
             <div class="d-flex align-items-center gap-3">
               <span class="footer-status-pill">
