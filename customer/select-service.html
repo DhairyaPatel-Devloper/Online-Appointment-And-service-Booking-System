@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Configure Appointment & Payment — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+
+  <style>
+    .time-slot-btn {
+      padding: 0.65rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--color-slate-700);
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition-fast);
+      width: 100%;
+    }
+
+    .time-slot-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .time-slot-btn.selected {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px var(--color-primary-glow);
+    }
+
+    .time-slot-btn:disabled {
+      background: var(--color-slate-100);
+      color: var(--color-slate-400);
+      border-color: var(--color-slate-200);
+      cursor: not-allowed;
+    }
+
+    .payment-tab-btn {
+      flex: 1;
+      padding: 0.85rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--color-slate-700);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+    }
+
+    .payment-tab-btn.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .summary-sticky-card {
+      position: sticky;
+      top: 90px;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-card);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer"></site-header>
+
+  <main class="container my-4">
+    <!-- Breadcrumb & Step Indicator -->
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: #0f172a; margin: 0;">Configure Appointment</h1>
+        <p class="fs-xs text-muted mb-0">Provider: <strong>Aura Luxury Salon & Spa</strong> • Metropolis Central</p>
+      </div>
+      <div class="badge-custom badge-neutral" style="font-size: 0.8rem;">
+        <i class="bi bi-shield-check text-success"></i> Instant Guaranteed Slot
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Left Column: Steps -->
+      <div class="col-lg-8">
+        
+        <!-- STEP 1: Select Services & Add-ons -->
+        <div class="custom-card p-4 mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="avatar-circle" style="width: 28px; height: 28px; font-size: 0.8rem; background: var(--color-primary);">1</span>
+            <h2 class="fs-5 fw-bold text-slate-900 mb-0">Select Services & Add-ons</h2>
+          </div>
+
+          <div class="d-flex flex-column gap-3">
+            <!-- Service 1 -->
+            <label class="d-flex align-items-center justify-content-between p-3 border rounded-3 cursor-pointer bg-light">
+              <div class="d-flex align-items-center gap-3">
+                <input type="checkbox" class="service-checkbox form-check-input mt-0" value="45" data-name="Executive Hair Styling" checked onchange="calculateSummary()">
+                <div>
+                  <div class="fw-bold text-slate-900 fs-sm">Executive Hair Styling & Consultation</div>
+                  <div class="text-xs text-muted">Wash, precision cut, and blowdry finish (45 mins)</div>
+                </div>
+              </div>
+              <div class="fw-bold fs-6 text-slate-900">$45.00</div>
+            </label>
+
+            <!-- Service 2 -->
+            <label class="d-flex align-items-center justify-content-between p-3 border rounded-3 cursor-pointer">
+              <div class="d-flex align-items-center gap-3">
+                <input type="checkbox" class="service-checkbox form-check-input mt-0" value="35" data-name="Organic Scalp Spa Treatment" onchange="calculateSummary()">
+                <div>
+                  <div class="fw-bold text-slate-900 fs-sm">Add-on: Organic Scalp Spa Therapy</div>
+                  <div class="text-xs text-muted">Herbal moisture mask & head massage (20 mins)</div>
+                </div>
+              </div>
+              <div class="fw-bold fs-6 text-slate-900">$35.00</div>
+            </label>
+
+            <!-- Service 3 -->
+            <label class="d-flex align-items-center justify-content-between p-3 border rounded-3 cursor-pointer">
+              <div class="d-flex align-items-center gap-3">
+                <input type="checkbox" class="service-checkbox form-check-input mt-0" value="25" data-name="Beard Trim & Grooming" onchange="calculateSummary()">
+                <div>
+                  <div class="fw-bold text-slate-900 fs-sm">Add-on: Beard Trim & Hot Towel Treatment</div>
+                  <div class="text-xs text-muted">Precision contouring & essential oil massage (15 mins)</div>
+                </div>
+              </div>
+              <div class="fw-bold fs-6 text-slate-900">$25.00</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 2: Choose Specialist -->
+        <div class="custom-card p-4 mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="avatar-circle" style="width: 28px; height: 28px; font-size: 0.8rem; background: var(--color-primary);">2</span>
+            <h2 class="fs-5 fw-bold text-slate-900 mb-0">Select Specialist</h2>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <div class="staff-avatar-pill selected specialist-card" data-staff="Sarah Jenkins" onclick="selectStaff(this)">
+                <div class="avatar-circle" style="background: var(--color-primary);">SJ</div>
+                <div>
+                  <div class="fw-bold fs-xs text-slate-900">Sarah Jenkins</div>
+                  <div class="text-xs text-muted">★ 4.9 Master</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="staff-avatar-pill specialist-card" data-staff="Marcus Reed" onclick="selectStaff(this)">
+                <div class="avatar-circle" style="background: linear-gradient(135deg, #059669, #10b981);">MR</div>
+                <div>
+                  <div class="fw-bold fs-xs text-slate-900">Marcus Reed</div>
+                  <div class="text-xs text-muted">★ 4.8 Colorist</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="staff-avatar-pill specialist-card" data-staff="Any Specialist" onclick="selectStaff(this)">
+                <div class="avatar-circle" style="background: var(--color-slate-700);">ANY</div>
+                <div>
+                  <div class="fw-bold fs-xs text-slate-900">Any Specialist</div>
+                  <div class="text-xs text-muted">Maximum Speed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Date & Time Slot -->
+        <div class="custom-card p-4 mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="avatar-circle" style="width: 28px; height: 28px; font-size: 0.8rem; background: var(--color-primary);">3</span>
+            <h2 class="fs-5 fw-bold text-slate-900 mb-0">Pick Date & Available Slot</h2>
+          </div>
+
+          <!-- Date Picker Bar -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label-custom fs-xs text-muted">Appointment Date</label>
+              <input type="date" id="appointmentDate" class="form-control-custom" value="2026-09-24" onchange="updateSelectedDate(this.value)">
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+              <span class="badge-custom badge-success py-2 w-100 justify-content-center">
+                <i class="bi bi-clock-history"></i> 8 Slots Available on Selected Date
+              </span>
+            </div>
+          </div>
+
+          <!-- Morning Slots -->
+          <div class="mb-3">
+            <div class="text-xs fw-bold text-muted text-uppercase mb-2"><i class="bi bi-sun"></i> Morning Slots</div>
+            <div class="row g-2">
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">09:30 AM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn selected" onclick="selectSlot(this)">10:30 AM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">11:45 AM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" disabled>12:15 PM (Booked)</button></div>
+            </div>
+          </div>
+
+          <!-- Afternoon Slots -->
+          <div>
+            <div class="text-xs fw-bold text-muted text-uppercase mb-2"><i class="bi bi-sunset"></i> Afternoon & Evening Slots</div>
+            <div class="row g-2">
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">02:00 PM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">03:30 PM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">05:00 PM</button></div>
+              <div class="col-4 col-sm-3"><button type="button" class="time-slot-btn" onclick="selectSlot(this)">06:15 PM</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Customer Details & Government / National ID (Cookie-Powered) -->
+        <div class="custom-card p-4 mb-4">
+          <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="avatar-circle" style="width: 28px; height: 28px; font-size: 0.8rem; background: var(--color-primary);">4</span>
+              <h2 class="fs-5 fw-bold text-slate-900 mb-0">Customer Details & Identity Verification</h2>
+            </div>
+            <span class="badge-custom badge-success fs-xs"><i class="bi bi-cookie"></i> Persistent Cookie Enabled</span>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-custom fs-xs">Full Name <span class="text-danger">*</span></label>
+              <input type="text" id="custFullName" class="form-control-custom" placeholder="e.g. Aarav Patel" value="Aarav Patel" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom fs-xs">Phone Number (10 Digits) <span class="text-danger">*</span></label>
+              <input type="tel" id="custPhone" class="form-control-custom" placeholder="9876543210" value="9876543210" maxlength="10" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom fs-xs">Email Address (For Instant Pass & Calendar Invite)</label>
+              <input type="email" id="custEmail" class="form-control-custom" placeholder="name@domain.com" value="aarav.patel@gmail.com">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom fs-xs">Government / National ID Reference <span class="badge-custom badge-neutral ms-1">Gov ID</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted fs-xs border-end-0"><i class="bi bi-person-vcard"></i></span>
+                <input type="text" id="custGovId" class="form-control-custom border-start-0" placeholder="e.g. GOV-ID-88219 or National ID #">
+              </div>
+              <div class="fs-xs text-muted mt-1">Saved in your secure browser cookie so you can book services on your Gov/User ID anytime.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Payment Mode Selection -->
+        <div class="custom-card p-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="avatar-circle" style="width: 28px; height: 28px; font-size: 0.8rem; background: var(--color-primary);">5</span>
+            <h2 class="fs-5 fw-bold text-slate-900 mb-0">Select Payment Method</h2>
+          </div>
+
+          <!-- Payment Tabs -->
+          <div class="d-flex gap-2 mb-3">
+            <button type="button" class="payment-tab-btn active" data-method="card" onclick="selectPaymentMethod(this, 'card')">
+              <i class="bi bi-credit-card"></i> Credit / Debit Card
+            </button>
+            <button type="button" class="payment-tab-btn" data-method="upi" onclick="selectPaymentMethod(this, 'upi')">
+              <i class="bi bi-qr-code-scan"></i> UPI / Instant Pay
+            </button>
+            <button type="button" class="payment-tab-btn" data-method="cash" onclick="selectPaymentMethod(this, 'cash')">
+              <i class="bi bi-cash-stack"></i> Pay at Venue
+            </button>
+          </div>
+
+          <!-- Card Form View -->
+          <div id="cardPaymentView">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label-custom fs-xs">Cardholder Name</label>
+                <input type="text" class="form-control-custom" placeholder="Aarav Patel" value="Aarav Patel">
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom fs-xs">Card Number</label>
+                <input type="text" class="form-control-custom" placeholder="•••• •••• •••• 4242" value="4242 •••• •••• 1092">
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom fs-xs">Expiry Date</label>
+                <input type="text" class="form-control-custom" placeholder="MM/YY" value="08/28">
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom fs-xs">Security CVV</label>
+                <input type="password" class="form-control-custom" placeholder="•••" maxlength="4" value="892">
+              </div>
+            </div>
+          </div>
+
+          <!-- UPI View -->
+          <div id="upiPaymentView" style="display: none;" class="p-3 bg-light rounded-3 text-center">
+            <i class="bi bi-qr-code fs-1 text-primary"></i>
+            <p class="fs-sm text-slate-600 mt-2 mb-0">A QR code will be generated on confirmation to complete payment via Google Pay, PhonePe, or Apple Pay.</p>
+          </div>
+
+          <!-- Cash View -->
+          <div id="cashPaymentView" style="display: none;" class="p-3 bg-light rounded-3 text-center">
+            <i class="bi bi-shop fs-1 text-success"></i>
+            <p class="fs-sm text-slate-600 mt-2 mb-0">No upfront digital payment required. You will pay directly at Aura Luxury Salon reception upon service completion.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sticky Summary & Checkout -->
+      <div class="col-lg-4">
+        <div class="summary-sticky-card">
+          <h3 class="fs-5 fw-bold text-slate-900 mb-3">Booking Summary</h3>
+
+          <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+            <div class="avatar-circle" style="width: 38px; height: 38px;">AL</div>
+            <div>
+              <div class="fw-bold fs-sm text-slate-900">Aura Luxury Salon</div>
+              <div class="text-xs text-muted" id="summarySlotDate">Thu, Sep 24, 2026 • 10:30 AM</div>
+            </div>
+          </div>
+
+          <!-- Selected Services List -->
+          <div class="mb-3">
+            <div class="text-xs text-muted text-uppercase fw-bold mb-2">Selected Services</div>
+            <div id="summaryServicesList" class="d-flex flex-column gap-1 fs-sm text-slate-700">
+              <div class="d-flex justify-content-between">
+                <span>Executive Hair Styling</span>
+                <span class="fw-semibold">$45.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specialist & Slot Row -->
+          <div class="p-2 bg-light rounded-2 fs-xs mb-3">
+            <div>Specialist: <strong id="summaryStaffName">Sarah Jenkins</strong></div>
+            <div>Time Slot: <strong id="summarySlotTime">10:30 AM</strong></div>
+          </div>
+
+          <!-- Price Calculations -->
+          <div class="pt-3 border-top d-flex flex-column gap-1 fs-sm">
+            <div class="d-flex justify-content-between text-muted">
+              <span>Subtotal</span>
+              <span id="subtotalVal">$45.00</span>
+            </div>
+            <div class="d-flex justify-content-between text-muted">
+              <span>Estimated Tax (8%)</span>
+              <span id="taxVal">$3.60</span>
+            </div>
+            <div class="d-flex justify-content-between text-success">
+              <span>Platform Fee Waiver</span>
+              <span>-$2.00 (Promo)</span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold text-slate-900 fs-5 pt-2 border-top mt-1">
+              <span>Total Amount</span>
+              <span id="totalVal" class="text-primary">$46.60</span>
+            </div>
+          </div>
+
+          <!-- Confirm CTA Button -->
+          <button type="button" class="btn-primary-custom w-100 py-3 mt-4" onclick="proceedToConfirmation()" style="font-size: 1rem;">
+            <i class="bi bi-lock-fill"></i>
+            <span>Confirm & Lock Appointment</span>
+          </button>
+
+          <p class="text-center text-xs text-muted mt-2 mb-0">
+            <i class="bi bi-shield-check"></i> Free cancellation up to 24 hours before
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let selectedStaff = 'Sarah Jenkins';
+    let selectedTime = '10:30 AM';
+    let selectedSlotId = null;
+    let currentProviderId = 1;
+    let selectedDate = new Date().toISOString().split('T')[0];
+
+    async function initAppointmentConfig() {
+      const urlParams = new URLSearchParams(window.location.search);
+      currentProviderId = parseInt(urlParams.get('providerId') || urlParams.get('id') || '1', 10);
+      
+      const dateInput = document.getElementById('appointmentDate');
+      if (dateInput) {
+        dateInput.value = selectedDate;
+        dateInput.min = selectedDate;
+      }
+
+      // Fetch Provider Info
+      try {
+        const provider = await window.ProviderService.getProviderById(currentProviderId);
+        if (provider) {
+          const shopDesc = document.querySelector('p.fs-xs.text-muted');
+          if (shopDesc) {
+            shopDesc.innerHTML = `Provider: <strong>${provider.businessname}</strong> • ${provider.businessaddress || 'Local'}`;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch provider details:', e);
+      }
+
+      // Pre-fill user & Gov ID from Cookie
+      if (window.AuthService) {
+        const u = window.AuthService.getCurrentUser();
+        const govId = window.AuthService.getGovId();
+        if (u) {
+          const fnEl = document.getElementById('custFullName');
+          const phEl = document.getElementById('custPhone');
+          const emEl = document.getElementById('custEmail');
+          if (fnEl && u.firstname) fnEl.value = `${u.firstname} ${u.lastname || ''}`.trim();
+          if (phEl && u.phone) phEl.value = u.phone;
+          if (emEl && u.emailid) emEl.value = u.emailid;
+        }
+        const govEl = document.getElementById('custGovId');
+        if (govEl && govId) {
+          govEl.value = govId;
+        }
+      }
+
+      await loadDateSlots(selectedDate);
+    }
+
+    async function loadDateSlots(dateStr) {
+      selectedDate = dateStr;
+      const morningContainer = document.querySelector('.mb-3 .row.g-2');
+      const afternoonContainer = document.querySelector('div:not(.mb-3) > .row.g-2');
+
+      try {
+        let slots = await window.SlotService.getSlotsByDateAndProvider(currentProviderId, dateStr);
+
+        // If no slots exist yet, auto-generate for today's date
+        if (!slots || slots.length === 0) {
+          await window.SlotService.generateDaySlots(currentProviderId, dateStr, '09:00:00', '19:00:00', 30, 2);
+          slots = await window.SlotService.getSlotsByDateAndProvider(currentProviderId, dateStr);
+        }
+
+        if (morningContainer) morningContainer.innerHTML = '';
+        if (afternoonContainer) afternoonContainer.innerHTML = '';
+
+        (slots || []).forEach((slot, index) => {
+          const startTime = slot.slotstarttime.slice(0, 5);
+          const hour = parseInt(startTime.split(':')[0], 10);
+          const isMorning = hour < 12;
+          const isAvailable = slot.isAvailable;
+
+          const col = document.createElement('div');
+          col.className = 'col-4 col-sm-3';
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `time-slot-btn ${index === 0 && isAvailable ? 'selected' : ''}`;
+          btn.disabled = !isAvailable;
+          btn.textContent = startTime + (isAvailable ? '' : ' (Full)');
+          btn.dataset.slotId = slot.slotid;
+          btn.dataset.time = startTime;
+
+          if (index === 0 && isAvailable) {
+            selectedSlotId = slot.slotid;
+            selectedTime = startTime;
+          }
+
+          btn.onclick = () => {
+            document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTime = startTime;
+            selectedSlotId = slot.slotid;
+            document.getElementById('summarySlotTime').textContent = startTime;
+            updateSummaryDateTime();
+          };
+
+          col.appendChild(btn);
+          if (isMorning && morningContainer) {
+            morningContainer.appendChild(col);
+          } else if (afternoonContainer) {
+            afternoonContainer.appendChild(col);
+          }
+        });
+
+        updateSummaryDateTime();
+      } catch (err) {
+        console.error('Error fetching slots:', err);
+      }
+    }
+
+    function selectStaff(el) {
+      document.querySelectorAll('.specialist-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedStaff = el.getAttribute('data-staff');
+      document.getElementById('summaryStaffName').textContent = selectedStaff;
+    }
+
+    function updateSelectedDate(val) {
+      selectedDate = val;
+      loadDateSlots(val);
+      updateSummaryDateTime();
+    }
+
+    function updateSummaryDateTime() {
+      const dt = new Date(selectedDate);
+      const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+      const summaryDateEl = document.getElementById('summarySlotDate');
+      if (summaryDateEl) {
+        summaryDateEl.textContent = `${dt.toLocaleDateString('en-US', options)} • ${selectedTime}`;
+      }
+    }
+
+    function selectPaymentMethod(btn, method) {
+      document.querySelectorAll('.payment-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.getElementById('cardPaymentView').style.display = method === 'card' ? 'block' : 'none';
+      document.getElementById('upiPaymentView').style.display = method === 'upi' ? 'block' : 'none';
+      document.getElementById('cashPaymentView').style.display = method === 'cash' ? 'block' : 'none';
+    }
+
+    function calculateSummary() {
+      const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+      const listContainer = document.getElementById('summaryServicesList');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      let subtotal = 0;
+      checkboxes.forEach(cb => {
+        const price = parseFloat(cb.value);
+        const name = cb.getAttribute('data-name');
+        subtotal += price;
+
+        const row = document.createElement('div');
+        row.className = 'd-flex justify-content-between';
+        row.innerHTML = `<span>${name}</span><span class="fw-semibold">$${price.toFixed(2)}</span>`;
+        listContainer.appendChild(row);
+      });
+
+      if (checkboxes.length === 0) {
+        listContainer.innerHTML = '<span class="text-danger">Please select at least one service</span>';
+      }
+
+      const tax = subtotal * 0.08;
+      const total = Math.max(0, subtotal + tax - 2.00);
+
+      document.getElementById('subtotalVal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('taxVal').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('totalVal').textContent = `$${total.toFixed(2)}`;
+    }
+
+    function proceedToConfirmation() {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const custName = document.getElementById('custFullName')?.value.trim() || 'Aarav Patel';
+      const custPhone = document.getElementById('custPhone')?.value.trim() || '9876543210';
+      const custEmail = document.getElementById('custEmail')?.value.trim() || 'aarav.patel@gmail.com';
+      const custGovId = document.getElementById('custGovId')?.value.trim() || '';
+
+      // Persist in Cookie and Session for instant booking on Gov ID
+      if (window.AuthService) {
+        if (custGovId) window.AuthService.setGovId(custGovId);
+        window.AuthService.setCookie('bwt_user_name', custName, 30);
+        window.AuthService.setCookie('bwt_phone', custPhone, 30);
+        window.AuthService.setCookie('bwt_email', custEmail, 30);
+      }
+
+      sessionStorage.setItem('LastBookingCustName', custName);
+      sessionStorage.setItem('LastBookingCustPhone', custPhone);
+      sessionStorage.setItem('LastBookingCustEmail', custEmail);
+      sessionStorage.setItem('LastBookingGovId', custGovId);
+
+      sessionStorage.setItem('LastBookingProviderId', currentProviderId);
+      sessionStorage.setItem('LastBookingSlotId', selectedSlotId || 1);
+      sessionStorage.setItem('LastBookingStaff', selectedStaff);
+      sessionStorage.setItem('LastBookingTime', selectedTime);
+      sessionStorage.setItem('LastBookingDate', selectedDate);
+      sessionStorage.setItem('LastBookingTotal', document.getElementById('totalVal').textContent);
+
+      if (window.AppConfig) {
+        window.AppConfig.showToast(`✨ Booking configured with Gov ID: ${custGovId || 'Verified Cookie'}`, 'success');
+      }
+
+      window.location.href = 'confirm-appointment.html';
+    }
+
+    window.addEventListener('datamodechange', initAppointmentConfig);
+    document.addEventListener('DOMContentLoaded', initAppointmentConfig);
+  </script>
+</body>
+</html>
+

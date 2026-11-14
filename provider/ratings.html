@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Customer Reviews & Ratings — Aura Luxury Salon — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="provider" data-active="ratings"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Customer Reputation & Reviews</h1>
+        <p class="fs-xs text-muted mb-0">Verified client feedback, satisfaction analytics, and provider reply center</p>
+      </div>
+      <span class="badge-custom badge-success"><i class="bi bi-shield-check"></i> 100% Authenticated Reviews</span>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <!-- Rating Score Overview -->
+      <div class="col-lg-4">
+        <div class="custom-card p-4 text-center h-100">
+          <div class="fs-xs text-muted text-uppercase fw-bold mb-1">Overall Store Score</div>
+          <div style="font-family: var(--font-family-display); font-size: 3.5rem; font-weight: 800; color: #0f172a; line-height: 1;">4.9</div>
+          <div class="text-warning fs-5 my-2">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="fs-xs text-muted mb-4">Based on 184 completed appointments</p>
+
+          <!-- Star Bars -->
+          <div class="d-flex flex-column gap-2 text-start">
+            <div class="d-flex align-items-center gap-2 fs-xs">
+              <span style="width: 45px;">5 Star</span>
+              <div class="progress flex-grow-1" style="height: 6px;">
+                <div class="progress-bar bg-warning" style="width: 88%;"></div>
+              </div>
+              <span class="text-muted" style="width: 30px;">88%</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 fs-xs">
+              <span style="width: 45px;">4 Star</span>
+              <div class="progress flex-grow-1" style="height: 6px;">
+                <div class="progress-bar bg-warning" style="width: 9%;"></div>
+              </div>
+              <span class="text-muted" style="width: 30px;">9%</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 fs-xs">
+              <span style="width: 45px;">3 Star</span>
+              <div class="progress flex-grow-1" style="height: 6px;">
+                <div class="progress-bar bg-warning" style="width: 2%;"></div>
+              </div>
+              <span class="text-muted" style="width: 30px;">2%</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 fs-xs">
+              <span style="width: 45px;">2 Star</span>
+              <div class="progress flex-grow-1" style="height: 6px;">
+                <div class="progress-bar bg-warning" style="width: 1%;"></div>
+              </div>
+              <span class="text-muted" style="width: 30px;">1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Feed List -->
+      <div class="col-lg-8">
+        <div class="custom-card p-4">
+          <h2 class="fs-5 fw-bold text-slate-900 mb-3">Recent Client Reviews</h2>
+
+          <!-- Review Item 1 -->
+          <div class="p-3 border rounded-3 mb-3 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:32px; height:32px; font-size: 0.8rem;">AP</div>
+                <div>
+                  <div class="fw-bold fs-sm text-slate-900">Aarav Patel</div>
+                  <div class="text-xs text-muted">Service: Executive Hair Styling (Sarah Jenkins)</div>
+                </div>
+              </div>
+              <span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> 5.0</span>
+            </div>
+            <p class="fs-sm text-slate-700 mb-2">The styling session was exceptional! Sarah was completely on time, recommended the ideal contour for my face shape, and the head massage was so rejuvenating. Definitely rebooking next month.</p>
+            
+            <!-- Provider Reply -->
+            <div class="p-3 bg-light rounded-2 mt-2 border-start border-3 border-primary">
+              <div class="fw-bold fs-xs text-primary mb-1">Aura Luxury Salon (Response):</div>
+              <p class="fs-xs text-slate-600 mb-0">Thank you so much Aarav! It was a pleasure hosting you, and Sarah looks forward to seeing you for your maintenance session next month.</p>
+            </div>
+          </div>
+
+          <!-- Review Item 2 -->
+          <div class="p-3 border rounded-3 mb-3 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:32px; height:32px; font-size: 0.8rem; background:#0284c7;">ML</div>
+                <div>
+                  <div class="fw-bold fs-sm text-slate-900">Maya Lin</div>
+                  <div class="text-xs text-muted">Service: Keratin Infusion (Marcus Reed)</div>
+                </div>
+              </div>
+              <span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> 5.0</span>
+            </div>
+            <p class="fs-sm text-slate-700 mb-3">Very silky finish and no frizz even in humid weather. Marcus was super professional.</p>
+            
+            <button type="button" class="btn btn-sm btn-outline-custom fs-xs py-1 px-3" onclick="alert('Provider Reply Dialog: Write a personalized reply to Maya.')">
+              <i class="bi bi-reply-fill"></i> Reply to Client
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="provider"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let activeProviderId = 1;
+
+    async function loadProviderRatings() {
+      const currentUser = window.AuthService.getCurrentUser();
+      if (currentUser) {
+        try {
+          const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
+          if (pDetails) {
+            activeProviderId = pDetails.providerid;
+          }
+        } catch (e) {
+          console.warn('Could not load provider record:', e);
+        }
+      }
+
+      try {
+        const data = await window.FeedbackService.getProviderFeedback(activeProviderId);
+        
+        // Update average rating and total
+        const scoreEl = document.querySelector('div[style*="font-size: 3.5rem"]');
+        if (scoreEl) scoreEl.textContent = data.averageRating.toFixed(1);
+
+        const reviewCountEl = document.querySelector('p.fs-xs.text-muted.mb-4');
+        if (reviewCountEl) reviewCountEl.textContent = `Based on ${data.totalReviews} completed appointments`;
+
+        // Render reviews
+        const reviewContainer = document.querySelector('.col-lg-8 .custom-card');
+        if (reviewContainer && data.reviews && data.reviews.length > 0) {
+          const h2 = reviewContainer.querySelector('h2');
+          const titleHtml = h2 ? h2.outerHTML : '<h2 class="fs-5 fw-bold text-slate-900 mb-3">Recent Client Reviews</h2>';
+
+          reviewContainer.innerHTML = titleHtml + data.reviews.map(r => {
+            const cName = r.users ? `${r.users.firstname} ${r.users.lastname || ''}`.trim() : 'Customer';
+            const initials = cName.slice(0, 2).toUpperCase();
+            return `
+              <div class="p-3 border rounded-3 mb-3 bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-circle" style="width:32px; height:32px; font-size: 0.8rem;">${initials}</div>
+                    <div>
+                      <div class="fw-bold fs-sm text-slate-900">${cName}</div>
+                      <div class="text-xs text-muted">Booking #${r.bookingid}</div>
+                    </div>
+                  </div>
+                  <span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> ${r.rating}.0</span>
+                </div>
+                <p class="fs-sm text-slate-700 mb-2">${r.comment || 'Great service!'}</p>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Error loading ratings:', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProviderRatings);
+  </script>
+</body>
+</html>
+

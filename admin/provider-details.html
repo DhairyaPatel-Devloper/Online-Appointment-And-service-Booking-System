@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Provider Details - Admin Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="app-sidebar">
+            <div class="p-4 border-bottom border-slate-800">
+                <a href="../index.html" class="brand-badge text-white fs-4"><i class="bi bi-calendar2-check-fill"></i> BookWith.tech</a>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="provider-list.html" class="btn-outline-custom btn-sm"><i class="bi bi-arrow-left"></i> Back to Providers</a>
+                    <h2 class="h5 fw-bold mb-0">Provider Account Details</h2>
+                </div>
+            </header>
+
+            <main class="app-content">
+                <div class="max-w-2xl mx-auto">
+                    <div class="custom-card p-4 p-md-5 reveal-on-scroll" id="adminShopDetails">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/app-core.js"></script>
+    <script>
+        async function loadAdminProviderDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const shopId = urlParams.get('id') || 1;
+            const shop = await ApiService.getShopById(shopId);
+
+            document.getElementById('adminShopDetails').innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <span class="badge-custom badge-success mb-2">Verified & Active</span>
+                        <h1 class="h3 fw-bold mb-0">${shop.name}</h1>
+                        <span class="text-muted fs-sm">${shop.address}</span>
+                    </div>
+                    <span class="fs-4 fw-bold text-warning"><i class="bi bi-star-fill"></i> ${shop.rating}</span>
+                </div>
+
+                <div class="bg-light p-4 rounded-4 border mb-4">
+                    <div class="row g-3">
+                        <div class="col-6"><span class="text-muted fs-xs d-block">Category</span><span class="fw-bold">${shop.category}</span></div>
+                        <div class="col-6"><span class="text-muted fs-xs d-block">Phone</span><span class="fw-bold">${shop.phone}</span></div>
+                        <div class="col-6"><span class="text-muted fs-xs d-block">Operating Hours</span><span class="fw-bold">${shop.openingHours}</span></div>
+                        <div class="col-6"><span class="text-muted fs-xs d-block">Reviews Count</span><span class="fw-bold">${shop.reviewsCount} verified</span></div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn-outline-custom w-50 text-danger" onclick="AppCore.showToast('Account suspended', 'warning')">Suspend Business</button>
+                    <button class="btn-primary-custom w-50" onclick="AppCore.showToast('Updated account level', 'success')">Update Tier</button>
+                </div>
+            `;
+        }
+        document.addEventListener('DOMContentLoaded', loadAdminProviderDetails);
+    </script>
+</body>
+</html>
+

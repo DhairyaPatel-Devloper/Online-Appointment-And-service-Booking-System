@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Manage Appointments — Aura Luxury Salon — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="provider" data-active="appointments"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Appointment Management</h1>
+        <p class="fs-xs text-muted mb-0">Calendar, client roster, and booking status controls</p>
+      </div>
+      <div class="d-flex gap-2">
+        <input type="date" class="form-control-custom" value="2026-09-24" style="width: auto;">
+        <button type="button" class="btn-primary-custom"
+          onclick="alert('Manual Appointment Creation Modal: Reserve slot for walk-in client.')">
+          <i class="bi bi-plus-lg"></i> Walk-In Booking
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="d-flex gap-2 mb-4 border-bottom pb-2">
+      <button type="button" class="btn btn-sm btn-primary-custom" onclick="filterAppointments('all')">All (12)</button>
+      <button type="button" class="btn btn-sm btn-outline-custom" onclick="filterAppointments('confirmed')">Confirmed
+        (4)</button>
+      <button type="button" class="btn btn-sm btn-outline-custom" onclick="filterAppointments('completed')">Completed
+        (7)</button>
+      <button type="button" class="btn btn-sm btn-outline-custom" onclick="filterAppointments('cancelled')">Cancelled
+        (1)</button>
+    </div>
+
+    <!-- Appointment Ledger Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="appointmentsTable">
+        <thead>
+          <tr>
+            <th>Ref ID</th>
+            <th>Customer Name</th>
+            <th>Contact Phone</th>
+            <th>Service Booked</th>
+            <th>Time Slot</th>
+            <th>Staff Specialist</th>
+            <th>Billed Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-8921</td>
+            <td class="fw-bold text-slate-900">Aarav Patel</td>
+            <td class="fs-xs text-muted">+1 987-654-3210</td>
+            <td>Executive Hair Styling & Consultation</td>
+            <td class="fw-bold text-primary">Today, 10:30 AM</td>
+            <td>Sarah Jenkins</td>
+            <td class="fw-bold text-slate-900">$46.60 (Paid)</td>
+            <td><span class="badge-custom badge-warning">Checked In</span></td>
+            <td>
+              <div class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"
+                  onclick="alert('Viewing Customer notes: Prefers herbal shampoo, no tea tree oil.')">Notes</button>
+                <button type="button" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs"
+                  onclick="alert('Starting Service...')">Start</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-8922</td>
+            <td class="fw-bold text-slate-900">Maya Lin</td>
+            <td class="fs-xs text-muted">+1 555-019-2831</td>
+            <td>Keratin Infusion Therapy</td>
+            <td class="fw-bold text-slate-800">Today, 11:45 AM</td>
+            <td>Marcus Reed</td>
+            <td class="fw-bold text-slate-900">$85.00 (Paid)</td>
+            <td><span class="badge-custom badge-primary">Confirmed</span></td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"
+                onclick="alert('SMS notification reminder sent.')">Remind</button>
+            </td>
+          </tr>
+
+          <!-- Item 3 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-8923</td>
+            <td class="fw-bold text-slate-900">Samuel Green</td>
+            <td class="fs-xs text-muted">+1 555-839-1122</td>
+            <td>Full Balayage & Gloss Treatment</td>
+            <td class="fw-bold text-slate-800">Today, 02:00 PM</td>
+            <td>Sarah Jenkins</td>
+            <td class="fw-bold text-slate-900">$140.00 (Venue)</td>
+            <td><span class="badge-custom badge-neutral">Pay on Arrival</span></td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"
+                onclick="alert('Reschedule modal opened.')">Reschedule</button>
+            </td>
+          </tr>
+
+          <!-- Item 4 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-8919</td>
+            <td class="fw-bold text-slate-900">Jessica Wright</td>
+            <td class="fs-xs text-muted">+1 555-772-9901</td>
+            <td>Organic Botanical Facial Spa</td>
+            <td class="text-muted">Today, 09:00 AM</td>
+            <td>Marcus Reed</td>
+            <td class="fw-bold text-slate-900">$70.00 (Paid)</td>
+            <td><span class="badge-custom badge-success">Completed</span></td>
+            <td>
+              <span class="text-xs text-muted">Receipt Sent</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="provider"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let activeProviderId = 1;
+    let loadedAppointments = [];
+
+    async function initProviderAppointments() {
+      const currentUser = window.AuthService.getCurrentUser();
+      if (currentUser) {
+        try {
+          const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
+          if (pDetails) {
+            activeProviderId = pDetails.providerid;
+          }
+        } catch (e) {
+          console.warn('Could not load provider record:', e);
+        }
+      }
+
+      await loadAppointments();
+    }
+
+    async function loadAppointments(filterStatus = 'all') {
+      try {
+        const bookings = await window.BookingService.getProviderBookings(activeProviderId, { status: filterStatus });
+        loadedAppointments = bookings || [];
+        renderAppointmentsTable(loadedAppointments);
+      } catch (err) {
+        console.error('Error fetching appointments:', err);
+      }
+    }
+
+    function renderAppointmentsTable(bookings) {
+      const tbody = document.querySelector('#appointmentsTable tbody');
+      if (!tbody) return;
+
+      if (!bookings || bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted">No appointments found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        const cName = b.users ? `${b.users.firstname} ${b.users.lastname || ''}`.trim() : 'Customer';
+        const cPhone = b.users ? b.users.phone : 'N/A';
+        const sTime = b.providertimeslots ? b.providertimeslots.slotstarttime.slice(0, 5) : '10:00 AM';
+        const sDate = b.providertimeslots ? b.providertimeslots.slotdate : (b.bookingdate ? b.bookingdate.split('T')[0] : 'Today');
+        const status = b.bookingstatus || 'Confirmed';
+
+        let badgeClass = 'badge-primary';
+        if (status === 'Completed') badgeClass = 'badge-success';
+        if (status === 'Cancelled') badgeClass = 'badge-danger';
+        if (status === 'Ongoing') badgeClass = 'badge-warning';
+
+        return `
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-${b.bookingid}</td>
+            <td class="fw-bold text-slate-900">${cName}</td>
+            <td class="fs-xs text-muted">${cPhone}</td>
+            <td>General Appointment</td>
+            <td class="fw-bold text-primary">${sDate}, ${sTime}</td>
+            <td>Direct Specialist</td>
+            <td class="fw-bold text-slate-900">$${parseFloat(b.amount || 45).toFixed(2)}</td>
+            <td><span class="badge-custom ${badgeClass}">${status}</span></td>
+            <td>
+              <div class="d-flex gap-1">
+                ${status === 'Confirmed' ? `
+                  <button type="button" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs" onclick="updateStatus(${b.bookingid}, 'Ongoing')">Start</button>
+                ` : status === 'Ongoing' ? `
+                  <button type="button" class="btn btn-sm btn-success py-1 px-2 fs-xs" onclick="updateStatus(${b.bookingid}, 'Completed')">Complete</button>
+                ` : `<span class="text-xs text-muted">${status}</span>`}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateStatus(bookingId, newStatus) {
+      await window.BookingService.updateBookingStatus(bookingId, newStatus);
+      await loadAppointments();
+    }
+
+    function filterAppointments(status) {
+      if (status === 'all') {
+        renderAppointmentsTable(loadedAppointments);
+      } else {
+        const filtered = loadedAppointments.filter(b => (b.bookingstatus || '').toLowerCase() === status.toLowerCase());
+        renderAppointmentsTable(filtered);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initProviderAppointments);
+  </script>
+</body>
+
+</html>

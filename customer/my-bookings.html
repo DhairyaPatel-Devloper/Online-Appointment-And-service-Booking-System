@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Bookings — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer" data-active="my-bookings"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">My Bookings</h1>
+        <p class="fs-xs text-muted mb-0">Manage active appointments, view digital QR tickets, or reschedule</p>
+      </div>
+      <a href="browse-shops.html" class="btn-primary-custom" style="padding: 0.6rem 1.3rem;">
+        <i class="bi bi-plus-lg"></i> Book New Service
+      </a>
+    </div>
+
+    <!-- Booking Tabs -->
+    <div class="d-flex gap-2 mb-4 border-bottom pb-2">
+      <button type="button" class="btn btn-sm btn-primary-custom active" id="tabUpcoming" onclick="switchBookingTab('upcoming')">
+        Upcoming (2)
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-custom" id="tabCompleted" onclick="switchBookingTab('completed')">
+        Completed (5)
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-custom" id="tabCancelled" onclick="switchBookingTab('cancelled')">
+        Cancelled (1)
+      </button>
+    </div>
+
+    <!-- UPCOMING BOOKINGS LIST -->
+    <div id="viewUpcoming" class="d-flex flex-column gap-3">
+      <!-- Booking Card 1 (Tomorrow) -->
+      <div class="custom-card p-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar-circle" style="background: var(--color-primary); width: 44px; height: 44px;">AL</div>
+            <div>
+              <h3 class="fs-6 fw-bold text-slate-900 mb-0">Aura Luxury Salon & Spa</h3>
+              <div class="text-xs text-muted">Booking Ref: <strong>#BK-8921-2026</strong></div>
+            </div>
+          </div>
+          <span class="badge-custom badge-success"><i class="bi bi-check2-circle"></i> Confirmed & Guaranteed</span>
+        </div>
+
+        <div class="row g-3 p-3 bg-light rounded-3 mb-3">
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Service Selected</div>
+            <div class="fw-bold fs-sm text-slate-900">Executive Hair Styling</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Date & Time</div>
+            <div class="fw-bold fs-sm text-primary">Thu, Sep 24, 2026 • 10:30 AM</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Specialist</div>
+            <div class="fw-bold fs-sm text-slate-900">Sarah Jenkins (Master)</div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2 border-top">
+          <div class="text-xs text-muted d-flex align-items-center gap-2">
+            <i class="bi bi-alarm text-primary"></i> Starts in: <strong>18 hours 20 mins</strong>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <a href="cancel-appointment.html?ref=BK-8921" class="btn btn-sm btn-outline-custom text-danger border-danger">
+              Cancel
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-custom" onclick="alert('Rescheduling modal: Choose a new available slot without any penalty fee.')">
+              Reschedule
+            </button>
+            <a href="confirm-appointment.html" class="btn btn-sm btn-primary-custom">
+              <i class="bi bi-qr-code"></i> Show Pass
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Card 2 (Next Week) -->
+      <div class="custom-card p-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar-circle" style="background: linear-gradient(135deg, #059669, #10b981); width: 44px; height: 44px;">AD</div>
+            <div>
+              <h3 class="fs-6 fw-bold text-slate-900 mb-0">Apex Dental Care & Aesthetics</h3>
+              <div class="text-xs text-muted">Booking Ref: <strong>#BK-7410-2026</strong></div>
+            </div>
+          </div>
+          <span class="badge-custom badge-primary"><i class="bi bi-calendar2-check"></i> Confirmed</span>
+        </div>
+
+        <div class="row g-3 p-3 bg-light rounded-3 mb-3">
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Service Selected</div>
+            <div class="fw-bold fs-sm text-slate-900">Ultrasonic Teeth Cleaning</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Date & Time</div>
+            <div class="fw-bold fs-sm text-primary">Tue, Sep 29, 2026 • 02:00 PM</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="text-xs text-muted">Specialist</div>
+            <div class="fw-bold fs-sm text-slate-900">Dr. Rachel Vance (DDS)</div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2 border-top">
+          <div class="text-xs text-muted">Total Paid: <strong>$90.00</strong> (Card •••• 1092)</div>
+          <div class="d-flex align-items-center gap-2">
+            <a href="cancel-appointment.html?ref=BK-7410" class="btn btn-sm btn-outline-custom text-danger border-danger">Cancel</a>
+            <button type="button" class="btn btn-sm btn-outline-custom" onclick="alert('Rescheduling calendar loaded.')">Reschedule</button>
+            <a href="confirm-appointment.html" class="btn btn-sm btn-primary-custom"><i class="bi bi-qr-code"></i> Show Pass</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLETED BOOKINGS VIEW -->
+    <div id="viewCompleted" class="d-flex flex-column gap-3" style="display: none !important;">
+      <div class="custom-card p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar-circle" style="background:#e0f2fe; color:#0284c7; width:44px; height:44px;">SS</div>
+            <div>
+              <h3 class="fs-6 fw-bold text-slate-900 mb-0">Serene Sanctuary Spa</h3>
+              <div class="text-xs text-muted">Completed on Sep 12, 2026 • Ref #BK-6219</div>
+            </div>
+          </div>
+          <span class="badge-custom badge-neutral"><i class="bi bi-check-circle"></i> Completed</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+          <span class="fs-sm text-slate-700">Deep Tissue Massage (60 min) — <strong>$85.00</strong></span>
+          <div class="d-flex gap-2">
+            <a href="feedback.html" class="btn btn-sm btn-outline-custom"><i class="bi bi-star"></i> Leave Review</a>
+            <a href="browse-shops.html" class="btn btn-sm btn-primary-custom">Book Again</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CANCELLED BOOKINGS VIEW -->
+    <div id="viewCancelled" class="d-flex flex-column gap-3" style="display: none !important;">
+      <div class="custom-card p-4">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h3 class="fs-6 fw-bold text-slate-900 mb-0">DermaGlow Clinical Aesthetics</h3>
+          <span class="badge-custom badge-danger">Cancelled</span>
+        </div>
+        <p class="fs-xs text-muted mb-0">Cancelled on Sep 02, 2026. 100% Refund ($80.00) credited back to your original payment card.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    const DEMO_UPCOMING_BOOKINGS = [
+      {
+        bookingid: 8921,
+        providerid: 1,
+        bookingstatus: 'Confirmed',
+        amount: 45,
+        bookingdate: '2026-09-24T10:30:00',
+        providerdetails: {
+          businessname: 'Aura Luxury Salon & Spa',
+          businessaddress: '402 Crystal Plaza, Sector 6, Metropolis'
+        },
+        providertimeslots: {
+          slotdate: '2026-09-24',
+          slotstarttime: '10:30:00'
+        }
+      },
+      {
+        bookingid: 7410,
+        providerid: 2,
+        bookingstatus: 'Confirmed',
+        amount: 90,
+        bookingdate: '2026-09-29T14:00:00',
+        providerdetails: {
+          businessname: 'Apex Dental Care & Aesthetics',
+          businessaddress: '108 Metro Tower, Central Blvd'
+        },
+        providertimeslots: {
+          slotdate: '2026-09-29',
+          slotstarttime: '14:00:00'
+        }
+      }
+    ];
+
+    const DEMO_COMPLETED_BOOKINGS = [
+      {
+        bookingid: 6219,
+        providerid: 3,
+        bookingstatus: 'Completed',
+        amount: 85,
+        bookingdate: '2026-09-12T15:00:00',
+        providerdetails: {
+          businessname: 'Serene Sanctuary Spa & Wellness',
+          businessaddress: '74 Green Valley Road, Metropolis North'
+        },
+        providertimeslots: {
+          slotdate: '2026-09-12',
+          slotstarttime: '15:00:00'
+        }
+      }
+    ];
+
+    const DEMO_CANCELLED_BOOKINGS = [
+      {
+        bookingid: 5104,
+        providerid: 4,
+        bookingstatus: 'Cancelled',
+        amount: 80,
+        bookingdate: '2026-09-02T16:30:00',
+        providerdetails: {
+          businessname: 'DermaGlow Clinical Aesthetics',
+          businessaddress: '88 Medical Arts Complex, Sector 4'
+        },
+        providertimeslots: {
+          slotdate: '2026-09-02',
+          slotstarttime: '16:30:00'
+        }
+      }
+    ];
+
+    async function loadCustomerBookings() {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+
+      if (!isDb) {
+        // DEMO / STATIC MODE
+        renderBookingsList('viewUpcoming', DEMO_UPCOMING_BOOKINGS, 'upcoming');
+        renderBookingsList('viewCompleted', DEMO_COMPLETED_BOOKINGS, 'completed');
+        renderBookingsList('viewCancelled', DEMO_CANCELLED_BOOKINGS, 'cancelled');
+
+        document.getElementById('tabUpcoming').textContent = `Upcoming (${DEMO_UPCOMING_BOOKINGS.length})`;
+        document.getElementById('tabCompleted').textContent = `Completed (${DEMO_COMPLETED_BOOKINGS.length})`;
+        document.getElementById('tabCancelled').textContent = `Cancelled (${DEMO_CANCELLED_BOOKINGS.length})`;
+        return;
+      }
+
+      // LIVE SUPABASE DATABASE MODE
+      if (!currentUser) {
+        const promptHtml = `
+          <div class="custom-card p-5 text-center">
+            <i class="bi bi-shield-lock fs-1 text-primary mb-2"></i>
+            <h4 class="fw-bold text-slate-900 mb-1">Sign In Required for Live Database</h4>
+            <p class="text-muted fs-sm max-w-md mx-auto mb-4">
+              You are currently in Live Supabase Database Mode. Please sign in to query your real bookings.
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="../login.html" class="btn-primary-custom" style="padding:0.5rem 1.5rem;">Sign In</a>
+              <button type="button" class="btn-outline-custom" onclick="window.AppConfig.setMode('static')">Switch to Demo Mode</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('viewUpcoming').innerHTML = promptHtml;
+        document.getElementById('viewCompleted').innerHTML = promptHtml;
+        document.getElementById('viewCancelled').innerHTML = promptHtml;
+        return;
+      }
+
+      const customerId = currentUser.userid;
+
+      try {
+        const [activeBookings, historyBookings] = await Promise.all([
+          window.BookingService.getCustomerBookings(customerId),
+          window.BookingService.getCustomerBookingHistory(customerId)
+        ]);
+
+        renderBookingsList('viewUpcoming', activeBookings, 'upcoming');
+        
+        const completed = (historyBookings || []).filter(b => b.bookingstatus === 'Completed');
+        const cancelled = (historyBookings || []).filter(b => b.bookingstatus === 'Cancelled');
+
+        renderBookingsList('viewCompleted', completed, 'completed');
+        renderBookingsList('viewCancelled', cancelled, 'cancelled');
+
+        document.getElementById('tabUpcoming').textContent = `Upcoming (${activeBookings.length})`;
+        document.getElementById('tabCompleted').textContent = `Completed (${completed.length})`;
+        document.getElementById('tabCancelled').textContent = `Cancelled (${cancelled.length})`;
+      } catch (err) {
+        console.warn('Live DB query error in bookings:', err);
+      }
+    }
+
+    function renderBookingsList(containerId, bookings, type) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      if (!bookings || bookings.length === 0) {
+        container.innerHTML = `
+          <div class="custom-card p-4 text-center text-muted">
+            <i class="bi bi-calendar-x fs-2"></i>
+            <p class="mt-2 mb-0 fs-sm">No ${type} appointments found in database.</p>
+            <a href="browse-shops.html" class="btn btn-sm btn-primary-custom mt-3">Book New Appointment</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = bookings.map(b => {
+        const pName = b.providerdetails ? b.providerdetails.businessname : 'Service Provider';
+        const sDate = b.providertimeslots ? b.providertimeslots.slotdate : (b.bookingdate ? b.bookingdate.split('T')[0] : 'N/A');
+        const sTime = b.providertimeslots ? b.providertimeslots.slotstarttime.slice(0, 5) : 'Scheduled';
+
+        let badgeClass = 'badge-success';
+        if (b.bookingstatus === 'Cancelled') badgeClass = 'badge-danger';
+        if (b.bookingstatus === 'Completed') badgeClass = 'badge-neutral';
+
+        return `
+          <div class="custom-card p-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="avatar-circle" style="background: var(--color-primary); width: 44px; height: 44px;">${pName.slice(0, 2).toUpperCase()}</div>
+                <div>
+                  <h3 class="fs-6 fw-bold text-slate-900 mb-0">${pName}</h3>
+                  <div class="text-xs text-muted">Booking Ref: <strong>#BK-${b.bookingid}-${new Date().getFullYear()}</strong></div>
+                </div>
+              </div>
+              <span class="badge-custom ${badgeClass}"><i class="bi bi-check2-circle"></i> ${b.bookingstatus}</span>
+            </div>
+
+            <div class="row g-3 p-3 bg-light rounded-3 mb-3">
+              <div class="col-sm-4">
+                <div class="text-xs text-muted">Service Appointment</div>
+                <div class="fw-bold fs-sm text-slate-900">Standard Booking</div>
+              </div>
+              <div class="col-sm-4">
+                <div class="text-xs text-muted">Date & Time</div>
+                <div class="fw-bold fs-sm text-primary">${sDate} • ${sTime}</div>
+              </div>
+              <div class="col-sm-4">
+                <div class="text-xs text-muted">Amount</div>
+                <div class="fw-bold fs-sm text-slate-900">$${parseFloat(b.amount || 45).toFixed(2)}</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2 border-top">
+              <div class="text-xs text-muted"><i class="bi bi-shield-check text-success"></i> Verified Booking Record</div>
+              <div class="d-flex align-items-center gap-2">
+                ${b.bookingstatus !== 'Cancelled' && b.bookingstatus !== 'Completed' ? `
+                  <a href="cancel-appointment.html?id=${b.bookingid}" class="btn btn-sm btn-outline-custom text-danger border-danger">
+                    Cancel
+                  </a>
+                  <a href="select-service.html?providerId=${b.providerid}" class="btn btn-sm btn-outline-custom">
+                    Reschedule
+                  </a>
+                  <a href="confirm-appointment.html" class="btn btn-sm btn-primary-custom">
+                    <i class="bi bi-qr-code"></i> Show Pass
+                  </a>
+                ` : ''}
+                ${b.bookingstatus === 'Completed' ? `
+                  <a href="feedback.html?id=${b.bookingid}&providerId=${b.providerid}" class="btn btn-sm btn-outline-custom">
+                    <i class="bi bi-star"></i> Leave Review
+                  </a>
+                  <a href="browse-shops.html" class="btn btn-sm btn-primary-custom">Book Again</a>
+                ` : ''}
+                ${b.bookingstatus === 'Cancelled' ? `
+                  <a href="browse-shops.html" class="btn btn-sm btn-primary-custom">Book Again</a>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchBookingTab(tab) {
+      document.getElementById('tabUpcoming').className = tab === 'upcoming' ? 'btn btn-sm btn-primary-custom active' : 'btn btn-sm btn-outline-custom';
+      document.getElementById('tabCompleted').className = tab === 'completed' ? 'btn btn-sm btn-primary-custom active' : 'btn btn-sm btn-outline-custom';
+      document.getElementById('tabCancelled').className = tab === 'cancelled' ? 'btn btn-sm btn-primary-custom active' : 'btn btn-sm btn-outline-custom';
+
+      document.getElementById('viewUpcoming').style.setProperty('display', tab === 'upcoming' ? 'flex' : 'none', 'important');
+      document.getElementById('viewCompleted').style.setProperty('display', tab === 'completed' ? 'flex' : 'none', 'important');
+      document.getElementById('viewCancelled').style.setProperty('display', tab === 'cancelled' ? 'flex' : 'none', 'important');
+    }
+
+    window.addEventListener('datamodechange', loadCustomerBookings);
+    document.addEventListener('DOMContentLoaded', loadCustomerBookings);
+  </script>
+</body>
+</html>
+

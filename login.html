@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — BookWith.tech Platform</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/header.css">
+
+  <style>
+    .auth-page-container {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+      background: radial-gradient(100% 70% at 50% 10%, #ffffff 0%, #f1f5f9 100%);
+    }
+
+    .auth-card-box {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: clamp(2rem, 4vw, 2.75rem);
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .auth-demo-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      padding: 0.75rem;
+      background: var(--color-slate-50);
+      border: 1px dashed var(--color-slate-300);
+      border-radius: var(--radius-md);
+    }
+
+    .auth-demo-btn {
+      flex: 1;
+      min-width: 110px;
+      font-size: 0.775rem;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      color: var(--color-slate-700);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all var(--transition-fast);
+    }
+
+    .auth-demo-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .password-input-wrapper {
+      position: relative;
+    }
+
+    .password-toggle-trigger {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--color-slate-400);
+      cursor: pointer;
+      padding: 4px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-toggle-trigger:hover {
+      color: var(--color-slate-700);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="public"></site-header>
+
+  <main class="auth-page-container">
+    <div class="auth-card-box">
+      <!-- Icon & Headline -->
+      <div class="text-center mb-4">
+        <div style="width: 52px; height: 52px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+          <i class="bi bi-box-arrow-in-right"></i>
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: #0f172a; margin: 0;">Welcome Back</h1>
+        <p style="font-size: 0.9rem; color: var(--color-slate-500); margin-top: 4px;">Sign in to your BookWith.tech console</p>
+      </div>
+
+      <!-- Quick 1-Click Demo Logins -->
+      <div>
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <div style="font-size: 0.725rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-slate-400);">
+            1-Click Quick Fill Logins:
+          </div>
+          <span id="loginModeIndicatorBadge" class="badge bg-warning text-dark fs-xs py-1 px-2 rounded-pill">Demo Mode</span>
+        </div>
+        <div class="auth-demo-pill-group">
+          <button type="button" class="auth-demo-btn" id="demoCustomerBtn">
+            <i class="bi bi-person text-primary"></i> Customer
+          </button>
+          <button type="button" class="auth-demo-btn" id="demoProviderBtn">
+            <i class="bi bi-shop text-success"></i> Provider
+          </button>
+          <button type="button" class="auth-demo-btn" id="demoAdminBtn">
+            <i class="bi bi-shield-check text-danger"></i> Admin
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode Information Banner -->
+      <div id="modeStatusBanner" class="p-2 px-3 rounded-2 mb-3 fs-xs d-flex align-items-center justify-content-between" style="background: #f1f5f9; border: 1px solid #cbd5e1;">
+        <span id="modeStatusText" class="text-slate-700">
+          <i class="bi bi-lightning-charge-fill text-warning me-1"></i> <strong>Demo Mode:</strong> Instant offline login (no DB check)
+        </span>
+        <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2 fs-xs" onclick="window.AppConfig.toggleMode()" style="line-height: 1.6;">Switch</button>
+      </div>
+
+      <!-- Form Error Summary -->
+      <div id="loginAlertBox" style="display: none;" class="alert alert-danger py-2 px-3 fs-xs rounded-3 mb-3"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+        <div class="mb-3">
+          <label for="txtEmail" class="form-label-custom">Email Address <span class="text-danger">*</span></label>
+          <input type="email" id="txtEmail" class="form-control-custom" placeholder="name@domain.com" required>
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex align-items-center justify-content-between mb-1">
+            <label for="txtPassword" class="form-label-custom mb-0">Password <span class="text-danger">*</span></label>
+            <a href="customer/forgot-password.html" class="fs-xs fw-semibold text-primary">Forgot password?</a>
+          </div>
+          <div class="password-input-wrapper">
+            <input type="password" id="txtPassword" class="form-control-custom pe-5" placeholder="Enter your password" required>
+            <button type="button" class="password-toggle-trigger" onclick="togglePassVisibility()" aria-label="Toggle password visibility">
+              <i class="bi bi-eye" id="passToggleIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="ddlRole" class="form-label-custom">Portal Role <span class="text-danger">*</span></label>
+          <select id="ddlRole" class="form-select-custom" required>
+            <option value="">-- Select Access Role --</option>
+            <option value="Customer">Customer (Book & Manage)</option>
+            <option value="Provider">Service Provider (Shop Portal)</option>
+            <option value="Admin">Administrator (Master Control)</option>
+          </select>
+        </div>
+
+        <button type="submit" id="btnSubmitLogin" class="btn-primary-custom w-100 py-3" style="font-size: 0.95rem;">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Sign In to Account</span>
+        </button>
+
+        <div class="text-center mt-4 pt-2 border-top">
+          <span style="font-size: 0.85rem; color: var(--color-slate-500);">Don't have an account? </span>
+          <a href="register.html" class="fs-sm fw-bold text-primary">Register Here</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="public"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/services/auth-service.js"></script>
+  <script src="js/services/user-service.js"></script>
+  <script src="js/services/provider-service.js"></script>
+  <script src="js/services/slot-service.js"></script>
+  <script src="js/services/booking-service.js"></script>
+  <script src="js/services/feedback-service.js"></script>
+  <script src="js/services/admin-service.js"></script>
+  <script src="js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="js/site-header.js"></script>
+  <script src="js/site-footer.js"></script>
+
+  <script>
+    function togglePassVisibility() {
+      const pass = document.getElementById('txtPassword');
+      const icon = document.getElementById('passToggleIcon');
+      if (pass.type === 'password') {
+        pass.type = 'text';
+        icon.className = 'bi bi-eye-slash';
+      } else {
+        pass.type = 'password';
+        icon.className = 'bi bi-eye';
+      }
+    }
+
+    function updateLoginModeBanner() {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const badge = document.getElementById('loginModeIndicatorBadge');
+      const text = document.getElementById('modeStatusText');
+      const alertBox = document.getElementById('loginAlertBox');
+      if (alertBox) alertBox.style.display = 'none';
+
+      if (isDb) {
+        if (badge) {
+          badge.className = 'badge bg-success text-white fs-xs py-1 px-2 rounded-pill';
+          badge.textContent = 'Live DB Mode';
+        }
+        if (text) {
+          text.innerHTML = '<i class="bi bi-database-check text-success me-1"></i> <strong>Live DB Mode:</strong> Authenticates against Supabase users table.';
+        }
+      } else {
+        if (badge) {
+          badge.className = 'badge bg-warning text-dark fs-xs py-1 px-2 rounded-pill';
+          badge.textContent = 'Demo Mode';
+        }
+        if (text) {
+          text.innerHTML = '<i class="bi bi-lightning-charge-fill text-warning me-1"></i> <strong>Demo Mode:</strong> Instant offline login (no DB check). Zero errors.';
+        }
+      }
+    }
+
+    // Demo Button Handlers (switches according to mode)
+    document.getElementById('demoCustomerBtn').addEventListener('click', () => {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      if (isDb) {
+        document.getElementById('txtEmail').value = 'dhairyapatel0246@gmail.com';
+        document.getElementById('txtPassword').value = 'Dhairya@12345';
+      } else {
+        document.getElementById('txtEmail').value = 'rahul@gmail.com';
+        document.getElementById('txtPassword').value = 'Rahul@123';
+      }
+      document.getElementById('ddlRole').value = 'Customer';
+    });
+
+    document.getElementById('demoProviderBtn').addEventListener('click', () => {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      if (isDb) {
+        document.getElementById('txtEmail').value = 'sarah_1794127018367@aura.salon';
+        document.getElementById('txtPassword').value = 'Aura@123';
+      } else {
+        document.getElementById('txtEmail').value = 'amitprovider@gmail.com';
+        document.getElementById('txtPassword').value = 'Amit@789';
+      }
+      document.getElementById('ddlRole').value = 'Provider';
+    });
+
+    document.getElementById('demoAdminBtn').addEventListener('click', () => {
+      document.getElementById('txtEmail').value = 'admin@gmail.com';
+      document.getElementById('txtPassword').value = 'Admin@999';
+      document.getElementById('ddlRole').value = 'Admin';
+    });
+
+    window.addEventListener('datamodechange', updateLoginModeBanner);
+    document.addEventListener('DOMContentLoaded', updateLoginModeBanner);
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('txtEmail').value.trim();
+      const password = document.getElementById('txtPassword').value.trim();
+      const role = document.getElementById('ddlRole').value;
+      const alertBox = document.getElementById('loginAlertBox');
+      const submitBtn = document.getElementById('btnSubmitLogin');
+
+      if (!email || !password || !role) {
+        alertBox.textContent = 'Please fill out all required fields and select your access role.';
+        alertBox.style.display = 'block';
+        return;
+      }
+
+      alertBox.style.display = 'none';
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Authenticating...';
+
+      try {
+        const result = await window.AuthService.login(email, password, role);
+        if (result && result.success) {
+          const user = result.user;
+          const userRole = (user.rolle || role).toLowerCase();
+
+          if (userRole === 'customer') {
+            window.location.href = 'customer/browse-shops.html';
+          } else if (userRole === 'provider') {
+            window.location.href = 'provider/dashboard.html';
+          } else if (userRole === 'admin') {
+            window.location.href = 'admin/dashboard.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }
+      } catch (err) {
+        alertBox.textContent = err.message || 'Login failed. Please verify your credentials.';
+        alertBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    }
+  </script>
+</body>
+</html>
+

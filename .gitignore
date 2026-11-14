@@ -1,0 +1,39 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node & Dependencies
+node_modules/
+dist/
+build/
+
+# IDE & OS
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# AI tools & configs
+.claude/
+.claude*
+CLAUDE.md
+.cursorrules
+.cursor/
+.aider*
+.bolt/
+.v0/
+.copilot/
+.github/copilot*
+
+# Restore / migration scripts
+restore_phase1.py
+
+# Submission / format / reference folders
+Formate/
+REF for backend/
+92610103002_Dhairya/
+test bill/
+

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Provider Onboarding Requests — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="requests"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Provider Onboarding Queue</h1>
+        <p class="fs-xs text-muted mb-0">Inspect business legal credentials, trade certificates, and authorize new storefronts</p>
+      </div>
+      <div class="d-flex gap-2">
+        <span class="badge-custom badge-warning py-2 px-3 fs-xs"><i class="bi bi-clock-history"></i> 2 Applications Awaiting Action</span>
+      </div>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="providerRequestsTable">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Business Details</th>
+            <th>Applicant / Owner</th>
+            <th>Target Category</th>
+            <th>Verified Documents</th>
+            <th>Submission Date</th>
+            <th>Status</th>
+            <th>Decision Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr id="rowReq201">
+            <td class="fw-bold fs-xs text-slate-800">#REQ-201</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Elite Barber Lounge & Club</div>
+              <div class="text-xs text-muted">714 West Boulevard, Metropolis</div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-800 fs-sm">Kevin Vance</div>
+              <div class="text-xs text-muted">+1 555-482-1940</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Hair & Barbershops</span></td>
+            <td>
+              <div class="d-flex flex-wrap gap-1">
+                <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-file-earmark-check"></i> Trade License</span>
+                <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-person-badge"></i> Owner ID</span>
+              </div>
+            </td>
+            <td class="fs-xs text-muted">Sep 23, 2026 (Yesterday)</td>
+            <td><span class="badge-custom badge-warning" id="statusBadge201">Pending Review</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <a href="provider-request-details.html?id=201" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">
+                  <i class="bi bi-eye"></i> Dossier
+                </a>
+                <button type="button" class="btn btn-sm btn-success py-1 px-2 fs-xs" onclick="quickApprove(201)">
+                  Approve
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-custom text-danger border-danger py-1 px-2 fs-xs" onclick="quickReject(201)">
+                  Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr id="rowReq202">
+            <td class="fw-bold fs-xs text-slate-800">#REQ-202</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Dr. Claire Dental Aesthetics</div>
+              <div class="text-xs text-muted">Suite 200, Medical Plaza</div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-800 fs-sm">Dr. Claire Wu (DDS)</div>
+              <div class="text-xs text-muted">+1 555-901-3829</div>
+            </td>
+            <td><span class="badge-custom badge-primary" style="background:#ecfdf5; color:#059669;">Dental Clinic</span></td>
+            <td>
+              <div class="d-flex flex-wrap gap-1">
+                <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-award"></i> Medical License</span>
+                <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-shield-check"></i> Malpractice Ins.</span>
+              </div>
+            </td>
+            <td class="fs-xs text-muted">Sep 22, 2026</td>
+            <td><span class="badge-custom badge-warning" id="statusBadge202">Pending Review</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <a href="provider-request-details.html?id=202" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">
+                  <i class="bi bi-eye"></i> Dossier
+                </a>
+                <button type="button" class="btn btn-sm btn-success py-1 px-2 fs-xs" onclick="quickApprove(202)">
+                  Approve
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-custom text-danger border-danger py-1 px-2 fs-xs" onclick="quickReject(202)">
+                  Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    async function loadProviderRequests() {
+      const tbody = document.querySelector('#providerRequestsTable tbody');
+      if (!tbody) return;
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Loading applications from Supabase...</td></tr>`;
+
+      try {
+        const providers = await window.ProviderService.getAllProviders();
+        // Unapproved / pending applications
+        const pending = providers.filter(p => !p.approvalstatus || p.approvalstatus === 0);
+
+        if (pending.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No pending provider applications in queue. All providers are verified!</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = pending.map(p => {
+          const ownerName = p.users ? `${p.users.firstname} ${p.users.lastname}` : 'Provider Owner';
+          const ownerPhone = p.businessphone || (p.users ? p.users.phone : 'N/A');
+          const dateStr = p.createdat ? p.createdat.split('T')[0] : 'Recent';
+
+          return `
+            <tr id="rowReq${p.providerid}">
+              <td class="fw-bold fs-xs text-slate-800">#REQ-${p.providerid}</td>
+              <td>
+                <div class="fw-bold text-slate-900 fs-sm">${p.businessname}</div>
+                <div class="text-xs text-muted">${p.businessaddress || 'Local Business'}</div>
+              </td>
+              <td>
+                <div class="fw-bold text-slate-800 fs-sm">${ownerName}</div>
+                <div class="text-xs text-muted">${ownerPhone}</div>
+              </td>
+              <td><span class="badge-custom badge-primary">Service Storefront</span></td>
+              <td>
+                <div class="d-flex flex-wrap gap-1">
+                  <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-file-earmark-check"></i> Registration</span>
+                  <span class="badge-custom badge-neutral" style="font-size: 0.65rem;"><i class="bi bi-person-badge"></i> ID Verified</span>
+                </div>
+              </td>
+              <td class="fs-xs text-muted">${dateStr}</td>
+              <td><span class="badge-custom badge-warning" id="statusBadge${p.providerid}">Pending Review</span></td>
+              <td>
+                <div class="d-flex align-items-center gap-1">
+                  <a href="provider-request-details.html?id=${p.providerid}" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">
+                    <i class="bi bi-eye"></i> Dossier
+                  </a>
+                  <button type="button" class="btn btn-sm btn-success py-1 px-2 fs-xs" onclick="quickApprove(${p.providerid})">
+                    Approve
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-custom text-danger border-danger py-1 px-2 fs-xs" onclick="quickReject(${p.providerid})">
+                    Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Error loading provider requests:', err);
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load onboarding queue from Supabase.</td></tr>`;
+      }
+    }
+
+    async function quickApprove(id) {
+      try {
+        await window.ProviderService.updateApprovalStatus(id, true);
+        const badge = document.getElementById('statusBadge' + id);
+        if (badge) {
+          badge.className = 'badge-custom badge-success';
+          badge.textContent = 'Approved';
+        }
+        alert(`Provider Application #REQ-${id} has been authorized in Supabase.`);
+      } catch (err) {
+        alert('Failed to approve provider: ' + err.message);
+      }
+    }
+
+    async function quickReject(id) {
+      const reason = prompt('Please input rejection reason for this applicant:', 'Incomplete documentation');
+      if (reason) {
+        try {
+          await window.ProviderService.updateApprovalStatus(id, false);
+          const badge = document.getElementById('statusBadge' + id);
+          if (badge) {
+            badge.className = 'badge-custom badge-danger';
+            badge.textContent = 'Rejected';
+          }
+          alert(`Application #REQ-${id} marked as rejected.`);
+        } catch (err) {
+          alert('Failed to update status: ' + err.message);
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProviderRequests);
+  </script>
+</body>
+</html>
+
+

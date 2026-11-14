@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Category Master Management — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="categories"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Platform Service Categories</h1>
+        <p class="fs-xs text-muted mb-0">Define public categories, assign commission splits, and manage taxonomy</p>
+      </div>
+      <button type="button" class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        <i class="bi bi-plus-circle-fill"></i> Add Category
+      </button>
+    </div>
+
+    <!-- Category Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="categoriesTable">
+        <thead>
+          <tr>
+            <th>Icon</th>
+            <th>Category Title</th>
+            <th>Active Providers</th>
+            <th>Default Commission</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr>
+            <td>
+              <div class="stat-card-icon mb-0" style="width:38px; height:38px; font-size:1.1rem; background:#edf7f3; color:#0d5c46;">
+                <i class="bi bi-scissors"></i>
+              </div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Hair, Styling & Barbershops</div>
+              <div class="text-xs text-muted">Salons, hair extensions, precision barber styling</div>
+            </td>
+            <td class="fw-bold">842 Providers</td>
+            <td><span class="badge-custom badge-neutral">10% Platform Fee</span></td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing Hair category')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr>
+            <td>
+              <div class="stat-card-icon mb-0" style="width:38px; height:38px; font-size:1.1rem; background:#e0f2fe; color:#0284c7;">
+                <i class="bi bi-water"></i>
+              </div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Spa, Massage & Hydrotherapy</div>
+              <div class="text-xs text-muted">Aromatics, hot stone therapy, sauna treatments</div>
+            </td>
+            <td class="fw-bold">410 Providers</td>
+            <td><span class="badge-custom badge-neutral">10% Platform Fee</span></td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing Spa category')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Item 3 -->
+          <tr>
+            <td>
+              <div class="stat-card-icon mb-0" style="width:38px; height:38px; font-size:1.1rem; background:#ecfdf5; color:#059669;">
+                <i class="bi bi-heart-pulse"></i>
+              </div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Dental Clinic & Oral Aesthetics</div>
+              <div class="text-xs text-muted">Teeth whitening, orthodontics, scaling, cleaning</div>
+            </td>
+            <td class="fw-bold">320 Providers</td>
+            <td><span class="badge-custom badge-neutral">8% Platform Fee</span></td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing Dental category')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Item 4 -->
+          <tr>
+            <td>
+              <div class="stat-card-icon mb-0" style="width:38px; height:38px; font-size:1.1rem; background:#fdf2f8; color:#be185d;">
+                <i class="bi bi-stars"></i>
+              </div>
+            </td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Dermatology & Clinical Skincare</div>
+              <div class="text-xs text-muted">Chemical peels, microdermabrasion, laser aesthetics</div>
+            </td>
+            <td class="fw-bold">270 Providers</td>
+            <td><span class="badge-custom badge-neutral">12% Platform Fee</span></td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing Dermatology category')">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-xl);">
+          <div class="modal-header border-bottom p-4">
+            <h5 class="modal-title fw-bold text-slate-900" id="addCategoryModalLabel">Create Platform Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <form onsubmit="handleAddCategory(event)">
+              <div class="mb-3">
+                <label class="form-label-custom">Category Title <span class="text-danger">*</span></label>
+                <input type="text" id="newCatTitle" class="form-control-custom" placeholder="e.g. Physiotherapy & Rehabilitation" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label-custom">Bootstrap Icon Class</label>
+                <input type="text" id="newCatIcon" class="form-control-custom" placeholder="e.g. bi-activity" value="bi-activity">
+              </div>
+              <div class="mb-3">
+                <label class="form-label-custom">Default Platform Fee (%)</label>
+                <input type="number" id="newCatFee" class="form-control-custom" value="10" min="1" max="50">
+              </div>
+              <div class="mb-4">
+                <label class="form-label-custom">Category Scope & Description</label>
+                <textarea class="form-control-custom" rows="3" placeholder="Target service offerings grouped under this taxonomy..."></textarea>
+              </div>
+              <button type="submit" class="btn-primary-custom w-100 py-3">
+                <i class="bi bi-check2"></i> Save & Publish Category
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    function handleAddCategory(e) {
+      e.preventDefault();
+      const title = document.getElementById('newCatTitle').value.trim();
+      const fee = document.getElementById('newCatFee').value;
+      const icon = document.getElementById('newCatIcon').value || 'bi-tag';
+
+      const tbody = document.querySelector('#categoriesTable tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="stat-card-icon mb-0" style="width:38px; height:38px; font-size:1.1rem; background:#f1f5f9; color:#475569;">
+            <i class="bi ${icon}"></i>
+          </div>
+        </td>
+        <td>
+          <div class="fw-bold text-slate-900 fs-sm">${title}</div>
+          <div class="text-xs text-muted">Platform service taxonomy</div>
+        </td>
+        <td class="fw-bold">0 Providers</td>
+        <td><span class="badge-custom badge-neutral">${fee}% Platform Fee</span></td>
+        <td>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" checked>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      const modalEl = document.getElementById('addCategoryModal');
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.hide();
+
+      alert(`Category "${title}" configured successfully.`);
+    }
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Login - BookWith.tech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+    <div class="auth-wrapper min-vh-100 d-flex align-items-center justify-content-center bg-light p-3">
+        <div class="custom-card p-4 p-md-5 max-w-md w-100 reveal-on-scroll">
+            <div class="text-center mb-4">
+                <a class="brand-badge fs-2 mb-2 d-inline-flex" href="../index.html"><i class="bi bi-calendar2-check-fill"></i> BookWith.tech</a>
+                <h1 class="h4 fw-bold mb-1">Service Provider Login</h1>
+                <p class="text-muted fs-sm">Access your business portal</p>
+            </div>
+            <form onsubmit="handleProviderLogin(event)">
+                <div class="mb-3">
+                    <label class="form-label-custom">Provider Email</label>
+                    <input type="email" class="form-control-custom" value="info@glowshine.com" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label-custom">Password</label>
+                    <input type="password" class="form-control-custom" value="ProviderPass123!" required>
+                </div>
+                <button type="submit" class="btn-primary-custom w-100 mb-3" style="background:#0d9488;">Sign In to Business Console</button>
+                <div class="text-center">
+                    <a href="../login.html" class="fs-sm text-primary fw-semibold">Switch Portal Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Supabase JS SDK & Services -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/services/auth-service.js"></script>
+    <script src="../js/services/user-service.js"></script>
+    <script src="../js/services/provider-service.js"></script>
+    <script src="../js/services/slot-service.js"></script>
+    <script src="../js/services/booking-service.js"></script>
+    <script src="../js/services/feedback-service.js"></script>
+    <script src="../js/services/admin-service.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/app-core.js"></script>
+    <script>
+        async function handleProviderLogin(e) {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const email = inputs[0].value.trim();
+            const password = inputs[1].value.trim();
+            const btn = e.target.querySelector('button[type="submit"]');
+
+            btn.disabled = true;
+            btn.textContent = 'Authenticating...';
+
+            try {
+                const result = await window.AuthService.login(email, password, 'Provider');
+                if (result && result.success) {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (err) {
+                alert(err.message || 'Provider login failed.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Sign In to Business Console';
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Manage Services & Pricing — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="provider" data-active="services"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Services & Treatment Catalog</h1>
+        <p class="fs-xs text-muted mb-0">Configure your offerings, appointment duration limits, and pricing</p>
+      </div>
+      <button type="button" class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+        <i class="bi bi-plus-circle-fill"></i> Add New Service
+      </button>
+    </div>
+
+    <!-- Services Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="servicesCatalogTable">
+        <thead>
+          <tr>
+            <th>Service Name</th>
+            <th>Category</th>
+            <th>Duration</th>
+            <th>Price ($)</th>
+            <th>Active Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Service 1 -->
+          <tr>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Executive Hair Styling & Consultation</div>
+              <div class="text-xs text-muted">Wash, precision cut, and blowdry finish</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Hair & Styling</span></td>
+            <td class="fw-semibold">45 mins</td>
+            <td class="fw-bold text-slate-900 fs-6">$45.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing service: Executive Hair Styling')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Service 2 -->
+          <tr>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Keratin Infusion & Thermal Repair</div>
+              <div class="text-xs text-muted">Deep conditioning moisture therapy for damaged hair</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Hair & Styling</span></td>
+            <td class="fw-semibold">60 mins</td>
+            <td class="fw-bold text-slate-900 fs-6">$85.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing service: Keratin Infusion')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Service 3 -->
+          <tr>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Organic Botanical Facial Spa</div>
+              <div class="text-xs text-muted">Enzyme peel, ultrasonic pore extraction, and face massage</div>
+            </td>
+            <td><span class="badge-custom badge-neutral">Facial & Spa</span></td>
+            <td class="fw-semibold">50 mins</td>
+            <td class="fw-bold text-slate-900 fs-6">$70.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing service: Organic Botanical Facial')">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Service 4 -->
+          <tr>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Full Balayage & Gloss Tone Treatment</div>
+              <div class="text-xs text-muted">Hand-painted multidimensional highlights & gloss finish</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Hair & Styling</span></td>
+            <td class="fw-semibold">90 mins</td>
+            <td class="fw-bold text-slate-900 fs-6">$140.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs" onclick="alert('Editing service: Balayage')">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Service Modal -->
+    <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-xl);">
+          <div class="modal-header border-bottom p-4">
+            <h5 class="modal-title fw-bold text-slate-900" id="addServiceModalLabel">Add New Service to Catalog</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <form id="addServiceForm" onsubmit="handleAddService(event)">
+              <div class="mb-3">
+                <label class="form-label-custom">Service Title <span class="text-danger">*</span></label>
+                <input type="text" id="newServTitle" class="form-control-custom" placeholder="e.g. Scalp Detox Scrub" required>
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="form-label-custom">Category <span class="text-danger">*</span></label>
+                  <select id="newServCat" class="form-select-custom" required>
+                    <option value="Hair & Styling">Hair & Styling</option>
+                    <option value="Facial & Spa">Facial & Spa</option>
+                    <option value="Body Therapy">Body Therapy</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="form-label-custom">Price ($) <span class="text-danger">*</span></label>
+                  <input type="number" id="newServPrice" class="form-control-custom" placeholder="50.00" step="0.5" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label-custom">Appointment Duration <span class="text-danger">*</span></label>
+                <select id="newServDuration" class="form-select-custom" required>
+                  <option value="30 mins">30 minutes</option>
+                  <option value="45 mins" selected>45 minutes</option>
+                  <option value="60 mins">60 minutes</option>
+                  <option value="90 mins">90 minutes</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="form-label-custom">Service Description</label>
+                <textarea id="newServDesc" class="form-control-custom" rows="3" placeholder="Brief summary of steps, products used, and benefits..."></textarea>
+              </div>
+              <button type="submit" class="btn-primary-custom w-100 py-3">
+                <i class="bi bi-check2"></i> Publish Service to Storefront
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="provider"></site-footer>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    async function initProviderServices() {
+      const user = window.AuthService ? window.AuthService.getCurrentUser() : null;
+      if (!user) return;
+      // In Supabase schema: provider profile has avgservicetime
+      console.log('Provider services initialized for user:', user.emailid || user.Email);
+    }
+
+    function handleAddService(e) {
+      e.preventDefault();
+      const title = document.getElementById('newServTitle').value.trim();
+      const cat = document.getElementById('newServCat').value;
+      const price = parseFloat(document.getElementById('newServPrice').value).toFixed(2);
+      const duration = document.getElementById('newServDuration').value;
+      const desc = document.getElementById('newServDesc').value.trim();
+
+      const tbody = document.querySelector('#servicesCatalogTable tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="fw-bold text-slate-900 fs-sm">${title}</div>
+          <div class="text-xs text-muted">${desc || 'Standard procedure'}</div>
+        </td>
+        <td><span class="badge-custom badge-primary">${cat}</span></td>
+        <td class="fw-semibold">${duration}</td>
+        <td class="fw-bold text-slate-900 fs-6">$${price}</td>
+        <td>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" checked>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Hide modal
+      const modalEl = document.getElementById('addServiceModal');
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.hide();
+
+      alert(`Service "${title}" successfully configured.`);
+      document.getElementById('addServiceForm').reset();
+    }
+
+    document.addEventListener('DOMContentLoaded', initProviderServices);
+  </script>
+</body>
+</html>
+
+

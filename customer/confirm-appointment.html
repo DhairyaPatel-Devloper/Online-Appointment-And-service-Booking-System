@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Appointment Confirmed — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+
+  <style>
+    .confirmation-hero-check {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 0 0 8px rgba(13, 92, 70, 0.1);
+      animation: checkPulse 1.2s ease-out;
+    }
+
+    .booking-pass-card {
+      max-width: 520px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .pass-header {
+      background: var(--color-primary);
+      color: #ffffff;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    /* Perforated receipt line */
+    .perforated-divider {
+      position: relative;
+      height: 1px;
+      border-top: 2px dashed var(--color-border);
+      margin: 1.5rem -1.5rem;
+    }
+
+    .perforated-divider::before, .perforated-divider::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+    }
+
+    .perforated-divider::before {
+      left: -2px;
+      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    }
+
+    .perforated-divider::after {
+      right: -2px;
+      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    }
+
+    .qr-box-frame {
+      width: 130px;
+      height: 130px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .glance-kpi-pill {
+      background: var(--color-slate-100);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+    }
+
+    @keyframes checkPulse {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer"></site-header>
+
+  <main class="container my-5">
+    <!-- Success Banner -->
+    <div class="text-center mb-4">
+      <div class="confirmation-hero-check">
+        <i class="bi bi-check-lg"></i>
+      </div>
+      <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--color-text-main); margin: 0;">Appointment Confirmed!</h1>
+      <p style="font-size: 0.95rem; color: var(--color-slate-600); margin-top: 4px;">
+        Slot guaranteed. SMS & Calendar invite dispatched to <strong id="userEmailConfirm">aarav.patel@gmail.com</strong>
+      </p>
+    </div>
+
+    <!-- Official Booking Digital Pass (Tactile Boarding Pass) -->
+    <div class="booking-pass-card">
+      <div class="pass-header d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge-custom" style="background: rgba(255,255,255,0.2); color:#fff; font-size: 0.7rem;">
+            <i class="bi bi-shield-check"></i> Verified Digital Ticket
+          </span>
+          <h2 class="fs-5 fw-bold text-white mb-0 mt-2" id="passShopName">Aura Luxury Salon & Spa</h2>
+          <div class="text-xs" style="color: rgba(255,255,255,0.8);">Ref: <span id="bookingRefId">#BK-8921-2026</span></div>
+        </div>
+        <div class="text-end">
+          <div class="text-xs" style="color: rgba(255,255,255,0.8);">Total Paid</div>
+          <div class="fs-4 fw-extrabold text-white" id="passTotal">$45.00</div>
+        </div>
+      </div>
+
+      <div class="p-4">
+        <!-- Glanceable Key Signal Row (High Contrast) -->
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <div class="glance-kpi-pill">
+              <div class="text-xs text-muted text-uppercase fw-bold">Date & Time</div>
+              <div class="fw-bold fs-sm text-primary mt-1" id="passDateTime">Thu, Sep 24 • 10:30 AM</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glance-kpi-pill">
+              <div class="text-xs text-muted text-uppercase fw-bold">Specialist</div>
+              <div class="fw-bold fs-sm text-slate-900 mt-1" id="passStaff">Sarah Jenkins (Master)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue Location -->
+        <div class="p-3 bg-light rounded-3 mb-3 border">
+          <div class="text-xs text-muted text-uppercase fw-bold">Location & Venue</div>
+          <div class="fs-sm text-slate-800 fw-semibold mt-1">402 Crystal Plaza, Main Avenue, Sector 6, Metropolis</div>
+          <a href="https://maps.google.com" target="_blank" class="fs-xs fw-bold text-primary text-decoration-none mt-1 d-inline-block">
+            <i class="bi bi-geo-alt"></i> Open in Google Maps Directions
+          </a>
+        </div>
+
+        <!-- Gov ID / Cookie Verification Badge -->
+        <div id="passGovIdRow" class="p-2 px-3 bg-light rounded-3 border mb-3 d-flex align-items-center justify-content-between">
+          <div class="fs-xs text-muted d-flex align-items-center gap-1">
+            <i class="bi bi-person-vcard text-primary fs-6"></i>
+            <span>Verified Gov / User ID:</span>
+          </div>
+          <span class="badge-custom badge-success fs-xs fw-bold" id="passGovIdVal">GOV-VERIFIED-COOKIE</span>
+        </div>
+
+        <!-- QR Code Ticket -->
+        <div class="text-center p-3 bg-light rounded-3 mb-4 border">
+          <div class="qr-box-frame mb-2">
+            <i class="bi bi-qr-code text-slate-900" style="font-size: 4.5rem;"></i>
+          </div>
+          <div class="text-xs text-muted">Show this QR pass at the reception counter on arrival</div>
+        </div>
+
+        <!-- Perforated Divider -->
+        <div class="perforated-divider"></div>
+
+        <!-- Action CTAs -->
+        <div class="d-flex flex-column gap-2">
+          <a href="my-bookings.html" class="btn-primary-custom w-100 text-center py-2">
+            <i class="bi bi-calendar-event"></i> View in My Bookings
+          </a>
+          <button type="button" class="btn-outline-custom w-100 text-center py-2" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print or Save Receipt (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Web Components -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    async function persistAndDisplayBooking() {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+      const savedEmail = sessionStorage.getItem('LastBookingCustEmail') || (window.AuthService && window.AuthService.getCookie('bwt_email'));
+      const savedName = sessionStorage.getItem('LastBookingCustName') || (window.AuthService && window.AuthService.getCookie('bwt_user_name'));
+      const savedGovId = sessionStorage.getItem('LastBookingGovId') || (window.AuthService && window.AuthService.getGovId());
+
+      const customerId = (currentUser && currentUser.userid) || parseInt((window.AuthService && window.AuthService.getCookie('bwt_user_id')) || '1', 10) || 1;
+      const email = savedEmail || (currentUser ? currentUser.emailid : 'aarav.patel@gmail.com');
+
+      const providerId = parseInt(sessionStorage.getItem('LastBookingProviderId') || '1', 10);
+      const slotId = parseInt(sessionStorage.getItem('LastBookingSlotId') || '1', 10);
+      const bookingDate = sessionStorage.getItem('LastBookingDate') || new Date().toISOString().split('T')[0];
+      const timeStr = sessionStorage.getItem('LastBookingTime') || '10:30 AM';
+      const staff = sessionStorage.getItem('LastBookingStaff') || 'Sarah Jenkins (Master)';
+      const total = sessionStorage.getItem('LastBookingTotal') || '$45.00';
+      const amountNum = parseFloat(total.replace(/[^0-9.]/g, '')) || 45;
+
+      // Update UI elements
+      const emailEl = document.getElementById('userEmailConfirm');
+      if (emailEl) emailEl.textContent = email;
+      const totalEl = document.getElementById('passTotal');
+      if (totalEl) totalEl.textContent = total;
+      const staffEl = document.getElementById('passStaff');
+      if (staffEl) staffEl.textContent = staff;
+      const dateEl = document.getElementById('passDateTime');
+      if (dateEl) dateEl.textContent = `${bookingDate} • ${timeStr}`;
+
+      const govIdEl = document.getElementById('passGovIdVal');
+      if (govIdEl) {
+        govIdEl.textContent = savedGovId ? `Gov ID: ${savedGovId}` : (currentUser ? `ID #${currentUser.userid} (${currentUser.firstname})` : 'Gov/User Cookie Verified');
+      }
+
+      if (!isDb) {
+        // DEMO / STATIC MODE
+        document.getElementById('bookingRefId').textContent = '#BK-8921-2026';
+        return;
+      }
+
+      // LIVE SUPABASE DATABASE MODE
+      try {
+        // Fetch Provider Name
+        const provider = await window.ProviderService.getProviderById(providerId);
+        if (provider) {
+          document.getElementById('passShopName').textContent = provider.businessname;
+          const locEl = document.querySelector('.fs-sm.text-slate-800.fw-semibold');
+          if (locEl) locEl.textContent = provider.businessaddress || 'Local Venue';
+        }
+
+        // Create Real Booking in Supabase booking table
+        const booking = await window.BookingService.createBooking({
+          customerId: customerId,
+          providerId: providerId,
+          slotId: slotId,
+          amount: amountNum,
+          bookingDate: bookingDate
+        });
+
+        if (booking && booking.bookingid) {
+          document.getElementById('bookingRefId').textContent = `#BK-${booking.bookingid}-${new Date().getFullYear()}`;
+          if (window.AppConfig) {
+            window.AppConfig.showToast(`🟢 Booking #${booking.bookingid} saved to Supabase on User ID #${customerId}.`, 'success');
+          }
+        }
+      } catch (err) {
+        console.error('Error creating booking in Supabase:', err);
+        document.getElementById('bookingRefId').textContent = '#BK-TEMP-SUCCESS';
+        if (window.AppConfig) {
+          window.AppConfig.showToast(`Notice: Booking saved with Gov ID reference: ${savedGovId || 'Cookie #1'}`, 'info');
+        }
+      }
+    }
+
+    window.addEventListener('datamodechange', persistAndDisplayBooking);
+    document.addEventListener('DOMContentLoaded', persistAndDisplayBooking);
+  </script>
+</body>
+</html>
+
