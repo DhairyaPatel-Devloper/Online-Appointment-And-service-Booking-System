@@ -171,23 +171,35 @@
     let activeProviderId = 1;
 
     async function loadShopProfile() {
-      const currentUser = window.AuthService.getCurrentUser();
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
       if (currentUser) {
         try {
           const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
           if (pDetails) {
             activeProviderId = pDetails.providerid;
-            const inputs = document.querySelectorAll('form input[type="text"], form input[type="tel"], form input[type="email"]');
-            if (inputs.length >= 4) {
-              inputs[0].value = pDetails.businessname || '';
-              inputs[1].value = pDetails.businessphone || '';
-              inputs[2].value = currentUser.emailid || '';
-              inputs[3].value = pDetails.businessaddress || '';
-            }
           }
         } catch (e) {
           console.warn('Could not load provider profile:', e);
         }
+      }
+
+      if (activeProviderId === 1 && window.AppConfig && window.AppConfig.isDatabaseMode()) {
+        activeProviderId = 2;
+      }
+
+      try {
+        const pDetails = await window.ProviderService.getProviderById(activeProviderId);
+        if (pDetails) {
+          const inputs = document.querySelectorAll('form input[type="text"], form input[type="tel"], form input[type="email"]');
+          if (inputs.length >= 4) {
+            inputs[0].value = pDetails.businessname || '';
+            inputs[1].value = pDetails.businessphone || '';
+            inputs[2].value = (pDetails.users && pDetails.users.emailid) || (currentUser ? currentUser.emailid : 'sarah@aura.salon');
+            inputs[3].value = pDetails.businessaddress || '';
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load provider details:', e);
       }
     }
 

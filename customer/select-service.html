@@ -423,7 +423,14 @@
 
       // Fetch Provider Info
       try {
-        const provider = await window.ProviderService.getProviderById(currentProviderId);
+        let provider = await window.ProviderService.getProviderById(currentProviderId);
+        if (!provider && window.AppConfig && window.AppConfig.isDatabaseMode()) {
+          const approved = await window.ProviderService.getApprovedProviders();
+          if (approved && approved.length > 0) {
+            currentProviderId = approved[0].providerId;
+            provider = await window.ProviderService.getProviderById(currentProviderId);
+          }
+        }
         if (provider) {
           const shopDesc = document.querySelector('p.fs-xs.text-muted');
           if (shopDesc) {
@@ -489,7 +496,7 @@
           btn.dataset.slotId = slot.slotid;
           btn.dataset.time = startTime;
 
-          if (index === 0 && isAvailable) {
+          if ((index === 0 && isAvailable) || (!selectedSlotId && isAvailable)) {
             selectedSlotId = slot.slotid;
             selectedTime = startTime;
           }
@@ -598,8 +605,9 @@
       sessionStorage.setItem('LastBookingCustEmail', custEmail);
       sessionStorage.setItem('LastBookingGovId', custGovId);
 
+      sessionStorage.setItem('LastBookingProviderId', currentProviderId);
       sessionStorage.setItem('LastBookingProvId', currentProviderId);
-      sessionStorage.setItem('LastBookingSlotId', selectedSlotId || 1);
+      sessionStorage.setItem('LastBookingSlotId', selectedSlotId || 2);
       sessionStorage.setItem('LastBookingStaff', selectedStaff);
       sessionStorage.setItem('LastBookingTime', selectedTime);
       sessionStorage.setItem('LastBookingDate', selectedDate);

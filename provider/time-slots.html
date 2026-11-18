@@ -28,8 +28,7 @@
         <p class="fs-xs text-muted mb-0">Configure interval granularity, buffers between appointments, and staff
           capacity</p>
       </div>
-      <button type="button" class="btn-primary-custom"
-        onclick="alert('Time slot changes published to live customer storefront.')">
+      <button type="button" class="btn-primary-custom" onclick="publishSchedule()">
         <i class="bi bi-cloud-arrow-up"></i> Publish Schedule
       </button>
     </div>
@@ -80,8 +79,7 @@
                 <input type="date" class="form-control-custom py-1 fs-xs" value="2026-09-25">
               </div>
               <div class="col-6">
-                <button type="button" class="btn btn-sm btn-outline-custom w-100 text-danger border-danger"
-                  onclick="alert('Slot blocked for Sep 25.')">
+                <button type="button" class="btn btn-sm btn-outline-custom w-100 text-danger border-danger" onclick="blockDate()">
                   Block Date
                 </button>
               </div>
@@ -159,7 +157,7 @@
     let activeProviderId = 1;
 
     async function initSlotManagement() {
-      const currentUser = window.AuthService.getCurrentUser();
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
       if (currentUser) {
         try {
           const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
@@ -169,6 +167,9 @@
         } catch (e) {
           console.warn('Could not load provider record:', e);
         }
+      }
+      if (activeProviderId === 1 && window.AppConfig && window.AppConfig.isDatabaseMode()) {
+        activeProviderId = 2;
       }
 
       await loadProviderSlotsPreview();

@@ -271,16 +271,25 @@
       }
 
       // LIVE SUPABASE DATABASE MODE
-      if (!currentUser) {
+      let customerId = currentUser ? currentUser.userid : null;
+      if (!customerId) {
+        const cookieId = window.AuthService ? window.AuthService.getCookie('bwt_user_id') : null;
+        if (cookieId) {
+          customerId = parseInt(cookieId, 10);
+        }
+      }
+
+      if (!customerId) {
         const promptHtml = `
           <div class="custom-card p-5 text-center">
             <i class="bi bi-shield-lock fs-1 text-primary mb-2"></i>
             <h4 class="fw-bold text-slate-900 mb-1">Sign In Required for Live Database</h4>
             <p class="text-muted fs-sm max-w-md mx-auto mb-4">
-              You are currently in Live Supabase Database Mode. Please sign in to query your real bookings.
+              You are currently in Live Supabase Database Mode. Please sign in or explore real database bookings.
             </p>
-            <div class="d-flex justify-content-center gap-2">
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
               <a href="../login.html" class="btn-primary-custom" style="padding:0.5rem 1.5rem;">Sign In</a>
+              <button type="button" class="btn-outline-custom" onclick="viewAsLiveCustomer(1)">Explore Live Bookings (User #1)</button>
               <button type="button" class="btn-outline-custom" onclick="window.AppConfig.setMode('static')">Switch to Demo Mode</button>
             </div>
           </div>
@@ -290,8 +299,6 @@
         document.getElementById('viewCancelled').innerHTML = promptHtml;
         return;
       }
-
-      const customerId = currentUser.userid;
 
       try {
         const [activeBookings, historyBookings] = await Promise.all([
@@ -405,6 +412,13 @@
       document.getElementById('viewUpcoming').style.setProperty('display', tab === 'upcoming' ? 'flex' : 'none', 'important');
       document.getElementById('viewCompleted').style.setProperty('display', tab === 'completed' ? 'flex' : 'none', 'important');
       document.getElementById('viewCancelled').style.setProperty('display', tab === 'cancelled' ? 'flex' : 'none', 'important');
+    }
+
+    function viewAsLiveCustomer(id) {
+      if (window.AuthService) {
+        window.AuthService.setCookie('bwt_user_id', String(id), 7);
+      }
+      loadCustomerBookings();
     }
 
     window.addEventListener('datamodechange', loadCustomerBookings);

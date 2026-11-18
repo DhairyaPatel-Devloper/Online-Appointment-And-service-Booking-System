@@ -229,19 +229,19 @@
       const customerId = (currentUser && currentUser.userid) || parseInt((window.AuthService && window.AuthService.getCookie('bwt_user_id')) || '1', 10) || 1;
       const email = savedEmail || (currentUser ? currentUser.emailid : 'aarav.patel@gmail.com');
 
-      const providerId = parseInt(sessionStorage.getItem('LastBookingProvId') || '1', 10);
-      const slotId = parseInt(sessionStorage.getItem('LastBookingSlotId') || '1', 10);
+      const providerId = parseInt(sessionStorage.getItem('LastBookingProviderId') || sessionStorage.getItem('LastBookingProvId') || '2', 10);
+      const slotId = parseInt(sessionStorage.getItem('LastBookingSlotId') || '2', 10);
       const bookingDate = sessionStorage.getItem('LastBookingDate') || new Date().toISOString().split('T')[0];
-      const timeStr = sessionStorage.getItem('LastBookingTime') || '10:30 AM';
+      const timeStr = sessionStorage.getItem('LastBookingTime') || '10:00 AM';
       const staff = sessionStorage.getItem('LastBookingStaff') || 'Sarah Jenkins (Master)';
       const total = sessionStorage.getItem('LastBookingTotal') || '$45.00';
-      const amountNum = parseFloat(total.replace(/[^0-9.]/g, '')) || 45;
+      const amountNum = Math.round(parseFloat(total.replace(/[^0-9.]/g, '')) || 45);
 
       // Update UI elements
       const emailEl = document.getElementById('userEmailConfirm');
       if (emailEl) emailEl.textContent = email;
       const totalEl = document.getElementById('passTotal');
-      if (totalEl) totalEl.textContent = total;
+      if (totalEl) totalEl.textContent = `$${amountNum.toFixed(2)}`;
       const staffEl = document.getElementById('passStaff');
       if (staffEl) staffEl.textContent = staff;
       const dateEl = document.getElementById('passDateTime');
@@ -249,7 +249,7 @@
 
       const govIdEl = document.getElementById('passGovIdVal');
       if (govIdEl) {
-        govIdEl.textContent = savedGovId ? `Gov ID: ${savedGovId}` : (currentUser ? `ID #${currentUser.userid} (${currentUser.firstname})` : 'Gov/User Cookie Verified');
+        govIdEl.textContent = savedGovId ? `Gov ID: ${savedGovId}` : (currentUser ? `ID #${currentUser.userid} (${currentUser.firstname})` : 'Gov/User Verified');
       }
 
       if (!isDb) {
@@ -280,14 +280,14 @@
         if (booking && booking.bookingid) {
           document.getElementById('bookingRefId').textContent = `#BK-${booking.bookingid}-${new Date().getFullYear()}`;
           if (window.AppConfig) {
-            window.AppConfig.showToast(`🟢 Booking #${booking.bookingid} saved to Supabase on User ID #${customerId}.`, 'success');
+            window.AppConfig.showToast(`🟢 Booking #${booking.bookingid} saved to Supabase database.`, 'success');
           }
         }
       } catch (err) {
         console.error('Error creating booking in Supabase:', err);
-        document.getElementById('bookingRefId').textContent = '#BK-TEMP-SUCCESS';
+        document.getElementById('bookingRefId').textContent = '#BK-DB-RETRY';
         if (window.AppConfig) {
-          window.AppConfig.showToast(`Notice: Booking saved with Gov ID reference: ${savedGovId || 'Cookie #1'}`, 'info');
+          window.AppConfig.showToast(`Database error: ${err.message}`, 'danger');
         }
       }
     }

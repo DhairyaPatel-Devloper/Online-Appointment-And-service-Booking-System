@@ -145,7 +145,7 @@
     let activeProviderId = 1;
 
     async function loadProviderRatings() {
-      const currentUser = window.AuthService.getCurrentUser();
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
       if (currentUser) {
         try {
           const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
@@ -155,6 +155,10 @@
         } catch (e) {
           console.warn('Could not load provider record:', e);
         }
+      }
+
+      if (activeProviderId === 1 && window.AppConfig && window.AppConfig.isDatabaseMode()) {
+        activeProviderId = 2;
       }
 
       try {

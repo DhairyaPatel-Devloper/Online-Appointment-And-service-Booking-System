@@ -227,14 +227,23 @@
       }
 
       // LIVE SUPABASE DATABASE MODE
-      if (!user) {
+      let customerId = user ? user.userid : null;
+      if (!customerId) {
+        const cookieId = window.AuthService ? window.AuthService.getCookie('bwt_user_id') : null;
+        if (cookieId) customerId = parseInt(cookieId, 10);
+      }
+
+      if (!customerId) {
         tbody.innerHTML = `
           <tr>
             <td colspan="8" class="text-center py-5">
               <i class="bi bi-shield-lock text-primary fs-2 d-block mb-2"></i>
               <div class="fw-bold text-slate-900">Sign In Required for Live Database History</div>
-              <p class="fs-xs text-muted mb-3">Please authenticate or switch to demo mode to view records.</p>
-              <a href="../login.html" class="btn btn-sm btn-primary-custom">Sign In</a>
+              <p class="fs-xs text-muted mb-3">Please authenticate, explore live records, or switch to demo mode.</p>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="../login.html" class="btn btn-sm btn-primary-custom">Sign In</a>
+                <button type="button" class="btn btn-sm btn-outline-custom" onclick="viewAsLiveCustomerHistory(1)">Explore Live History (User #1)</button>
+              </div>
             </td>
           </tr>
         `;
@@ -242,8 +251,6 @@
       }
 
       tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Loading booking history from Supabase...</td></tr>`;
-
-      const customerId = user.userid;
 
       try {
         const bookings = await window.BookingService.getCustomerBookingHistory(customerId);
@@ -293,6 +300,13 @@
         console.error('Error loading booking history:', err);
         tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load booking history from database: ${err.message}</td></tr>`;
       }
+    }
+
+    function viewAsLiveCustomerHistory(id) {
+      if (window.AuthService) {
+        window.AuthService.setCookie('bwt_user_id', String(id), 7);
+      }
+      loadCustomerBookingHistory();
     }
 
     window.addEventListener('datamodechange', loadCustomerBookingHistory);

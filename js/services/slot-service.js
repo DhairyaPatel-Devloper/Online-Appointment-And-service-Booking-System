@@ -10,6 +10,15 @@ window.SlotService = (function () {
     return window.SupabaseClient ? window.SupabaseClient.client : window.db;
   }
 
+  function toBooleanStatus(status) {
+    if (typeof status === 'boolean') return status;
+    if (typeof status === 'string') {
+      const s = status.toLowerCase().trim();
+      return s === 'available' || s === 'true' || s === '1' || s === 'active';
+    }
+    return Boolean(status);
+  }
+
   return {
     /**
      * Get slots for a provider on a specific date with live remaining booking capacity
@@ -47,17 +56,15 @@ window.SlotService = (function () {
       return slots.map(s => {
         const bookedCount = bookedCountMap[s.slotid] || 0;
         const remainingCapacity = Math.max(0, s.slotcapacity - bookedCount);
-        let dynamicStatus = s.slotstatus;
-
-        if (s.slotstatus === 'Available' && remainingCapacity <= 0) {
-          dynamicStatus = 'Full';
-        }
+        const isActive = s.slotstatus === true || s.slotstatus === 'true' || s.slotstatus === 1 || s.slotstatus === 'Available';
+        const isAvailable = isActive && remainingCapacity > 0;
+        const dynamicStatus = !isActive ? 'Blocked' : (remainingCapacity <= 0 ? 'Full' : 'Available');
 
         return {
           ...s,
           bookedCount,
           remainingCapacity,
-          isAvailable: dynamicStatus === 'Available',
+          isAvailable,
           computedStatus: dynamicStatus
         };
       });
@@ -92,7 +99,7 @@ window.SlotService = (function () {
           slotstarttime: `${sHour}:${sMin}:00`,
           slotendtime: `${eHour}:${eMin}:00`,
           slotcapacity: perSlotCapacity,
-          slotstatus: 'Available'
+          slotstatus: true // Strict boolean for PostgreSQL schema
         });
 
         currentMin = nextMin;
@@ -130,6 +137,8 @@ window.SlotService = (function () {
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 
+      const boolStatus = toBooleanStatus(slotStatus);
+
       const { data: existing } = await client
         .from('providertimeslots')
         .select('slotid')
@@ -143,7 +152,7 @@ window.SlotService = (function () {
           .from('providertimeslots')
           .update({
             slotcapacity: slotCapacity,
-            slotstatus: slotStatus,
+            slotstatus: boolStatus,
             slotendtime: slotEndTime
           })
           .eq('slotid', existing[0].slotid)
@@ -161,7 +170,7 @@ window.SlotService = (function () {
               slotstarttime: slotStartTime,
               slotendtime: slotEndTime,
               slotcapacity: slotCapacity || 2,
-              slotstatus: slotStatus || 'Available'
+              slotstatus: boolStatus
             }
           ])
           .select();
@@ -180,7 +189,7 @@ window.SlotService = (function () {
 
       const { data, error } = await client
         .from('providertimeslots')
-        .update({ slotstatus: slotStatus })
+        .update({ slotstatus: toBooleanStatus(slotStatus) })
         .eq('slotid', slotId)
         .select();
 
@@ -197,7 +206,7 @@ window.SlotService = (function () {
 
       const { data, error } = await client
         .from('providertimeslots')
-        .update({ slotstatus: status })
+        .update({ slotstatus: toBooleanStatus(status) })
         .eq('providerid', providerId)
         .eq('slotdate', dateStr)
         .select();
