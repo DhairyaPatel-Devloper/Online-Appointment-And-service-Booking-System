@@ -45,35 +45,27 @@
   // Global App Configuration (Data Mode Switcher & Utilities)
   window.AppConfig = {
     /**
-     * Get current operational data mode ('static' | 'database' | 'java')
+     * Get current operational data mode ('static' | 'database')
      * Defaults to 'static'
      */
     getMode() {
       const mode = localStorage.getItem(MODE_STORAGE_KEY);
-      if (mode === 'java') return 'java';
       if (mode === 'database') return 'database';
       return 'static';
     },
 
     /**
-     * Check if currently in live database mode
+     * Check if currently in live database mode (Supabase)
      */
     isDatabaseMode() {
       return this.getMode() === 'database';
     },
 
     /**
-     * Check if currently in pure Java Servlets + JDBC mode
-     */
-    isJavaMode() {
-      return this.getMode() === 'java';
-    },
-
-    /**
-     * Set operational data mode ('static' | 'database' | 'java')
+     * Set operational data mode ('static' | 'database')
      */
     setMode(mode) {
-      const target = (mode === 'java') ? 'java' : (mode === 'database' ? 'database' : 'static');
+      const target = (mode === 'database') ? 'database' : 'static';
       const prev = this.getMode();
       localStorage.setItem(MODE_STORAGE_KEY, target);
 
@@ -81,9 +73,7 @@
       const event = new CustomEvent('datamodechange', { detail: { mode: target, previous: prev } });
       window.dispatchEvent(event);
 
-      if (target === 'java') {
-        this.showToast('☕ Switched to Pure Java Backend Mode (Servlets + JDBC). Calling Apache Tomcat API on port 8080.', 'success');
-      } else if (target === 'database') {
+      if (target === 'database') {
         this.showToast('🟢 Switched to Live Supabase Database Mode. Real-time queries & authentication active.', 'success');
       } else {
         this.showToast('⚡ Switched to Demo / Static Mode. Fast offline sample data active.', 'info');
@@ -94,14 +84,10 @@
     },
 
     /**
-     * Toggle between static, database, and java modes
+     * Toggle between static and database modes
      */
     toggleMode() {
-      const current = this.getMode();
-      let next = 'static';
-      if (current === 'static') next = 'database';
-      else if (current === 'database') next = 'java';
-      else next = 'static';
+      const next = this.isDatabaseMode() ? 'static' : 'database';
       this.setMode(next);
       return next;
     },
@@ -130,23 +116,18 @@
      * Update all toggle buttons on current page to match state
      */
     updateToggleUI() {
-      const mode = this.getMode();
+      const isDb = this.isDatabaseMode();
       document.querySelectorAll('.data-mode-toggle-wrapper').forEach(wrapper => {
         const staticBtn = wrapper.querySelector('[data-mode="static"]');
         const dbBtn = wrapper.querySelector('[data-mode="database"]');
-        const javaBtn = wrapper.querySelector('[data-mode="java"]');
 
-        if (staticBtn) staticBtn.classList.toggle('active-static', mode === 'static');
-        if (dbBtn) dbBtn.classList.toggle('active-db', mode === 'database');
-        if (javaBtn) javaBtn.classList.toggle('active-java', mode === 'java');
+        if (staticBtn) staticBtn.classList.toggle('active-static', !isDb);
+        if (dbBtn) dbBtn.classList.toggle('active-db', isDb);
       });
 
       // Update banner indicators if present
       document.querySelectorAll('.data-mode-indicator-pill').forEach(pill => {
-        if (mode === 'java') {
-          pill.className = 'data-mode-indicator-pill java-mode';
-          pill.innerHTML = '<i class="bi bi-cup-hot-fill" style="color:#ea580c;"></i> Java Backend (JDBC)';
-        } else if (mode === 'database') {
+        if (isDb) {
           pill.className = 'data-mode-indicator-pill db-mode';
           pill.innerHTML = '<span class="pulse-dot"></span> Live Database';
         } else {
