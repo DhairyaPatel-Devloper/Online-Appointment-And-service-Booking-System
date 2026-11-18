@@ -15,6 +15,20 @@ window.BookingService = (function () {
      * Create a new booking matching REF sp_Master @Table='Booking', @Action='Insert'
      */
     async createBooking({ customerId, providerId, slotId, amount = 45, bookingDate }) {
+      // ── Java Servlet & JDBC Backend Delegation ────────────────────────────
+      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
+        try {
+          return await window.JavaBackendService.createBooking({
+            customerId: Number(customerId) || 1,
+            providerId: Number(providerId) || 2,
+            slotId: Number(slotId) || 2,
+            amount: Math.round(Number(amount) || 45)
+          });
+        } catch (e) {
+          console.warn('Java Servlet createBooking failed, trying database mode:', e);
+        }
+      }
+
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 
@@ -248,6 +262,15 @@ window.BookingService = (function () {
      * Get bookings for a provider matching REF ProviderAppointmentList.aspx.cs
      */
     async getProviderBookings(providerId, { status, date } = {}) {
+      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
+        try {
+          const raw = await window.JavaBackendService.getProviderBookings(providerId);
+          return raw || [];
+        } catch (e) {
+          console.warn('Java Servlet getProviderBookings failed, trying database mode:', e);
+        }
+      }
+
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 

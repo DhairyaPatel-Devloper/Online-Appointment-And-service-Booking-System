@@ -23,6 +23,12 @@ class SiteHeader extends HTMLElement {
 
     this.ensureDbSettingsModal();
     this.initInteractions();
+
+    if (typeof window.JavaBackendService === 'undefined') {
+      const script = document.createElement('script');
+      script.src = `${this._prefix}js/java-backend-service.js`;
+      document.head.appendChild(script);
+    }
   }
 
   detectRole() {
@@ -126,19 +132,23 @@ class SiteHeader extends HTMLElement {
 
   /* ── DATA MODE TOGGLE HTML ───────────────────────────────────────────── */
   getDataModeToggleHtml() {
-    const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+    const mode = window.AppConfig ? window.AppConfig.getMode() : 'static';
     return `
-      <div class="data-mode-toggle-wrapper" title="Toggle between Static Demo Mode and Live Supabase Database">
-        <button type="button" class="mode-toggle-btn mode-btn-static ${!isDb ? 'active-static' : ''}" data-mode="static" aria-label="Switch to Demo Static Mode">
+      <div class="data-mode-toggle-wrapper" title="Select Backend Engine: Demo Mode / Live Supabase / Pure Java Servlets + JDBC">
+        <button type="button" class="mode-toggle-btn mode-btn-static ${mode === 'static' ? 'active-static' : ''}" data-mode="static" aria-label="Switch to Demo Static Mode">
           <i class="bi bi-lightning-charge-fill"></i>
-          <span>Demo Mode</span>
+          <span>Demo</span>
         </button>
-        <button type="button" class="mode-toggle-btn mode-btn-db ${isDb ? 'active-db' : ''}" data-mode="database" aria-label="Switch to Live Supabase DB Mode">
+        <button type="button" class="mode-toggle-btn mode-btn-db ${mode === 'database' ? 'active-db' : ''}" data-mode="database" aria-label="Switch to Live Supabase DB Mode">
           <span class="db-live-indicator"></span>
           <i class="bi bi-database-fill"></i>
           <span>Live DB</span>
         </button>
-        <button type="button" class="mode-settings-btn mode-settings-trigger" title="Supabase Database Settings & Credentials" aria-label="Open DB Settings">
+        <button type="button" class="mode-toggle-btn mode-btn-java ${mode === 'java' ? 'active-java' : ''}" data-mode="java" aria-label="Switch to Pure Java Servlets + JDBC">
+          <i class="bi bi-cup-hot-fill text-warning"></i>
+          <span>Java Backend</span>
+        </button>
+        <button type="button" class="mode-settings-btn mode-settings-trigger" title="Database & Java Backend Configuration" aria-label="Open DB Settings">
           <i class="bi bi-gear-fill"></i>
         </button>
       </div>
@@ -543,6 +553,12 @@ class SiteHeader extends HTMLElement {
     this.querySelectorAll('[data-mode="database"]').forEach(btn => {
       btn.addEventListener('click', () => {
         if (window.AppConfig) window.AppConfig.setMode('database');
+      });
+    });
+
+    this.querySelectorAll('[data-mode="java"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (window.AppConfig) window.AppConfig.setMode('java');
       });
     });
 

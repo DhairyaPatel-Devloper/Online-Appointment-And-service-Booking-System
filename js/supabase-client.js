@@ -45,11 +45,12 @@
   // Global App Configuration (Data Mode Switcher & Utilities)
   window.AppConfig = {
     /**
-     * Get current operational data mode ('static' | 'database')
+     * Get current operational data mode ('static' | 'database' | 'java')
      * Defaults to 'static'
      */
     getMode() {
       const mode = localStorage.getItem(MODE_STORAGE_KEY);
+      if (mode === 'java') return 'java';
       if (mode === 'database') return 'database';
       return 'static';
     },
@@ -62,10 +63,17 @@
     },
 
     /**
-     * Set operational data mode ('static' | 'database')
+     * Check if currently in pure Java Servlets + JDBC mode
+     */
+    isJavaMode() {
+      return this.getMode() === 'java';
+    },
+
+    /**
+     * Set operational data mode ('static' | 'database' | 'java')
      */
     setMode(mode) {
-      const target = (mode === 'database') ? 'database' : 'static';
+      const target = (mode === 'java') ? 'java' : (mode === 'database' ? 'database' : 'static');
       const prev = this.getMode();
       localStorage.setItem(MODE_STORAGE_KEY, target);
 
@@ -73,7 +81,9 @@
       const event = new CustomEvent('datamodechange', { detail: { mode: target, previous: prev } });
       window.dispatchEvent(event);
 
-      if (target === 'database') {
+      if (target === 'java') {
+        this.showToast('☕ Switched to Pure Java Backend Mode (Servlets + JDBC). Calling Apache Tomcat API on port 8080.', 'success');
+      } else if (target === 'database') {
         this.showToast('🟢 Switched to Live Supabase Database Mode. Real-time queries & authentication active.', 'success');
       } else {
         this.showToast('⚡ Switched to Demo / Static Mode. Fast offline sample data active.', 'info');
@@ -84,10 +94,14 @@
     },
 
     /**
-     * Toggle between static and database modes
+     * Toggle between static, database, and java modes
      */
     toggleMode() {
-      const next = this.isDatabaseMode() ? 'static' : 'database';
+      const current = this.getMode();
+      let next = 'static';
+      if (current === 'static') next = 'database';
+      else if (current === 'database') next = 'java';
+      else next = 'static';
       this.setMode(next);
       return next;
     },
@@ -120,20 +134,19 @@
       document.querySelectorAll('.data-mode-toggle-wrapper').forEach(wrapper => {
         const staticBtn = wrapper.querySelector('[data-mode="static"]');
         const dbBtn = wrapper.querySelector('[data-mode="database"]');
-        if (staticBtn && dbBtn) {
-          if (mode === 'database') {
-            staticBtn.classList.remove('active-static', 'active');
-            dbBtn.classList.add('active-db', 'active');
-          } else {
-            staticBtn.classList.add('active-static', 'active');
-            dbBtn.classList.remove('active-db', 'active');
-          }
-        }
+        const javaBtn = wrapper.querySelector('[data-mode="java"]');
+
+        if (staticBtn) staticBtn.classList.toggle('active-static', mode === 'static');
+        if (dbBtn) dbBtn.classList.toggle('active-db', mode === 'database');
+        if (javaBtn) javaBtn.classList.toggle('active-java', mode === 'java');
       });
 
       // Update banner indicators if present
       document.querySelectorAll('.data-mode-indicator-pill').forEach(pill => {
-        if (mode === 'database') {
+        if (mode === 'java') {
+          pill.className = 'data-mode-indicator-pill java-mode';
+          pill.innerHTML = '<i class="bi bi-cup-hot-fill" style="color:#ea580c;"></i> Java Backend (JDBC)';
+        } else if (mode === 'database') {
           pill.className = 'data-mode-indicator-pill db-mode';
           pill.innerHTML = '<span class="pulse-dot"></span> Live Database';
         } else {

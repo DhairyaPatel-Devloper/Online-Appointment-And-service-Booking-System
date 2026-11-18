@@ -86,6 +86,31 @@ window.AuthService = (function () {
       }
 
       // =========================================================================
+      // 1.5 JAVA SERVLET & JDBC BACKEND MODE
+      // =========================================================================
+      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
+        try {
+          const res = await window.JavaBackendService.login(cleanEmail, cleanPassword);
+          if (res && (res.user || res.userId)) {
+            const u = res.user || {
+              userid: res.userId,
+              firstname: res.firstName || 'User',
+              lastname: res.lastName || '',
+              emailid: cleanEmail,
+              rolle: cleanRole
+            };
+            this.setSession(u);
+            if (window.AppConfig) {
+              window.AppConfig.showToast(`☕ Java Servlet Sign-In: Authenticated via JDBC (${u.rolle})`, 'success');
+            }
+            return { success: true, user: u, isJava: true };
+          }
+        } catch (e) {
+          console.warn('Java Servlet Login failed, trying direct database:', e);
+        }
+      }
+
+      // =========================================================================
       // 2. LIVE SUPABASE DATABASE MODE
       // =========================================================================
       const client = getClient();
@@ -175,6 +200,31 @@ window.AuthService = (function () {
           window.AppConfig.showToast(`✨ Demo Mode: Account created for ${demoUser.firstname}!`, 'success');
         }
         return { success: true, user: demoUser, isDemo: true };
+      }
+
+      // =========================================================================
+      // 1.5 JAVA SERVLET & JDBC BACKEND MODE
+      // =========================================================================
+      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
+        try {
+          const res = await window.JavaBackendService.login(cleanEmail, cleanPassword);
+          if (res && (res.user || res.userId)) {
+            const u = res.user || {
+              userid: res.userId,
+              firstname: res.firstName || 'User',
+              lastname: res.lastName || '',
+              emailid: cleanEmail,
+              rolle: cleanRole
+            };
+            this.setSession(u);
+            if (window.AppConfig) {
+              window.AppConfig.showToast(`☕ Java Servlet Sign-In: Authenticated via JDBC (${u.rolle})`, 'success');
+            }
+            return { success: true, user: u, isJava: true };
+          }
+        } catch (e) {
+          console.warn('Java Servlet Login failed, trying direct database:', e);
+        }
       }
 
       // =========================================================================
