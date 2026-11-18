@@ -14,6 +14,20 @@
   <!-- Core Design System & Shared Layout Styles -->
   <link rel="stylesheet" href="../css/design-system.css">
   <link rel="stylesheet" href="../css/header.css">
+  <style>
+    .slot-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      cursor: pointer;
+    }
+    .slot-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+    }
+    .slot-card:active {
+      transform: scale(0.95) !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -94,9 +108,9 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <div>
               <h2 class="fs-5 fw-bold text-slate-900 mb-0">Live Slot Matrix Preview</h2>
-              <p class="fs-xs text-muted mb-0">How your slots appear to clients on Thu, Sep 24</p>
+              <p class="fs-xs text-muted mb-0">Click any slot to switch status between <span class="text-success fw-bold">Available</span> and <span class="text-warning-emphasis fw-bold">Break / Not Available</span>.</p>
             </div>
-            <span class="badge-custom badge-success"><i class="bi bi-eye"></i> Live Simulation</span>
+            <span class="badge-custom badge-success" id="slotSimulationBadge"><i class="bi bi-broadcast"></i> Live Interactive</span>
           </div>
 
           <div class="row g-2" id="slotMatrixPreview">
@@ -154,7 +168,17 @@
   <script src="../js/site-footer.js"></script>
 
   <script>
-    let activeProviderId = 1;
+    let activeProviderId = 2; // Default to Aura Luxury Salon & Spa (Provider ID 2)
+
+    function formatSlotTime(timeStr) {
+      if (!timeStr) return '';
+      const parts = timeStr.split(':');
+      let hour = parseInt(parts[0], 10);
+      const min = parts[1] || '00';
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return `${String(hour).padStart(2, '0')}:${min} ${ampm}`;
+    }
 
     async function initSlotManagement() {
       const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
@@ -168,9 +192,6 @@
           console.warn('Could not load provider record:', e);
         }
       }
-      if (activeProviderId === 1 && window.AppConfig && window.AppConfig.isDatabaseMode()) {
-        activeProviderId = 2;
-      }
 
       await loadProviderSlotsPreview();
     }
@@ -178,6 +199,7 @@
     async function loadProviderSlotsPreview() {
       const todayStr = new Date().toISOString().split('T')[0];
       const previewContainer = document.getElementById('slotMatrixPreview');
+      if (!previewContainer) return;
 
       try {
         let slots = await window.SlotService.getSlotsByDateAndProvider(activeProviderId, todayStr);
@@ -186,22 +208,110 @@
           slots = await window.SlotService.getSlotsByDateAndProvider(activeProviderId, todayStr);
         }
 
-        if (previewContainer && slots) {
+        if (slots && slots.length > 0) {
           previewContainer.innerHTML = slots.map(s => {
-            const time = s.slotstarttime.slice(0, 5);
-            const isAvail = s.isAvailable;
-            const bgClass = isAvail ? 'bg-white text-slate-800' : 'bg-light text-muted';
-            return `
-              <div class="col-4">
-                <div class="p-2 border rounded text-center fs-xs fw-bold ${bgClass}">
-                  ${time} ${isAvail ? '' : `(${s.computedStatus})`}
+            const timeLabel = formatSlotTime(s.slotstarttime);
+            const isAvail = s.slotstatus === true || s.slotstatus === 'true' || s.slotstatus === 1 || s.slotstatus === 'Available';
+
+            if (isAvail) {
+              return `
+                <div class="col-4">
+                  <div class="slot-card border rounded-3 p-3 text-center bg-white"
+                       id="slotCard_${s.slotid}"
+                       style="border: 2px solid #10b981 !important; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.12);"
+                       onclick="toggleSlotStatus(${s.slotid}, true, event)">
+                    <div class="fw-bold fs-6 text-slate-900">${timeLabel}</div>
+                    <span class="badge bg-success-subtle text-success fs-xs px-2 py-1 rounded-pill mt-1">
+                      <i class="bi bi-check-circle-fill me-1"></i>Available
+                    </span>
+                    <div class="text-xs text-muted mt-1" style="font-size: 0.7rem;">
+                      <i class="bi bi-hand-index-thumb"></i> Click to Set Break
+                    </div>
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            } else {
+              return `
+                <div class="col-4">
+                  <div class="slot-card border rounded-3 p-3 text-center"
+                       id="slotCard_${s.slotid}"
+                       style="border: 2px dashed #f97316 !important; background: #fff7ed;"
+                       onclick="toggleSlotStatus(${s.slotid}, false, event)">
+                    <div class="fw-bold fs-6 text-muted text-decoration-line-through">${timeLabel}</div>
+                    <span class="badge bg-warning-subtle text-warning-emphasis fs-xs px-2 py-1 rounded-pill mt-1">
+                      <i class="bi bi-cup-hot-fill me-1"></i>Break / Blocked
+                    </span>
+                    <div class="text-xs text-warning-emphasis mt-1" style="font-size: 0.7rem;">
+                      <i class="bi bi-arrow-repeat"></i> Click to Make Available
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
           }).join('');
         }
       } catch (err) {
         console.error('Error fetching slots preview:', err);
+      }
+    }
+
+    async function toggleSlotStatus(slotId, currentStatus, event) {
+      const card = event.currentTarget;
+      const newStatus = !currentStatus; // true = Available, false = Break/Not Available
+
+      // Instant click feedback animation
+      card.style.transform = 'scale(0.95)';
+      setTimeout(() => { card.style.transform = ''; }, 150);
+
+      // Extract time text cleanly
+      const rawText = card.querySelector('.fw-bold')?.textContent || '';
+      const cleanTime = rawText.trim();
+
+      // Optimistic visual state change immediately
+      if (newStatus) {
+        card.style.border = '2px solid #10b981 !important';
+        card.style.background = '#ffffff';
+        card.style.boxShadow = '0 2px 6px rgba(16, 185, 129, 0.12)';
+        card.innerHTML = `
+          <div class="fw-bold fs-6 text-slate-900">${cleanTime}</div>
+          <span class="badge bg-success-subtle text-success fs-xs px-2 py-1 rounded-pill mt-1">
+            <i class="bi bi-check-circle-fill me-1"></i>Available
+          </span>
+          <div class="text-xs text-muted mt-1" style="font-size: 0.7rem;">
+            <i class="bi bi-hand-index-thumb"></i> Click to Set Break
+          </div>
+        `;
+      } else {
+        card.style.border = '2px dashed #f97316 !important';
+        card.style.background = '#fff7ed';
+        card.style.boxShadow = 'none';
+        card.innerHTML = `
+          <div class="fw-bold fs-6 text-muted text-decoration-line-through">${cleanTime}</div>
+          <span class="badge bg-warning-subtle text-warning-emphasis fs-xs px-2 py-1 rounded-pill mt-1">
+            <i class="bi bi-cup-hot-fill me-1"></i>Break / Blocked
+          </span>
+          <div class="text-xs text-warning-emphasis mt-1" style="font-size: 0.7rem;">
+            <i class="bi bi-arrow-repeat"></i> Click to Make Available
+          </div>
+        `;
+      }
+
+      // Re-bind onclick with the toggled state so user can toggle back and forth repeatedly
+      card.setAttribute('onclick', `toggleSlotStatus(${slotId}, ${newStatus}, event)`);
+
+      try {
+        if (window.SlotService && typeof window.SlotService.updateSlotStatus === 'function') {
+          await window.SlotService.updateSlotStatus(slotId, newStatus);
+        }
+        const toastText = newStatus ? `Slot ${cleanTime} is now AVAILABLE for customer bookings` : `Slot ${cleanTime} set to BREAK / NOT AVAILABLE`;
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(toastText, newStatus ? 'success' : 'warning');
+        }
+      } catch (err) {
+        console.error('Failed to sync slot status with Supabase:', err);
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(`Updated locally: ${newStatus ? 'Available' : 'Break'}`, 'info');
+        }
       }
     }
 
@@ -211,7 +321,11 @@
 
       try {
         await window.SlotService.generateDaySlots(activeProviderId, todayStr, '09:00:00', '19:00:00', duration, 2);
-        alert('Time slot changes published to live customer storefront.');
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast('Time slot changes published to live storefront!', 'success');
+        } else {
+          alert('Time slot changes published to live customer storefront.');
+        }
         await loadProviderSlotsPreview();
       } catch (err) {
         alert(err.message || 'Failed to publish slots.');
@@ -224,13 +338,18 @@
 
       try {
         await window.SlotService.markDayStatus(activeProviderId, dateStr, 'Unavailable');
-        alert(`Schedule blocked for ${dateStr}.`);
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(`Schedule blocked for ${dateStr}.`, 'warning');
+        } else {
+          alert(`Schedule blocked for ${dateStr}.`);
+        }
         await loadProviderSlotsPreview();
       } catch (err) {
         alert(err.message || 'Failed to block date.');
       }
     }
 
+    window.addEventListener('datamodechange', loadProviderSlotsPreview);
     document.addEventListener('DOMContentLoaded', initSlotManagement);
   </script>
 </body>

@@ -110,7 +110,7 @@
             <h2 class="fs-5 fw-bold text-slate-900 mb-0">Select Services & Add-ons</h2>
           </div>
 
-          <div class="d-flex flex-column gap-3">
+          <div class="d-flex flex-column gap-3" id="servicesCatalogContainer">
             <!-- Service 1 -->
             <label class="d-flex align-items-center justify-content-between p-3 border rounded-3 cursor-pointer bg-light">
               <div class="d-flex align-items-center gap-3">
@@ -457,6 +457,32 @@
         if (govEl && govId) {
           govEl.value = govId;
         }
+      }
+
+      // Render custom services from provider catalog if present
+      try {
+        const customServices = JSON.parse(localStorage.getItem('BWT_PROVIDER_CUSTOM_SERVICES') || '[]');
+        const container = document.getElementById('servicesCatalogContainer');
+        if (container && customServices.length > 0) {
+          container.querySelectorAll('.custom-injected-service').forEach(el => el.remove());
+          customServices.filter(s => s.active !== false).forEach(s => {
+            const lbl = document.createElement('label');
+            lbl.className = 'd-flex align-items-center justify-content-between p-3 border rounded-3 cursor-pointer custom-injected-service';
+            lbl.innerHTML = `
+              <div class="d-flex align-items-center gap-3">
+                <input type="checkbox" class="service-checkbox form-check-input mt-0" value="${parseFloat(s.price)}" data-name="${s.title}" onchange="calculateSummary()">
+                <div>
+                  <div class="fw-bold text-slate-900 fs-sm">${s.title} <span class="badge bg-primary-subtle text-primary fs-xs ms-1">New Service</span></div>
+                  <div class="text-xs text-muted">${s.desc || s.cat} (${s.duration})</div>
+                </div>
+              </div>
+              <div class="fw-bold fs-6 text-slate-900">$${parseFloat(s.price).toFixed(2)}</div>
+            `;
+            container.appendChild(lbl);
+          });
+        }
+      } catch (err) {
+        console.warn('Could not load custom services:', err);
       }
 
       await loadDateSlots(selectedDate);
