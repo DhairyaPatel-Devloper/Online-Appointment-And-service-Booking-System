@@ -153,6 +153,41 @@ window.ProviderService = (function () {
     },
 
     /**
+     * Get all providers (both pending and approved) for Admin console
+     */
+    async getAllProviders() {
+      const client = getClient();
+      if (!client) throw new Error('Supabase client not initialized');
+
+      const { data, error } = await client
+        .from('providerdetails')
+        .select(`
+          providerid,
+          userid,
+          businessname,
+          businessaddress,
+          businessphone,
+          openingtime,
+          closingtime,
+          avgservicetime,
+          perslotcapacity,
+          approvalstatus,
+          createdat,
+          users:userid (
+            firstname,
+            lastname,
+            emailid,
+            phone,
+            isactive
+          )
+        `)
+        .order('providerid', { ascending: false });
+
+      if (error) throw new Error(error.message);
+      return data || [];
+    },
+
+    /**
      * Get pending provider registration requests for Admin approval
      */
     async getPendingProviders() {
@@ -329,6 +364,13 @@ window.ProviderService = (function () {
 
       if (error) throw new Error(error.message);
       return (data && data[0]) || null;
+    },
+
+    /**
+     * Alias for setApprovalStatus matching admin page call signatures
+     */
+    async updateApprovalStatus(providerId, approvalStatus) {
+      return this.setApprovalStatus(providerId, approvalStatus);
     },
 
     /**
