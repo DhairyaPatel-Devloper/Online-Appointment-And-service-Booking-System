@@ -62,6 +62,13 @@
     },
 
     /**
+     * Check if currently in pure Java Servlets + JDBC mode
+     */
+    isJavaMode() {
+      return this.getMode() === 'java';
+    },
+
+    /**
      * Set operational data mode ('static' | 'database')
      */
     setMode(mode) {
@@ -75,6 +82,17 @@
 
       if (target === 'database') {
         this.showToast('🟢 Switched to Live Supabase Database Mode. Real-time queries & authentication active.', 'success');
+        
+        // Strict protection: If on a portal page without login in DB mode, redirect to login
+        const p = window.location.pathname;
+        const isPortal = p.includes('/customer/') || p.includes('/provider/') || p.includes('/admin/');
+        const user = window.AuthService ? window.AuthService.getCurrentUser() : null;
+        if (isPortal && !user) {
+          const prefix = isPortal ? '../' : '';
+          setTimeout(() => {
+            window.location.replace(`${prefix}login.html?returnUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+          }, 600);
+        }
       } else {
         this.showToast('⚡ Switched to Demo / Static Mode. Fast offline sample data active.', 'info');
       }

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Approved Providers Directory — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="providers"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Verified Provider Directory</h1>
+        <p class="fs-xs text-muted mb-0">Oversee active business listings, commission tiers, and operational compliance</p>
+      </div>
+      <button type="button" class="btn-primary-custom" onclick="window.print()">
+        <i class="bi bi-download"></i> Export Directory (CSV)
+      </button>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="d-flex gap-3 mb-4 flex-wrap">
+      <div class="input-icon-group flex-grow-1" style="max-width: 400px;">
+        <i class="bi bi-search"></i>
+        <input type="text" id="providerSearchInput" class="form-control-custom" placeholder="Search provider by name, owner, or city..." oninput="filterProviderList()">
+      </div>
+      <select class="form-select-custom" style="width: auto;" id="catFilterSelect" onchange="filterProviderList()">
+        <option value="all">All Categories</option>
+        <option value="Hair">Hair & Styling</option>
+        <option value="Spa">Spa & Wellness</option>
+        <option value="Dental">Dental Care</option>
+        <option value="Dermatology">Dermatology</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="providerMasterTable">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-name">Shop Name</th>
+            <th class="col-short">Owner</th>
+            <th class="col-badge">Category</th>
+            <th class="col-stat">Bookings</th>
+            <th class="col-stat">Rating</th>
+            <th class="col-short">Commission</th>
+            <th class="col-toggle">Live</th>
+            <th class="col-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#PR-101</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Aura Luxury Salon & Spa</div>
+              <div class="text-xs text-muted">Crystal Plaza, Sector 5</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-slate-800 fs-xs">Dhairya Patel</div>
+              <div class="text-xs text-muted">+1 800-492-2665</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Hair</span></td>
+            <td class="fw-bold">1,482 Bookings</td>
+            <td><span class="text-warning fw-bold fs-xs"><i class="bi bi-star-fill"></i> 4.9</span> <span class="text-muted text-xs">(184)</span></td>
+            <td>10% Tier</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked onchange="toggleStorefront('Aura Luxury Salon', this.checked)">
+              </div>
+            </td>
+            <td>
+              <a href="../customer/provider-details.html?id=101" target="_blank" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Storefront</a>
+            </td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#PR-102</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Serene Sanctuary Spa & Wellness</div>
+              <div class="text-xs text-muted">Metropolis North</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-slate-800 fs-xs">Amanda Brooks</div>
+              <div class="text-xs text-muted">+1 555-892-0192</div>
+            </td>
+            <td><span class="badge-custom badge-primary" style="background:#e0f2fe; color:#0284c7;">Spa</span></td>
+            <td class="fw-bold">980 Bookings</td>
+            <td><span class="text-warning fw-bold fs-xs"><i class="bi bi-star-fill"></i> 4.8</span> <span class="text-muted text-xs">(240)</span></td>
+            <td>10% Tier</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked onchange="toggleStorefront('Serene Sanctuary', this.checked)">
+              </div>
+            </td>
+            <td>
+              <a href="../customer/provider-details.html?id=102" target="_blank" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Storefront</a>
+            </td>
+          </tr>
+
+          <!-- Item 3 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#PR-103</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Apex Dental Care & Aesthetics</div>
+              <div class="text-xs text-muted">Medical Plaza West</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-slate-800 fs-xs">Dr. Rachel Vance</div>
+              <div class="text-xs text-muted">+1 555-772-4019</div>
+            </td>
+            <td><span class="badge-custom badge-primary" style="background:#ecfdf5; color:#059669;">Dental</span></td>
+            <td class="fw-bold">1,120 Bookings</td>
+            <td><span class="text-warning fw-bold fs-xs"><i class="bi bi-star-fill"></i> 4.9</span> <span class="text-muted text-xs">(312)</span></td>
+            <td>8% Tier</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked onchange="toggleStorefront('Apex Dental Care', this.checked)">
+              </div>
+            </td>
+            <td>
+              <a href="../customer/provider-details.html?id=103" target="_blank" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Storefront</a>
+            </td>
+          </tr>
+
+          <!-- Item 4 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#PR-104</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">DermaGlow Clinical Aesthetics</div>
+              <div class="text-xs text-muted">Sector 4, West Metropolis</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-slate-800 fs-xs">Dr. Megan Lee</div>
+              <div class="text-xs text-muted">+1 555-381-9921</div>
+            </td>
+            <td><span class="badge-custom badge-primary" style="background:#fdf4ff; color:#a855f7;">Dermatology</span></td>
+            <td class="fw-bold">650 Bookings</td>
+            <td><span class="text-warning fw-bold fs-xs"><i class="bi bi-star-fill"></i> 4.7</span> <span class="text-muted text-xs">(98)</span></td>
+            <td>12% Tier</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked onchange="toggleStorefront('DermaGlow', this.checked)">
+              </div>
+            </td>
+            <td>
+              <a href="../customer/provider-details.html?id=104" target="_blank" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Storefront</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let allProvidersList = [];
+
+    async function loadAdminProviderList() {
+      const tbody = document.querySelector('#providerMasterTable tbody');
+      if (!tbody) return;
+      tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Loading providers from Supabase...</td></tr>`;
+
+      try {
+        const providers = await window.ProviderService.getAllProviders();
+        // Show all approved providers
+        allProvidersList = providers.filter(p => p.approvalstatus);
+
+        if (allProvidersList.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted">No approved providers found in database. Check <a href="provider-requests.html">onboarding queue</a>.</td></tr>`;
+          return;
+        }
+
+        renderProviderTable(allProvidersList);
+      } catch (err) {
+        console.error('Error loading provider list:', err);
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-danger">Failed to load providers from Supabase.</td></tr>`;
+      }
+    }
+
+    function renderProviderTable(list) {
+      const tbody = document.querySelector('#providerMasterTable tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = list.map(p => {
+        const ownerName = p.users ? `${p.users.firstname} ${p.users.lastname}` : 'Store Owner';
+        const ownerPhone = p.businessphone || (p.users ? p.users.phone : 'N/A');
+        const rating = p.rating || 4.9;
+        const reviewsCount = p.reviewsCount || 12;
+
+        return `
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#PR-${p.providerid}</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">${p.businessname}</div>
+              <div class="text-xs text-muted">${p.businessaddress || 'Local Business'}</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-slate-800 fs-xs">${ownerName}</div>
+              <div class="text-xs text-muted">${ownerPhone}</div>
+            </td>
+            <td><span class="badge-custom badge-primary">Services</span></td>
+            <td class="fw-bold">Active</td>
+            <td><span class="text-warning fw-bold fs-xs"><i class="bi bi-star-fill"></i> ${rating}</span> <span class="text-muted text-xs">(${reviewsCount})</span></td>
+            <td>Standard</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked onchange="toggleStorefront('${p.businessname}', this.checked, ${p.providerid})">
+              </div>
+            </td>
+            <td>
+              <a href="../customer/provider-details.html?id=${p.providerid}" target="_blank" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Storefront</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function toggleStorefront(shopName, isActive, providerId) {
+      const state = isActive ? 'Active & Bookable' : 'Suspended';
+      try {
+        await window.ProviderService.updateApprovalStatus(providerId, isActive);
+        alert(`Provider "${shopName}" listing status is now: ${state}`);
+      } catch (err) {
+        alert('Failed to update status: ' + err.message);
+      }
+    }
+
+    function filterProviderList() {
+      const txt = document.getElementById('providerSearchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('catFilterSelect').value;
+      const rows = document.querySelectorAll('#providerMasterTable tbody tr');
+
+      rows.forEach(r => {
+        const textContent = r.textContent.toLowerCase();
+        const matchesText = !txt || textContent.includes(txt);
+        const matchesCat = (cat === 'all' || textContent.includes(cat.toLowerCase()));
+        r.style.display = (matchesText && matchesCat) ? '' : 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAdminProviderList);
+  </script>
+</body>
+</html>
+

@@ -3,8 +3,8 @@ package com.bookwithtech.servlet;
 import com.bookwithtech.service.UserService;
 import com.bookwithtech.service.UserServiceImpl;
 import com.google.gson.Gson;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.SQLException;

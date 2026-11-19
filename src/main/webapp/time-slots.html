@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Time Slots & Capacity Engine — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <style>
+    .slot-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      cursor: pointer;
+    }
+    .slot-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+    }
+    .slot-card:active {
+      transform: scale(0.95) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="provider" data-active="time-slots"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Smart Time Slot Engine</h1>
+        <p class="fs-xs text-muted mb-0">Configure interval granularity, buffers between appointments, and staff
+          capacity</p>
+      </div>
+      <button type="button" class="btn-primary-custom" onclick="publishSchedule()">
+        <i class="bi bi-cloud-arrow-up"></i> Publish Schedule
+      </button>
+    </div>
+
+    <div class="row g-4">
+      <!-- Left Config Form -->
+      <div class="col-lg-6">
+        <div class="custom-card p-4">
+          <h2 class="fs-5 fw-bold text-slate-900 mb-3">Capacity & Timing Configuration</h2>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Base Slot Duration Interval</label>
+            <select class="form-select-custom" id="selSlotDuration" onchange="renderSlotsPreview()">
+              <option value="30">30 Minutes (Recommended)</option>
+              <option value="45" selected>45 Minutes</option>
+              <option value="60">60 Minutes</option>
+              <option value="90">90 Minutes</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Buffer Cleaning & Sanitation Interval</label>
+            <select class="form-select-custom" id="selBufferTime" onchange="renderSlotsPreview()">
+              <option value="0">No buffer</option>
+              <option value="5">5 Minutes</option>
+              <option value="10">10 Minutes</option>
+              <option value="15" selected>15 Minutes</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Max Concurrent Appointments Per Slot</label>
+            <input type="number" class="form-control-custom" value="3" min="1" max="10">
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label-custom">Advance Booking Window (Days)</label>
+            <input type="number" class="form-control-custom" value="30" min="1" max="90">
+          </div>
+
+          <!-- Slot Blocker -->
+          <div class="p-3 border rounded-3 bg-light">
+            <h3 class="fs-6 fw-bold text-slate-900 mb-2">Block Out Dates or Slots</h3>
+            <p class="fs-xs text-muted mb-3">Temporarily close booking availability for staff holidays or inventory
+              checks.</p>
+            <div class="row g-2">
+              <div class="col-6">
+                <input type="date" class="form-control-custom py-1 fs-xs" value="2026-09-25">
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-sm btn-outline-custom w-100 text-danger border-danger" onclick="blockDate()">
+                  Block Date
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Storefront Slot Preview -->
+      <div class="col-lg-6">
+        <div class="custom-card p-4">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h2 class="fs-5 fw-bold text-slate-900 mb-0">Live Slot Matrix Preview</h2>
+              <p class="fs-xs text-muted mb-0">Click any slot to switch status between <span class="text-success fw-bold">Available</span> and <span class="text-warning-emphasis fw-bold">Break / Not Available</span>.</p>
+            </div>
+            <span class="badge-custom badge-success" id="slotSimulationBadge"><i class="bi bi-broadcast"></i> Live Interactive</span>
+          </div>
+
+          <div class="row g-2" id="slotMatrixPreview">
+            <!-- Simulated dynamic slots -->
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">09:00 AM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">10:00 AM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-white bg-primary">11:00 AM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs text-muted bg-light">12:00 PM (Booked)</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">01:30 PM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">02:30 PM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">03:30 PM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">04:30 PM</div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded text-center fs-xs fw-bold text-slate-800 bg-white">05:30 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="provider"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let activeProviderId = 2; // Default to Aura Luxury Salon & Spa (Provider ID 2)
+
+    function formatSlotTime(timeStr) {
+      if (!timeStr) return '';
+      const parts = timeStr.split(':');
+      let hour = parseInt(parts[0], 10);
+      const min = parts[1] || '00';
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return `${String(hour).padStart(2, '0')}:${min} ${ampm}`;
+    }
+
+    async function initSlotManagement() {
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+      if (currentUser) {
+        try {
+          const pDetails = await window.ProviderService.getProviderByUserId(currentUser.userid);
+          if (pDetails) {
+            activeProviderId = pDetails.providerid;
+          }
+        } catch (e) {
+          console.warn('Could not load provider record:', e);
+        }
+      }
+
+      await loadProviderSlotsPreview();
+    }
+
+    async function loadProviderSlotsPreview() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const previewContainer = document.getElementById('slotMatrixPreview');
+      if (!previewContainer) return;
+
+      try {
+        let slots = await window.SlotService.getSlotsByDateAndProvider(activeProviderId, todayStr);
+        if (!slots || slots.length === 0) {
+          await window.SlotService.generateDaySlots(activeProviderId, todayStr, '09:00:00', '19:00:00', 30, 2);
+          slots = await window.SlotService.getSlotsByDateAndProvider(activeProviderId, todayStr);
+        }
+
+        if (slots && slots.length > 0) {
+          previewContainer.innerHTML = slots.map(s => {
+            const timeLabel = formatSlotTime(s.slotstarttime);
+            const isAvail = s.slotstatus === true || s.slotstatus === 'true' || s.slotstatus === 1 || s.slotstatus === 'Available';
+
+            if (isAvail) {
+              return `
+                <div class="col-4">
+                  <div class="slot-card border rounded-3 p-3 text-center bg-white"
+                       id="slotCard_${s.slotid}"
+                       style="border: 2px solid #10b981 !important; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.12);"
+                       onclick="toggleSlotStatus(${s.slotid}, true, event)">
+                    <div class="fw-bold fs-6 text-slate-900">${timeLabel}</div>
+                    <span class="badge bg-success-subtle text-success fs-xs px-2 py-1 rounded-pill mt-1">
+                      <i class="bi bi-check-circle-fill me-1"></i>Available
+                    </span>
+                    <div class="text-xs text-muted mt-1" style="font-size: 0.7rem;">
+                      <i class="bi bi-hand-index-thumb"></i> Click to Set Break
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              return `
+                <div class="col-4">
+                  <div class="slot-card border rounded-3 p-3 text-center"
+                       id="slotCard_${s.slotid}"
+                       style="border: 2px dashed #f97316 !important; background: #fff7ed;"
+                       onclick="toggleSlotStatus(${s.slotid}, false, event)">
+                    <div class="fw-bold fs-6 text-muted text-decoration-line-through">${timeLabel}</div>
+                    <span class="badge bg-warning-subtle text-warning-emphasis fs-xs px-2 py-1 rounded-pill mt-1">
+                      <i class="bi bi-cup-hot-fill me-1"></i>Break / Blocked
+                    </span>
+                    <div class="text-xs text-warning-emphasis mt-1" style="font-size: 0.7rem;">
+                      <i class="bi bi-arrow-repeat"></i> Click to Make Available
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Error fetching slots preview:', err);
+      }
+    }
+
+    async function toggleSlotStatus(slotId, currentStatus, event) {
+      const card = event.currentTarget;
+      const newStatus = !currentStatus; // true = Available, false = Break/Not Available
+
+      // Instant click feedback animation
+      card.style.transform = 'scale(0.95)';
+      setTimeout(() => { card.style.transform = ''; }, 150);
+
+      // Extract time text cleanly
+      const rawText = card.querySelector('.fw-bold')?.textContent || '';
+      const cleanTime = rawText.trim();
+
+      // Optimistic visual state change immediately
+      if (newStatus) {
+        card.style.border = '2px solid #10b981 !important';
+        card.style.background = '#ffffff';
+        card.style.boxShadow = '0 2px 6px rgba(16, 185, 129, 0.12)';
+        card.innerHTML = `
+          <div class="fw-bold fs-6 text-slate-900">${cleanTime}</div>
+          <span class="badge bg-success-subtle text-success fs-xs px-2 py-1 rounded-pill mt-1">
+            <i class="bi bi-check-circle-fill me-1"></i>Available
+          </span>
+          <div class="text-xs text-muted mt-1" style="font-size: 0.7rem;">
+            <i class="bi bi-hand-index-thumb"></i> Click to Set Break
+          </div>
+        `;
+      } else {
+        card.style.border = '2px dashed #f97316 !important';
+        card.style.background = '#fff7ed';
+        card.style.boxShadow = 'none';
+        card.innerHTML = `
+          <div class="fw-bold fs-6 text-muted text-decoration-line-through">${cleanTime}</div>
+          <span class="badge bg-warning-subtle text-warning-emphasis fs-xs px-2 py-1 rounded-pill mt-1">
+            <i class="bi bi-cup-hot-fill me-1"></i>Break / Blocked
+          </span>
+          <div class="text-xs text-warning-emphasis mt-1" style="font-size: 0.7rem;">
+            <i class="bi bi-arrow-repeat"></i> Click to Make Available
+          </div>
+        `;
+      }
+
+      // Re-bind onclick with the toggled state so user can toggle back and forth repeatedly
+      card.setAttribute('onclick', `toggleSlotStatus(${slotId}, ${newStatus}, event)`);
+
+      try {
+        if (window.SlotService && typeof window.SlotService.updateSlotStatus === 'function') {
+          await window.SlotService.updateSlotStatus(slotId, newStatus);
+        }
+        const toastText = newStatus ? `Slot ${cleanTime} is now AVAILABLE for customer bookings` : `Slot ${cleanTime} set to BREAK / NOT AVAILABLE`;
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(toastText, newStatus ? 'success' : 'warning');
+        }
+      } catch (err) {
+        console.error('Failed to sync slot status with Supabase:', err);
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(`Updated locally: ${newStatus ? 'Available' : 'Break'}`, 'info');
+        }
+      }
+    }
+
+    async function publishSchedule() {
+      const duration = parseInt(document.getElementById('selSlotDuration').value, 10) || 30;
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      try {
+        await window.SlotService.generateDaySlots(activeProviderId, todayStr, '09:00:00', '19:00:00', duration, 2);
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast('Time slot changes published to live storefront!', 'success');
+        } else {
+          alert('Time slot changes published to live customer storefront.');
+        }
+        await loadProviderSlotsPreview();
+      } catch (err) {
+        alert(err.message || 'Failed to publish slots.');
+      }
+    }
+
+    async function blockDate() {
+      const dateInput = document.querySelector('input[type="date"]');
+      const dateStr = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
+
+      try {
+        await window.SlotService.markDayStatus(activeProviderId, dateStr, 'Unavailable');
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast(`Schedule blocked for ${dateStr}.`, 'warning');
+        } else {
+          alert(`Schedule blocked for ${dateStr}.`);
+        }
+        await loadProviderSlotsPreview();
+      } catch (err) {
+        alert(err.message || 'Failed to block date.');
+      }
+    }
+
+    window.addEventListener('datamodechange', loadProviderSlotsPreview);
+    document.addEventListener('DOMContentLoaded', initSlotManagement);
+  </script>
+</body>
+
+</html>

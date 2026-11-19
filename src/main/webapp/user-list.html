@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Customer Registry & Management — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="users"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Registered Customer Registry</h1>
+        <p class="fs-xs text-muted mb-0">Total of 18,450 registered accounts across all operational zones</p>
+      </div>
+      <button type="button" class="btn-outline-custom" onclick="window.print()">
+        <i class="bi bi-download"></i> Export User Base (CSV)
+      </button>
+    </div>
+
+    <!-- Search input -->
+    <div class="mb-4">
+      <div class="input-icon-group" style="max-width: 420px;">
+        <i class="bi bi-search"></i>
+        <input type="text" id="userSearchInput" class="form-control-custom"
+          placeholder="Search customer by name, email, or phone..." oninput="filterUserList()">
+      </div>
+    </div>
+
+    <!-- User Table -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact" id="userMasterTable">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Customer Name</th>
+            <th>Email Address</th>
+            <th>Phone</th>
+            <th>Registered</th>
+            <th>Total Bookings</th>
+            <th>Lifetime Spend</th>
+            <th>Account Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- User 1 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#USR-1001</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:28px; height:28px; font-size:0.75rem;">AP</div>
+                <strong class="text-slate-900 fs-sm">Aarav Patel</strong>
+              </div>
+            </td>
+            <td>aarav.patel@gmail.com</td>
+            <td>+1 987-654-3210</td>
+            <td class="fs-xs text-muted">Aug 14, 2024</td>
+            <td class="fw-bold">8 Bookings</td>
+            <td class="fw-bold text-success">$385.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked
+                  onchange="alert('User status toggled')">
+              </div>
+            </td>
+            <td>
+              <a href="edit-user.html?id=1001" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit User</a>
+            </td>
+          </tr>
+
+          <!-- User 2 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#USR-1002</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:28px; height:28px; font-size:0.75rem; background:#0284c7;">ML
+                </div>
+                <strong class="text-slate-900 fs-sm">Maya Lin</strong>
+              </div>
+            </td>
+            <td>maya.lin@outlook.com</td>
+            <td>+1 555-019-2831</td>
+            <td class="fs-xs text-muted">Jan 10, 2025</td>
+            <td class="fw-bold">14 Bookings</td>
+            <td class="fw-bold text-success">$740.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked
+                  onchange="alert('User status toggled')">
+              </div>
+            </td>
+            <td>
+              <a href="edit-user.html?id=1002" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit User</a>
+            </td>
+          </tr>
+
+          <!-- User 3 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#USR-1003</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:28px; height:28px; font-size:0.75rem; background:#059669;">SG
+                </div>
+                <strong class="text-slate-900 fs-sm">Samuel Green</strong>
+              </div>
+            </td>
+            <td>samuel.green@yahoo.com</td>
+            <td>+1 555-839-1122</td>
+            <td class="fs-xs text-muted">Mar 22, 2025</td>
+            <td class="fw-bold">5 Bookings</td>
+            <td class="fw-bold text-success">$280.00</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" checked
+                  onchange="alert('User status toggled')">
+              </div>
+            </td>
+            <td>
+              <a href="edit-user.html?id=1003" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit User</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let masterUsers = [];
+
+    async function loadAdminUserList() {
+      try {
+        const users = await window.UserService.getAllUsers();
+        masterUsers = users || [];
+        renderUsersTable(masterUsers);
+        const subHeader = document.querySelector('p.fs-xs.text-muted.mb-0');
+        if (subHeader) subHeader.textContent = `Total of ${masterUsers.length} registered accounts across all operational zones`;
+      } catch (err) {
+        console.error('Error loading users:', err);
+      }
+    }
+
+    function renderUsersTable(users) {
+      const tbody = document.querySelector('#userMasterTable tbody');
+      if (!tbody) return;
+
+      if (!users || users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted">No users found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = users.map(u => {
+        const fullName = `${u.firstname} ${u.lastname || ''}`.trim();
+        const initials = (u.firstname[0] + (u.lastname ? u.lastname[0] : '')).toUpperCase();
+        const regDate = u.createdat ? u.createdat.split('T')[0] : '2026';
+        const isAct = u.isactive === true;
+
+        return `
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#USR-${u.userid}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="width:28px; height:28px; font-size:0.75rem;">${initials}</div>
+                <strong class="text-slate-900 fs-sm">${fullName}</strong>
+              </div>
+            </td>
+            <td>${u.emailid}</td>
+            <td>${u.phone || 'N/A'}</td>
+            <td class="fs-xs text-muted">${regDate}</td>
+            <td class="fw-bold"><span class="badge-custom badge-neutral">${u.rolle}</span></td>
+            <td class="fw-bold text-success">—</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" ${isAct ? 'checked' : ''} onchange="toggleUser(${u.userid}, this.checked)">
+              </div>
+            </td>
+            <td>
+              <a href="edit-user.html?id=${u.userid}" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Edit User</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function toggleUser(userId, isActive) {
+      try {
+        await window.UserService.toggleUserStatus(userId, isActive);
+      } catch (e) {
+        alert(e.message || 'Failed to update user status.');
+      }
+    }
+
+    function filterUserList() {
+      const q = document.getElementById('userSearchInput').value.toLowerCase().trim();
+      const filtered = masterUsers.filter(u => {
+        const name = `${u.firstname} ${u.lastname || ''}`.toLowerCase();
+        const email = (u.emailid || '').toLowerCase();
+        const phone = (u.phone || '');
+        return name.includes(q) || email.includes(q) || phone.includes(q);
+      });
+      renderUsersTable(filtered);
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAdminUserList);
+  </script>
+</body>
+
+</html>

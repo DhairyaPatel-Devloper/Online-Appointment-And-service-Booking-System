@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>System Admin Master Console — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="overview"></site-header>
+
+  <main class="container my-5">
+    <!-- Header Title Bar -->
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Global Platform Overview</h1>
+          <span class="badge-custom badge-neutral" style="background:#fef2f2; color:#dc2626;"><i class="bi bi-shield-lock-fill"></i> Superadmin Root</span>
+        </div>
+        <p class="fs-xs text-muted mb-0">Real-time health, provider approvals, and gross transactional volume</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="reports.html" class="btn-outline-custom">
+          <i class="bi bi-file-earmark-bar-graph"></i> Full Reports
+        </a>
+        <a href="provider-requests.html" class="btn-primary-custom" style="background:#dc2626;">
+          <i class="bi bi-person-lines-fill"></i> Review Requests (2 Pending)
+        </a>
+      </div>
+    </div>
+
+    <!-- Stat Cards Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#ecfdf5; color:#059669;"><i class="bi bi-currency-dollar"></i></div>
+          <div class="stat-card-value">$142,890</div>
+          <div class="stat-card-label">Monthly Gross Booking Volume</div>
+          <span class="stat-trend up"><i class="bi bi-arrow-up-right"></i> +24% vs last month</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#edf7f3; color:#0d5c46;"><i class="bi bi-shop"></i></div>
+          <div class="stat-card-value">1,842</div>
+          <div class="stat-card-label">Active Verified Providers</div>
+          <span class="stat-trend up"><i class="bi bi-patch-check"></i> 99.4% SLA Compliance</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#fee2e2; color:#dc2626;"><i class="bi bi-hourglass-top"></i></div>
+          <div class="stat-card-value">2 Urgent</div>
+          <div class="stat-card-label">Onboarding Verification Queue</div>
+          <span class="badge-custom badge-danger mt-2">Requires Review</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#e0f2fe; color:#0284c7;"><i class="bi bi-people-fill"></i></div>
+          <div class="stat-card-value">18,450</div>
+          <div class="stat-card-label">Registered Consumers</div>
+          <span class="stat-trend up"><i class="bi bi-person-plus"></i> +320 this week</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts & Onboarding Queue Grid -->
+    <div class="row g-4 mb-4">
+      <!-- Monthly Platform Volume Chart -->
+      <div class="col-lg-8">
+        <div class="custom-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h2 class="fs-5 fw-bold text-slate-900 mb-0">Platform Growth & Monthly GMV</h2>
+              <p class="fs-xs text-muted mb-0">Total customer transaction volume across all categories</p>
+            </div>
+            <span class="badge-custom badge-neutral">2026 Financial Year</span>
+          </div>
+          <div style="height: 270px;">
+            <canvas id="adminPlatformChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Urgent Provider Queue (4 cols) -->
+      <div class="col-lg-4">
+        <div class="custom-card p-4 h-100 d-flex flex-column">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="fs-5 fw-bold text-slate-900 mb-0">Pending Approvals</h2>
+            <a href="provider-requests.html" class="fs-xs fw-bold text-primary">View All</a>
+          </div>
+
+          <div class="d-flex flex-column gap-3 mb-auto">
+            <!-- Request 1 -->
+            <div class="p-3 border rounded-3 bg-light">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <strong class="fs-sm text-slate-900">Elite Barber Lounge</strong>
+                <span class="badge-custom badge-warning" style="font-size:0.65rem;">Documents Uploaded</span>
+              </div>
+              <div class="text-xs text-muted mb-2">Category: Hair & Styling • Owner: Kevin Vance</div>
+              <div class="d-flex gap-2">
+                <a href="provider-request-details.html?id=201" class="btn btn-sm btn-outline-custom w-50 text-center py-1 fs-xs">Inspect</a>
+                <button type="button" class="btn btn-sm btn-primary-custom w-50 py-1 fs-xs" onclick="alert('Provider Approved.')">Approve</button>
+              </div>
+            </div>
+
+            <!-- Request 2 -->
+            <div class="p-3 border rounded-3 bg-light">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <strong class="fs-sm text-slate-900">Dr. Claire Dental Aesthetics</strong>
+                <span class="badge-custom badge-warning" style="font-size:0.65rem;">License Review</span>
+              </div>
+              <div class="text-xs text-muted mb-2">Category: Dental • Owner: Dr. Claire Wu</div>
+              <div class="d-flex gap-2">
+                <a href="provider-request-details.html?id=202" class="btn btn-sm btn-outline-custom w-50 text-center py-1 fs-xs">Inspect</a>
+                <button type="button" class="btn btn-sm btn-primary-custom w-50 py-1 fs-xs" onclick="alert('Provider Approved.')">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Bookings Activity Table -->
+    <div class="custom-card">
+      <div class="p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+          <h2 class="fs-5 fw-bold text-slate-900 mb-0">Recent Platform Transactions</h2>
+          <p class="fs-xs text-muted mb-0">Master audit ledger across all service providers and consumers</p>
+        </div>
+        <a href="booking-list.html" class="btn btn-sm btn-outline-custom">View Master Ledger</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table-custom table-fixed table-compact">
+          <thead>
+            <tr>
+              <th>Ref ID</th>
+              <th>Customer</th>
+              <th>Service Provider</th>
+              <th>Total ($)</th>
+              <th>Platform Commission</th>
+              <th>Timestamp</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold fs-xs text-slate-800">#BK-8921</td>
+              <td>Aarav Patel</td>
+              <td>Aura Luxury Salon</td>
+              <td class="fw-bold text-slate-900">$46.60</td>
+              <td class="text-success fw-semibold">+$4.66</td>
+              <td class="text-muted fs-xs">Today, 10:30 AM</td>
+              <td><span class="badge-custom badge-success">Confirmed</span></td>
+              <td>
+                <a href="booking-details.html?id=BK-8921" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Audit</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold fs-xs text-slate-800">#BK-8922</td>
+              <td>Maya Lin</td>
+              <td>Aura Luxury Salon</td>
+              <td class="fw-bold text-slate-900">$85.00</td>
+              <td class="text-success fw-semibold">+$8.50</td>
+              <td class="text-muted fs-xs">Today, 11:45 AM</td>
+              <td><span class="badge-custom badge-success">Confirmed</span></td>
+              <td>
+                <a href="booking-details.html?id=BK-8922" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Audit</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold fs-xs text-slate-800">#BK-8910</td>
+              <td>Samuel Green</td>
+              <td>Serene Sanctuary Spa</td>
+              <td class="fw-bold text-slate-900">$120.00</td>
+              <td class="text-success fw-semibold">+$12.00</td>
+              <td class="text-muted fs-xs">Yesterday, 04:15 PM</td>
+              <td><span class="badge-custom badge-neutral">Completed</span></td>
+              <td>
+                <a href="booking-details.html?id=BK-8910" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Audit</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    async function loadAdminDashboard() {
+      try {
+        const [stats, pendingProviders, allBookings, monthlyTrends] = await Promise.all([
+          window.AdminService.getDashboardStats(),
+          window.ProviderService.getPendingProviders(),
+          window.BookingService.getAllBookings(),
+          window.AdminService.getMonthlyBookingTrends()
+        ]);
+
+        // 1. Update KPI stat cards
+        const statValues = document.querySelectorAll('.stat-card-value');
+        if (statValues.length >= 4) {
+          statValues[0].textContent = `${stats.monthlyBookings} Bookings`;
+          statValues[1].textContent = `${stats.totalProviders}`;
+          statValues[2].textContent = `${stats.pendingRequests} Pending`;
+          statValues[3].textContent = `${stats.totalCustomers}`;
+        }
+
+        // 2. Render Pending Provider Requests
+        renderPendingRequests(pendingProviders);
+
+        // 3. Render Master Recent Transactions
+        renderRecentTransactions(allBookings.slice(0, 10));
+
+        // 4. Initialize Line Chart with Live Monthly Trends
+        const ctx = document.getElementById('adminPlatformChart');
+        if (ctx) {
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Monthly Bookings',
+                data: monthlyTrends || [0,0,0,0,0,0,0,0,0,0,0,0],
+                borderColor: '#0d5c46',
+                backgroundColor: 'rgba(13, 92, 70, 0.08)',
+                fill: true,
+                tension: 0.35,
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#0d5c46'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+              }
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error loading admin dashboard data:', err);
+      }
+    }
+
+    function renderPendingRequests(requests) {
+      const container = document.querySelector('.col-lg-4 .d-flex.flex-column.gap-3');
+      if (!container) return;
+
+      if (!requests || requests.length === 0) {
+        container.innerHTML = `
+          <div class="p-3 border rounded-3 bg-light text-center text-muted fs-xs">
+            <i class="bi bi-check-circle text-success fs-4 d-block mb-1"></i>
+            All provider requests are reviewed!
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = requests.slice(0, 3).map(r => `
+        <div class="p-3 border rounded-3 bg-light">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <strong class="fs-sm text-slate-900">${r.businessname}</strong>
+            <span class="badge-custom badge-warning" style="font-size:0.65rem;">Pending</span>
+          </div>
+          <div class="text-xs text-muted mb-2">Phone: ${r.businessphone} • Owner: ${r.users ? r.users.firstname : 'Provider'}</div>
+          <div class="d-flex gap-2">
+            <a href="provider-request-details.html?id=${r.providerid}" class="btn btn-sm btn-outline-custom w-50 text-center py-1 fs-xs">Inspect</a>
+            <button type="button" class="btn btn-sm btn-primary-custom w-50 py-1 fs-xs" onclick="approveProvider(${r.providerid})">Approve</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function approveProvider(providerId) {
+      try {
+        await window.ProviderService.setApprovalStatus(providerId, true);
+        alert('Provider approved successfully.');
+        window.location.reload();
+      } catch (e) {
+        alert(e.message || 'Approval failed.');
+      }
+    }
+
+    function renderRecentTransactions(bookings) {
+      const tbody = document.querySelector('.table-responsive tbody');
+      if (!tbody) return;
+
+      if (!bookings || bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No transactions recorded yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        const cName = b.users ? `${b.users.firstname} ${b.users.lastname || ''}`.trim() : 'Customer';
+        const pName = b.providerdetails ? b.providerdetails.businessname : 'Provider';
+        const amount = parseFloat(b.amount || 45);
+        const commission = (amount * 0.10).toFixed(2);
+        const sDate = b.bookingdate ? b.bookingdate.split('T')[0] : 'N/A';
+        const status = b.bookingstatus || 'Confirmed';
+
+        let badgeClass = 'badge-success';
+        if (status === 'Cancelled') badgeClass = 'badge-danger';
+        if (status === 'Ongoing') badgeClass = 'badge-warning';
+
+        return `
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-${b.bookingid}</td>
+            <td>${cName}</td>
+            <td>${pName}</td>
+            <td class="fw-bold text-slate-900">$${amount.toFixed(2)}</td>
+            <td class="text-success fw-semibold">+$${commission}</td>
+            <td class="text-muted fs-xs">${sDate}</td>
+            <td><span class="badge-custom ${badgeClass}">${status}</span></td>
+            <td>
+              <a href="booking-details.html?id=${b.bookingid}" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Audit</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.addEventListener('datamodechange', loadAdminDashboard);
+    document.addEventListener('DOMContentLoaded', loadAdminDashboard);
+  </script>
+</body>
+</html>
+
+
+

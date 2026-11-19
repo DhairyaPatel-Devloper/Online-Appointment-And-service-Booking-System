@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account — BookWith.tech Platform</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/header.css">
+
+  <style>
+    .register-page-container {
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+      background: radial-gradient(100% 70% at 50% 10%, #ffffff 0%, #f1f5f9 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .register-card-box {
+      width: 100%;
+      max-width: 760px;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: clamp(2rem, 4vw, 3rem);
+      box-shadow: var(--shadow-card);
+    }
+
+    .role-toggle-matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .role-option-card {
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      user-select: none;
+    }
+
+    .role-option-card.selected {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .role-option-card input[type="radio"] {
+      display: none;
+    }
+
+    .role-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pwd-requirements-box {
+      background: var(--color-slate-50);
+      border: 1px solid var(--color-slate-200);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .pwd-req-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.775rem;
+      color: var(--color-slate-500);
+      margin: 3px 0;
+      transition: all 0.2s ease;
+    }
+
+    .pwd-req-item.met {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .pwd-req-item.met i {
+      color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="public"></site-header>
+
+  <main class="register-page-container">
+    <div class="register-card-box">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Create Your Account</h1>
+        <p style="font-size: 0.95rem; color: var(--color-slate-500); margin-top: 6px;">
+          Join thousands of satisfied customers and verified service providers.
+        </p>
+      </div>
+
+      <form id="registrationForm" onsubmit="handleRegistrationSubmit(event)">
+        <!-- Role Selection -->
+        <label class="form-label-custom">Select Account Type <span class="text-danger">*</span></label>
+        <div class="role-toggle-matrix">
+          <label class="role-option-card selected" id="optCustomer">
+            <input type="radio" name="accountRole" value="Customer" checked onchange="updateRoleSelection()">
+            <div class="role-icon-box">
+              <i class="bi bi-person-heart"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;">Customer</div>
+              <div style="font-size: 0.775rem; color: var(--color-slate-500);">Book appointments & services</div>
+            </div>
+          </label>
+
+          <label class="role-option-card" id="optProvider">
+            <input type="radio" name="accountRole" value="Provider" onchange="updateRoleSelection()">
+            <div class="role-icon-box">
+              <i class="bi bi-shop"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;">Service Provider</div>
+              <div style="font-size: 0.775rem; color: var(--color-slate-500);">List services & manage clients</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Name Inputs -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="txtFirstName" class="form-label-custom">First Name <span class="text-danger">*</span></label>
+            <input type="text" id="txtFirstName" class="form-control-custom" placeholder="e.g. Aarav" required>
+          </div>
+          <div class="col-md-6">
+            <label for="txtLastName" class="form-label-custom">Last Name <span class="text-danger">*</span></label>
+            <input type="text" id="txtLastName" class="form-control-custom" placeholder="e.g. Patel" required>
+          </div>
+        </div>
+
+        <!-- Email & Phone -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="txtEmail" class="form-label-custom">Email Address <span class="text-danger">*</span></label>
+            <input type="email" id="txtEmail" class="form-control-custom" placeholder="name@domain.com" required>
+          </div>
+          <div class="col-md-6">
+            <label for="txtPhone" class="form-label-custom">Phone Number (10 Digits) <span class="text-danger">*</span></label>
+            <input type="tel" id="txtPhone" class="form-control-custom" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required>
+          </div>
+        </div>
+
+        <!-- Password & Confirmation -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="txtPassword" class="form-label-custom">Password <span class="text-danger">*</span></label>
+            <input type="password" id="txtPassword" class="form-control-custom" placeholder="Create a strong password" oninput="checkPasswordRequirements()" required>
+            
+            <div class="pwd-requirements-box">
+              <div class="pwd-req-item" id="reqLen"><i class="bi bi-circle"></i> At least 8 characters</div>
+              <div class="pwd-req-item" id="reqUpper"><i class="bi bi-circle"></i> 1 uppercase letter (A-Z)</div>
+              <div class="pwd-req-item" id="reqLower"><i class="bi bi-circle"></i> 1 lowercase letter (a-z)</div>
+              <div class="pwd-req-item" id="reqNum"><i class="bi bi-circle"></i> 1 number (0-9)</div>
+              <div class="pwd-req-item" id="reqSpec"><i class="bi bi-circle"></i> 1 special symbol (@$!%*?&)</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="txtConfirmPassword" class="form-label-custom">Confirm Password <span class="text-danger">*</span></label>
+            <input type="password" id="txtConfirmPassword" class="form-control-custom" placeholder="Re-enter password" required>
+            <div id="pwdMismatchWarning" style="display: none; color: #dc2626; font-size: 0.775rem; margin-top: 4px;">
+              Passwords do not match.
+            </div>
+          </div>
+        </div>
+
+        <!-- Address & City -->
+        <div class="mb-3">
+          <label for="txtAddress" class="form-label-custom">Street Address</label>
+          <input type="text" id="txtAddress" class="form-control-custom" placeholder="Street, Suite or Building (optional)">
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="txtCity" class="form-label-custom">City</label>
+            <input type="text" id="txtCity" class="form-control-custom" placeholder="City name">
+          </div>
+          <div class="col-md-6">
+            <label for="txtPinCode" class="form-label-custom">Pin / Postal Code (6 Digits)</label>
+            <input type="text" id="txtPinCode" class="form-control-custom" placeholder="380015" maxlength="6">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary-custom w-100 py-3" style="font-size: 1rem;">
+          <i class="bi bi-person-check-fill"></i>
+          <span>Complete Registration</span>
+        </button>
+
+        <div class="text-center mt-3">
+          <span style="font-size: 0.85rem; color: var(--color-slate-500);">Already have an account? </span>
+          <a href="login.html" class="fs-sm fw-bold text-primary">Sign In here</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/services/auth-service.js"></script>
+  <script src="js/services/user-service.js"></script>
+  <script src="js/services/provider-service.js"></script>
+  <script src="js/services/slot-service.js"></script>
+  <script src="js/services/booking-service.js"></script>
+  <script src="js/services/feedback-service.js"></script>
+  <script src="js/services/admin-service.js"></script>
+  <script src="js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="js/site-header.js"></script>
+  <script src="js/site-footer.js"></script>
+
+  <script>
+    function updateRoleSelection() {
+      const isCustomer = document.querySelector('input[name="accountRole"]:checked').value === 'Customer';
+      document.getElementById('optCustomer').classList.toggle('selected', isCustomer);
+      document.getElementById('optProvider').classList.toggle('selected', !isCustomer);
+    }
+
+    function checkPasswordRequirements() {
+      const val = document.getElementById('txtPassword').value;
+
+      const setReq = (id, met) => {
+        const el = document.getElementById(id);
+        if (met) {
+          el.className = 'pwd-req-item met';
+          el.querySelector('i').className = 'bi bi-check-circle-fill';
+        } else {
+          el.className = 'pwd-req-item';
+          el.querySelector('i').className = 'bi bi-circle';
+        }
+      };
+
+      setReq('reqLen', val.length >= 8);
+      setReq('reqUpper', /[A-Z]/.test(val));
+      setReq('reqLower', /[a-z]/.test(val));
+      setReq('reqNum', /[0-9]/.test(val));
+      setReq('reqSpec', /[@$!%*?&]/.test(val));
+    }
+
+    async function handleRegistrationSubmit(e) {
+      e.preventDefault();
+
+      const pass = document.getElementById('txtPassword').value;
+      const confirmPass = document.getElementById('txtConfirmPassword').value;
+      const mismatch = document.getElementById('pwdMismatchWarning');
+
+      if (pass !== confirmPass) {
+        mismatch.style.display = 'block';
+        return;
+      }
+      mismatch.style.display = 'none';
+
+      const role = document.querySelector('input[name="accountRole"]:checked').value;
+      const firstName = document.getElementById('txtFirstName').value.trim();
+      const lastName = document.getElementById('txtLastName').value.trim();
+      const email = document.getElementById('txtEmail').value.trim();
+      const phone = document.getElementById('txtPhone').value.trim();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating Account...';
+
+      try {
+        const result = await window.AuthService.register({
+          firstName,
+          lastName,
+          email,
+          password: pass,
+          phone,
+          role
+        });
+
+        if (result && result.success) {
+          if (role === 'Customer') {
+            window.location.href = 'customer/browse-shops.html';
+          } else {
+            window.location.href = 'provider/dashboard.html';
+          }
+        }
+      } catch (err) {
+        alert(err.message || 'Registration failed. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    }
+  </script>
+</body>
+</html>
+

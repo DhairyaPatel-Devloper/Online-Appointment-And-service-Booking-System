@@ -5,8 +5,8 @@ import com.bookwithtech.dao.ProviderTimeSlotDAOImpl;
 import com.bookwithtech.model.ProviderTimeSlot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.SQLException;

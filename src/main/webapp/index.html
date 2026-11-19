@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookWith.tech — Book Local Services Instantly. No Phone Tag.</title>
+  <meta name="description" content="Book verified local doctors, dentists, salons, wellness studios, and specialists in seconds. Zero phone tag, upfront transparent pricing, and instant calendar confirmation.">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/landing-3d.css">
+
+  <style>
+    /* Category Card Visuals */
+    .category-grid-section {
+      padding: clamp(3.5rem, 6vw, 6rem) 1.5rem;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .category-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .category-showcase-card {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-showcase-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-hover);
+      color: inherit;
+    }
+
+    .category-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Comparison Section */
+    .comparison-section {
+      background: var(--color-slate-100);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: clamp(4rem, 7vw, 6.5rem) 1.5rem;
+    }
+
+    .comparison-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .comparison-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      border: 1px solid var(--color-border);
+    }
+
+    .comparison-card.highlight {
+      border: 2px solid var(--color-primary);
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 1.5rem;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card-human {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="public" data-active="home"></site-header>
+
+  <main>
+    <!-- ==========================================================================
+         HERO SECTION: HUMAN, GROUNDED, EDITORIAL WITH INTERACTIVE DESK
+         ========================================================================== -->
+    <section class="hero-stage-section">
+      <div class="hero-background-grid"></div>
+      <div class="hero-glow-sphere"></div>
+
+      <div class="hero-layout-grid">
+        <!-- Left: Honest, Human Copy -->
+        <div class="hero-content-col">
+          <div class="hero-tag-pill reveal-on-scroll">
+            <span class="hero-tag-indicator"></span>
+            <span>Direct Local Booking · 100% Free for Clients</span>
+          </div>
+
+          <h1 class="hero-headline reveal-on-scroll stagger-1">
+            Book verified local appointments in seconds.
+            <span class="hero-headline-accent">No phone tag. No waiting on hold.</span>
+          </h1>
+
+          <p class="hero-subtitle reveal-on-scroll stagger-2">
+            Direct calendar access to vetted physicians, dentists, hair stylists, wellness practitioners, and home specialists. See upfront transparent pricing and confirm your slot in 30 seconds.
+          </p>
+
+          <div class="hero-cta-group reveal-on-scroll stagger-3">
+            <a href="customer/browse-shops.html" class="btn-primary-custom" style="padding: 0.85rem 1.85rem; font-size: 1rem;">
+              <i class="bi bi-search"></i>
+              <span>Explore Verified Providers</span>
+            </a>
+            <a href="register.html" class="btn-outline-custom" style="padding: 0.85rem 1.85rem; font-size: 1rem;">
+              <i class="bi bi-shop"></i>
+              <span>List Your Practice or Salon</span>
+            </a>
+          </div>
+
+          <!-- Hero Metrics Bar -->
+          <div class="hero-stats-row reveal-on-scroll stagger-4">
+            <div class="hero-stat-item">
+              <h3 id="statBookings">120k+</h3>
+              <p>Appointments Scheduled</p>
+            </div>
+            <div class="hero-stat-item">
+              <h3 id="statUptime">4.9</h3>
+              <p>★ Average Client Rating</p>
+            </div>
+            <div class="hero-stat-item">
+              <h3 id="statProviders">1,800+</h3>
+              <p>Verified Local Partners</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: 3D CSS Stacked Appointment Cards — Unique, human-first design -->
+        <div class="hero-3d-scene-container reveal-scale">
+
+          <!-- CSS 3D Layered Cards with mouse parallax -->
+          <div class="cards-3d-scene" id="cards3dScene">
+
+            <!-- Card 1 — Back: Category Picker -->
+            <div class="bk-card bk-card--back">
+              <span class="bk-card-step">Step 1</span>
+              <span class="bk-card-title">What do you need?</span>
+              <div class="bk-category-grid">
+                <div class="bk-cat-chip active"><i class="bi bi-scissors"></i> Haircut</div>
+                <div class="bk-cat-chip"><i class="bi bi-heart-pulse"></i> Wellness</div>
+                <div class="bk-cat-chip"><i class="bi bi-emoji-smile"></i> Dental</div>
+                <div class="bk-cat-chip"><i class="bi bi-stars"></i> Beauty</div>
+              </div>
+            </div>
+
+            <!-- Card 2 — Mid: Provider Selector -->
+            <div class="bk-card bk-card--mid">
+              <div class="bk-provider-row">
+                <div class="bk-provider-avatar">AL</div>
+                <div class="bk-provider-info">
+                  <div class="bk-provider-name">Aura Luxury Salon</div>
+                  <div class="bk-provider-rating"><i class="bi bi-star-fill"></i> 4.9 &middot; 184 reviews</div>
+                </div>
+              </div>
+              <div class="bk-slot-label">Available today</div>
+              <div class="bk-slot-row">
+                <span class="bk-slot bk-slot--taken">09:00</span>
+                <span class="bk-slot bk-slot--open">10:30</span>
+                <span class="bk-slot bk-slot--open">11:00</span>
+                <span class="bk-slot bk-slot--taken">12:00</span>
+                <span class="bk-slot bk-slot--open">14:00</span>
+              </div>
+            </div>
+
+            <!-- Card 3 — Front: Booking Confirmation Receipt -->
+            <div class="bk-card bk-card--front">
+              <div class="bk-confirm-top">
+                <div class="bk-confirm-check">
+                  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="19" stroke="#0d5c46" stroke-width="2" class="bk-check-ring"/>
+                    <polyline points="11,21 18,28 30,14" stroke="#0d5c46" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="bk-check-mark"/>
+                  </svg>
+                </div>
+                <div class="bk-confirm-status">Booking Confirmed</div>
+              </div>
+              <div class="bk-confirm-divider"><span>&middot; &middot; &middot;</span></div>
+              <div class="bk-confirm-row"><span class="bk-cr-label">Service</span><span class="bk-cr-val">Executive Haircut</span></div>
+              <div class="bk-confirm-row"><span class="bk-cr-label">Provider</span><span class="bk-cr-val">Aura Luxury Salon</span></div>
+              <div class="bk-confirm-row"><span class="bk-cr-label">Date</span><span class="bk-cr-val">Tomorrow &middot; 10:30 AM</span></div>
+              <div class="bk-confirm-code">BWT&#8209;8921</div>
+            </div>
+
+          </div>
+
+          <!-- Ambient dots -->
+          <div class="hero-ambient">
+            <div class="ambient-dot" style="--d:0s; --x:8%; --y:18%;"></div>
+            <div class="ambient-dot" style="--d:0.9s; --x:88%; --y:12%;"></div>
+            <div class="ambient-dot" style="--d:1.6s; --x:75%; --y:80%;"></div>
+          </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CURATED SERVICE CATEGORIES (VISUAL & GLANCEABLE)
+         ========================================================================== -->
+    <section class="category-grid-section" id="categories">
+      <div class="section-editorial-header reveal-on-scroll">
+        <span class="section-label">Browse by Specialty</span>
+        <h2 class="section-main-title">Top Rated Categories in Your Neighborhood</h2>
+        <p class="section-subtext">Every business is personally vetted for verified licensing, hygienic facilities, and transparent upfront pricing.</p>
+      </div>
+
+      <div class="category-showcase-grid">
+        <!-- Cat 1 -->
+        <a href="customer/browse-shops.html?cat=hair" class="category-showcase-card reveal-on-scroll">
+          <div class="category-icon-box">
+            <i class="bi bi-scissors"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Hair & Styling</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Precision scissor cuts, balayage, beard sculpting, and blowouts.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $30</span>
+            <span class="fs-xs fw-bold text-primary">Browse 42 Shops <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Cat 2 -->
+        <a href="customer/browse-shops.html?cat=spa" class="category-showcase-card reveal-on-scroll stagger-1">
+          <div class="category-icon-box" style="background: #fef3c7; color: #b45309;">
+            <i class="bi bi-water"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Spa & Bodywork</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Deep tissue massage, aromatherapy, reflexology, and sauna therapy.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $65</span>
+            <span class="fs-xs fw-bold text-primary">Browse 28 Studios <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Cat 3 -->
+        <a href="customer/browse-shops.html?cat=dental" class="category-showcase-card reveal-on-scroll stagger-2">
+          <div class="category-icon-box" style="background: #edf7f3; color: #0d5c46;">
+            <i class="bi bi-heart-pulse"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Dental & Medical</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Hygiene cleanings, cosmetic whitening, checkups, and consultations.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $75</span>
+            <span class="fs-xs fw-bold text-primary">Browse 34 Clinics <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Cat 4 -->
+        <a href="customer/browse-shops.html?cat=skin" class="category-showcase-card reveal-on-scroll">
+          <div class="category-icon-box" style="background: #fdf2f8; color: #be185d;">
+            <i class="bi bi-stars"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Dermatology & Skin</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Ultrasonic facials, chemical peels, acne treatments, and aesthetics.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $70</span>
+            <span class="fs-xs fw-bold text-primary">Browse 19 Practices <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Cat 5 -->
+        <a href="customer/browse-shops.html?cat=pet" class="category-showcase-card reveal-on-scroll stagger-1">
+          <div class="category-icon-box" style="background: #f0fdf4; color: #15803d;">
+            <i class="bi bi-shield-heart"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Pet Care & Grooming</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Gentle dog washing, breed-standard trims, nail care, and spa baths.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $40</span>
+            <span class="fs-xs fw-bold text-primary">Browse 16 Salons <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Cat 6 -->
+        <a href="customer/browse-shops.html?cat=auto" class="category-showcase-card reveal-on-scroll stagger-2">
+          <div class="category-icon-box" style="background: #fefce8; color: #a16207;">
+            <i class="bi bi-gear-wide-connected"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.35rem;">Auto & Specialized</h3>
+          <p style="font-size: 0.875rem; color: var(--color-slate-600); line-height: 1.5; margin-bottom: 1.25rem;">
+            Ceramic detailing, safety inspections, master alterations, and notary.
+          </p>
+          <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+            <span class="badge-custom badge-neutral" style="font-size: 0.75rem;">From $50</span>
+            <span class="fs-xs fw-bold text-primary">Browse 24 Experts <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SIDE-BY-SIDE REALITY CHECK: THE BookWith.tech DIFFERENCE
+         ========================================================================== -->
+    <section class="comparison-section">
+      <div class="section-editorial-header reveal-on-scroll mb-4">
+        <span class="section-label">Why BookWith.tech Works Better</span>
+        <h2 class="section-main-title">A Respectful, Human Booking Experience</h2>
+        <p class="section-subtext">No complicated phone menus, no "call back between 2 and 4", and no surprise charges.</p>
+      </div>
+
+      <div class="comparison-grid">
+        <!-- Old Traditional Way -->
+        <div class="comparison-card reveal-on-scroll">
+          <div class="d-flex align-items-center gap-2 mb-3 text-muted">
+            <i class="bi bi-telephone-x fs-4 text-danger"></i>
+            <h3 class="fs-5 fw-bold text-slate-800 mb-0">The Old Phone-Tag Routine</h3>
+          </div>
+          <ul class="d-flex flex-column gap-3 ps-0 mb-0" style="list-style: none;">
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-600">
+              <i class="bi bi-x-circle text-danger mt-1"></i>
+              <span>Calling during business hours while you're busy at work or in meetings.</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-600">
+              <i class="bi bi-x-circle text-danger mt-1"></i>
+              <span>"Let me check our paper book... Can you hold for 5 minutes?"</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-600">
+              <i class="bi bi-x-circle text-danger mt-1"></i>
+              <span>No price transparency until you arrive at the counter with your card.</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-600">
+              <i class="bi bi-x-circle text-danger mt-1"></i>
+              <span>Forgetting the appointment or having to call again to reschedule.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BookWith.tech Way -->
+        <div class="comparison-card highlight reveal-on-scroll stagger-1">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-check-circle-fill fs-4 text-success"></i>
+            <h3 class="fs-5 fw-bold text-slate-900 mb-0">The BookWith.tech Experience</h3>
+          </div>
+          <ul class="d-flex flex-column gap-3 ps-0 mb-0" style="list-style: none;">
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-800 fw-medium">
+              <i class="bi bi-check-lg text-success mt-1 fw-bold"></i>
+              <span>Book 24/7 in 30 seconds from your phone, laptop, or tablet.</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-800 fw-medium">
+              <i class="bi bi-check-lg text-success mt-1 fw-bold"></i>
+              <span>Live, synchronized calendar slots with instant confirmation.</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-800 fw-medium">
+              <i class="bi bi-check-lg text-success mt-1 fw-bold"></i>
+              <span>Exact upfront pricing with clear service durations and specialist bios.</span>
+            </li>
+            <li class="d-flex align-items-start gap-2 fs-sm text-slate-800 fw-medium">
+              <i class="bi bi-check-lg text-success mt-1 fw-bold"></i>
+              <span>Automatic Google/Apple calendar invite + free 1-click rescheduling.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         HOW IT WORKS (THREE-STEP JOURNEY)
+         ========================================================================== -->
+    <section class="workflow-section" id="how-it-works">
+      <div class="workflow-container">
+        <div class="section-editorial-header reveal-on-scroll">
+          <span class="section-label">Simplicity First</span>
+          <h2 class="section-main-title">Book Any Appointment in 3 Simple Steps</h2>
+          <p class="section-subtext">No accounts required to browse. Direct confirmation with guaranteed appointment slots.</p>
+        </div>
+
+        <div class="workflow-steps-grid">
+          <div class="workflow-step-card reveal-on-scroll">
+            <div class="workflow-step-num">01</div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.5rem;">Pick Your Service & Specialist</h3>
+            <p style="font-size: 0.9rem; color: var(--color-slate-600); line-height: 1.6;">
+              Browse vetted providers by distance and ratings. Choose the exact treatment, see duration, and choose your preferred team member.
+            </p>
+          </div>
+
+          <div class="workflow-step-card reveal-on-scroll stagger-1">
+            <div class="workflow-step-num">02</div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.5rem;">Select an Open Slot</h3>
+            <p style="font-size: 0.9rem; color: var(--color-slate-600); line-height: 1.6;">
+              See real-time available times for today, tomorrow, or next week. No waiting for a callback — what you see is open and guaranteed.
+            </p>
+          </div>
+
+          <div class="workflow-step-card reveal-on-scroll stagger-2">
+            <div class="workflow-step-num">03</div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.5rem;">Get Your Digital Pass</h3>
+            <p style="font-size: 0.9rem; color: var(--color-slate-600); line-height: 1.6;">
+              Receive an instant digital booking pass with QR check-in, automatic calendar invites, and SMS reminder notifications.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         AUTHENTIC CLIENT EXPERIENCES (GLANCEABLE REVIEWS)
+         ========================================================================== -->
+    <section class="reviews-section">
+      <div class="section-editorial-header reveal-on-scroll">
+        <span class="section-label">Real Feedback</span>
+        <h2 class="section-main-title">Trusted by Everyday Customers & Busy Professionals</h2>
+        <p class="section-subtext">Over 18,000 verified reviews from clients across healthcare, wellness, and personal care.</p>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card-human reveal-on-scroll">
+          <div>
+            <div class="text-warning fs-sm mb-2">★★★★★</div>
+            <p class="fs-sm text-slate-700 line-height-relaxed mb-3">
+              "Being able to book my dermatologist visit at 10 PM without playing phone tag the next morning saved me hours. The appointment started exactly on time."
+            </p>
+          </div>
+          <div class="d-flex align-items-center gap-2 pt-3 border-top">
+            <div class="avatar-circle" style="width: 36px; height: 36px; font-size: 0.8rem;">ET</div>
+            <div>
+              <div class="fw-bold fs-xs text-slate-900">Elena Torres</div>
+              <div class="text-xs text-muted">Booked Apex Dermatology</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card-human reveal-on-scroll stagger-1">
+          <div>
+            <div class="text-warning fs-sm mb-2">★★★★★</div>
+            <p class="fs-sm text-slate-700 line-height-relaxed mb-3">
+              "I manage a busy consulting schedule. The 1-click Google calendar sync and the QR check-in pass at Aura Salon are legitimately seamless."
+            </p>
+          </div>
+          <div class="d-flex align-items-center gap-2 pt-3 border-top">
+            <div class="avatar-circle" style="width: 36px; height: 36px; font-size: 0.8rem; background: #b45309;">MV</div>
+            <div>
+              <div class="fw-bold fs-xs text-slate-900">Marcus Vance</div>
+              <div class="text-xs text-muted">Booked Aura Salon & Spa</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card-human reveal-on-scroll stagger-2">
+          <div>
+            <div class="text-warning fs-sm mb-2">★★★★★</div>
+            <p class="fs-sm text-slate-700 line-height-relaxed mb-3">
+              "As a clinic owner, our no-show rate plummeted from 22% to under 4% since our clients started getting automated WhatsApp reminders through BookWith.tech."
+            </p>
+          </div>
+          <div class="d-flex align-items-center gap-2 pt-3 border-top">
+            <div class="avatar-circle" style="width: 36px; height: 36px; font-size: 0.8rem; background: #0d5c46;">DP</div>
+            <div>
+              <div class="fw-bold fs-xs text-slate-900">Dr. Dhairya Patel</div>
+              <div class="text-xs text-muted">Clinic Director, Lumina Health</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         TRANSPARENT PRICING FOR BUSINESSES
+         ========================================================================== -->
+    <section class="pricing-section" id="pricing">
+      <div class="section-editorial-header reveal-on-scroll">
+        <span class="section-label">Simple & Fair</span>
+        <h2 class="section-main-title">Transparent Plans for Every Business Scale</h2>
+        <p class="section-subtext">Always free for consumers. Predictable pricing for salons, clinics, and service providers.</p>
+
+        <div class="pricing-toggle-wrapper mt-4">
+          <div class="pricing-pill-toggle">
+            <button type="button" class="pricing-toggle-btn active" data-plan="monthly">Monthly</button>
+            <button type="button" class="pricing-toggle-btn" data-plan="annual">Annual (Save 20%)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card reveal-on-scroll">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin: 0;">Customer / Client</h3>
+          <p style="font-size: 0.85rem; color: var(--color-slate-500); margin-top: 4px;">For individuals booking local appointments</p>
+          <div class="pricing-price" id="priceStarter">$0</div>
+          <div class="pricing-period">Free forever</div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Unlimited online appointments</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Instant calendar & SMS confirmations</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Digital QR check-in ticket</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Verified rating & review submission</li>
+          </ul>
+
+          <a href="customer/browse-shops.html" class="btn-outline-custom w-100 text-center">Get Started Free</a>
+        </div>
+
+        <!-- Growth Plan (Featured) -->
+        <div class="pricing-card featured reveal-on-scroll stagger-1">
+          <div class="pricing-featured-badge">Most Popular for Providers</div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin: 0;">Provider Pro</h3>
+          <p style="font-size: 0.85rem; color: var(--color-slate-500); margin-top: 4px;">For salons, clinics & studios up to 10 staff</p>
+          <div class="pricing-price" id="priceGrowth">$49</div>
+          <div class="pricing-period">/ month (billed monthly)</div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Up to 10 staff member calendars</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Automated SMS & WhatsApp reminders</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Custom service duration & buffer times</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Real-time revenue analytics & CSV export</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Customer review reply console</li>
+          </ul>
+
+          <a href="register.html" class="btn-primary-custom w-100 text-center">Start 14-Day Free Trial</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card reveal-on-scroll stagger-2">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-main); margin: 0;">Multi-Location Enterprise</h3>
+          <p style="font-size: 0.85rem; color: var(--color-slate-500); margin-top: 4px;">For chains, hospitals, and franchise networks</p>
+          <div class="pricing-price" id="priceEnterprise">$119</div>
+          <div class="pricing-period">/ month (billed monthly)</div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Unlimited staff & multiple shop branches</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Dedicated Master Admin governance</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> Custom domain & white-label booking widget</li>
+            <li class="pricing-feature-item"><i class="bi bi-check-circle-fill"></i> 24/7 Priority support hotline</li>
+          </ul>
+
+          <a href="#contact" class="btn-outline-custom w-100 text-center">Contact Enterprise Team</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         PROPER CONTACT SECTION (Validated & Accessible — Strictly NO Team Section)
+         ========================================================================== -->
+    <section class="contact-section" id="contact">
+      <div class="section-editorial-header reveal-on-scroll">
+        <span class="section-label">Direct Communication</span>
+        <h2 class="section-main-title">Get in Touch with Our Operations Desk</h2>
+        <p class="section-subtext">Have questions about provider onboarding, platform integration, or enterprise features? We are here to help.</p>
+      </div>
+
+      <div class="contact-layout-grid">
+        <!-- Left: Direct Contact Information -->
+        <div class="contact-info-col reveal-on-scroll">
+          <div class="contact-direct-card">
+            <div class="contact-direct-icon">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-text-main); font-size: 1.05rem;">Headquarters & Operations</div>
+              <p style="margin: 4px 0 0; font-size: 0.9rem; color: var(--color-slate-600); line-height: 1.6;">
+                Suite 400, Horizon Business Tower<br>
+                Tech Park Central, Sector 6, Metropolis
+              </p>
+            </div>
+          </div>
+
+          <div class="contact-direct-card">
+            <div class="contact-direct-icon">
+              <i class="bi bi-envelope-at-fill"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-text-main); font-size: 1.05rem;">Email Communication</div>
+              <p style="margin: 4px 0 0; font-size: 0.9rem; color: var(--color-slate-600);">
+                General: <a href="mailto:support@bookwith.tech" class="text-primary fw-semibold">support@bookwith.tech</a><br>
+                Partners: <a href="mailto:partners@bookwith.tech" class="text-primary fw-semibold">partners@bookwith.tech</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="contact-direct-card">
+            <div class="contact-direct-icon">
+              <i class="bi bi-telephone-inbound-fill"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-text-main); font-size: 1.05rem;">Direct Phone Hotline</div>
+              <p style="margin: 4px 0 0; font-size: 0.9rem; color: var(--color-slate-600);">
+                Toll Free: <strong>+1 (800) 492-BOOK</strong><br>
+                Mon – Sat: 8:00 AM – 8:00 PM EST
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3 bg-light border rounded-3 d-flex align-items-center gap-3">
+            <span class="badge-custom badge-success"><i class="bi bi-lightning-charge-fill"></i> High SLA</span>
+            <span style="font-size: 0.85rem; color: var(--color-slate-600);">Average provider response time: <strong>8 minutes</strong></span>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Validated Contact Form -->
+        <div class="contact-form-box reveal-on-scroll stagger-1">
+          <!-- Success Notification Banner -->
+          <div class="contact-success-banner" id="contactSuccessBanner">
+            <div style="font-size: 2rem; color: #059669; margin-bottom: 0.5rem;">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h4 style="font-size: 1.25rem; font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Message Dispatched Successfully!</h4>
+            <p style="font-size: 0.9rem; color: #047857; margin: 0;">
+              Thank you for contacting BookWith.tech. Our operations desk has received your ticket and will respond within 2 business hours.
+            </p>
+          </div>
+
+          <form id="landingContactForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="contactName" class="form-label-custom">Your Full Name <span class="text-danger">*</span></label>
+                <input type="text" id="contactName" class="form-control-custom" placeholder="e.g. Rachel Adams">
+                <div class="form-feedback-msg" id="errContactName">Please enter your full name.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="contactEmail" class="form-label-custom">Work or Personal Email <span class="text-danger">*</span></label>
+                <input type="email" id="contactEmail" class="form-control-custom" placeholder="name@domain.com">
+                <div class="form-feedback-msg" id="errContactEmail">Please provide a valid email address.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="contactTopic" class="form-label-custom">Inquiry Topic <span class="text-danger">*</span></label>
+                <select id="contactTopic" class="form-select-custom">
+                  <option value="">-- Choose your inquiry topic --</option>
+                  <option value="provider_onboarding">Provider Onboarding & Registration</option>
+                  <option value="customer_support">Customer Appointment Support</option>
+                  <option value="enterprise_billing">Enterprise Licensing & Multi-location</option>
+                  <option value="api_integration">Custom API & POS Integration</option>
+                </select>
+                <div class="form-feedback-msg" id="errContactTopic">Please select an inquiry category.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="contactMessage" class="form-label-custom">Detailed Message <span class="text-danger">*</span></label>
+                <textarea id="contactMessage" class="form-control-custom" rows="4" placeholder="How can our technical or operations team assist you?"></textarea>
+                <div class="form-feedback-msg" id="errContactMessage">Please provide at least 10 characters detailing your request.</div>
+              </div>
+
+              <div class="col-12 pt-2">
+                <button type="submit" id="contactSubmitBtn" class="btn-primary-custom w-100" style="padding: 0.9rem; font-size: 1rem;">
+                  <i class="bi bi-send-fill"></i>
+                  <span>Submit Inquiry</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER (Strictly No Team Section) -->
+  <site-footer data-role="public"></site-footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Master Layout Web Components & Interactions -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/services/auth-service.js"></script>
+  <script src="js/services/provider-service.js"></script>
+  <script src="js/site-header.js"></script>
+  <script src="js/site-footer.js"></script>
+  <script src="js/landing-3d.js"></script>
+</body>
+</html>
+
+

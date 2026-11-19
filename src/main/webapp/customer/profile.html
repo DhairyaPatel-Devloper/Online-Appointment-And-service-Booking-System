@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Customer Profile & Preferences — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer"></site-header>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="custom-card p-4 p-md-5">
+          <div class="d-flex align-items-center gap-4 mb-4 pb-4 border-bottom flex-wrap">
+            <div class="avatar-circle" style="width: 72px; height: 72px; font-size: 1.75rem; background: var(--color-primary);">
+              AP
+            </div>
+            <div>
+              <h1 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0;">Aarav Patel</h1>
+              <p class="fs-xs text-muted mb-0">Customer Member since August 2024 • Verified Identity</p>
+              <div class="badge-custom badge-success mt-2"><i class="bi bi-shield-check"></i> Account in Good Standing</div>
+            </div>
+          </div>
+
+          <form onsubmit="saveProfile(event)">
+            <h3 class="fs-6 fw-bold text-slate-900 mb-3 text-uppercase fs-xs text-muted letter-spacing-1">Personal Details</h3>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label-custom">First Name</label>
+                <input type="text" class="form-control-custom" value="Aarav" id="profFirst">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Last Name</label>
+                <input type="text" class="form-control-custom" value="Patel" id="profLast">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Email Address</label>
+                <input type="email" class="form-control-custom" value="aarav.patel@gmail.com" readonly style="background: var(--color-slate-100);">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Phone Number</label>
+                <input type="tel" class="form-control-custom" value="9876543210" id="profPhone">
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Primary Street Address</label>
+                <input type="text" class="form-control-custom" value="742 Evergreen Terrace, Sector 5">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">City</label>
+                <input type="text" class="form-control-custom" value="Metropolis">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Pin Code</label>
+                <input type="text" class="form-control-custom" value="380015">
+              </div>
+            </div>
+
+            <h3 class="fs-6 fw-bold text-slate-900 mb-3 text-uppercase fs-xs text-muted letter-spacing-1">Notification Preferences</h3>
+            <div class="d-flex flex-column gap-2 mb-4 p-3 bg-light rounded-3">
+              <label class="d-flex align-items-center justify-content-between fs-sm text-slate-700">
+                <span>Receive WhatsApp appointment reminders & digital passes</span>
+                <input type="checkbox" class="form-check-input" checked>
+              </label>
+              <label class="d-flex align-items-center justify-content-between fs-sm text-slate-700">
+                <span>Receive SMS arrival alerts 2 hours prior</span>
+                <input type="checkbox" class="form-check-input" checked>
+              </label>
+              <label class="d-flex align-items-center justify-content-between fs-sm text-slate-700">
+                <span>Promotional discounts and new salon openings</span>
+                <input type="checkbox" class="form-check-input">
+              </label>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+              <a href="change-password.html" class="fs-sm fw-bold text-primary"><i class="bi bi-shield-lock"></i> Change Security Password</a>
+              <button type="submit" class="btn-primary-custom" style="padding: 0.65rem 1.75rem;">
+                <i class="bi bi-check2"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    let currentUserId = null;
+
+    async function loadUserProfile() {
+      const currentUser = window.AuthService.getCurrentUser();
+      if (!currentUser) return;
+      currentUserId = currentUser.userid;
+
+      try {
+        const user = await window.UserService.getUserById(currentUserId);
+        if (user) {
+          document.getElementById('profFirst').value = user.firstname || '';
+          document.getElementById('profLast').value = user.lastname || '';
+          document.getElementById('profPhone').value = user.phone || '';
+          const emailInput = document.querySelector('input[type="email"]');
+          if (emailInput) emailInput.value = user.emailid || '';
+
+          const nameHeading = document.querySelector('h1');
+          if (nameHeading) nameHeading.textContent = `${user.firstname} ${user.lastname || ''}`.trim();
+
+          const avatarCircle = document.querySelector('.avatar-circle');
+          if (avatarCircle) avatarCircle.textContent = (user.firstname[0] + (user.lastname ? user.lastname[0] : '')).toUpperCase();
+        }
+      } catch (e) {
+        console.warn('Could not fetch user profile:', e);
+      }
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      if (!currentUserId) return;
+
+      const firstName = document.getElementById('profFirst').value.trim();
+      const lastName = document.getElementById('profLast').value.trim();
+      const phone = document.getElementById('profPhone').value.trim();
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+
+      try {
+        await window.UserService.updateUser(currentUserId, { firstName, lastName, phone });
+        sessionStorage.setItem('FirstName', firstName);
+        sessionStorage.setItem('LastName', lastName);
+        sessionStorage.setItem('Phone', phone);
+        alert('Your customer profile preferences have been updated successfully.');
+        window.location.reload();
+      } catch (err) {
+        alert(err.message || 'Failed to update profile.');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+  </script>
+</body>
+</html>
+

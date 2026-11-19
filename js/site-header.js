@@ -13,6 +13,11 @@ class SiteHeader extends HTMLElement {
     this._prefix = this.getPrefix();
     this._useSidebar = (this._role === 'admin' || this._role === 'provider');
 
+    // ── Enforce Authentication Guard in Live Database Mode ────────────
+    if (this.enforcePortalAuth()) {
+      return;
+    }
+
     if (this._useSidebar) {
       this.renderSidebar();
       this.renderSlimHeader();
@@ -24,11 +29,61 @@ class SiteHeader extends HTMLElement {
     this.ensureDbSettingsModal();
     this.initInteractions();
 
+    window.addEventListener('datamodechange', (e) => {
+      if (e.detail && e.detail.mode === 'database') {
+        this.enforcePortalAuth();
+      }
+    });
+
     if (typeof window.JavaBackendService === 'undefined') {
       const script = document.createElement('script');
       script.src = `${this._prefix}js/java-backend-service.js`;
       document.head.appendChild(script);
     }
+  }
+
+  /**
+   * Enforce strict authentication on protected portal pages in Live Database Mode
+   * If in Live DB mode and no user is signed in, redirect immediately to login.html
+   */
+  enforcePortalAuth() {
+    if (!window.AppConfig || !window.AppConfig.isDatabaseMode()) {
+      return false;
+    }
+
+    const path = window.location.pathname.replace(/\\/g, '/').toLowerCase();
+    const isProtected = path.includes('/customer/') || path.includes('/provider/') || path.includes('/admin/');
+    if (!isProtected) {
+      return false;
+    }
+
+    const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+    if (!currentUser) {
+      console.warn('Access denied: Authentication required in Live Database Mode.');
+      try {
+        if (window.AppConfig && window.AppConfig.showToast) {
+          window.AppConfig.showToast('⚠️ Please sign in to access your portal in Live Database Mode.', 'warning');
+        }
+      } catch (err) {}
+      document.body.style.display = 'none';
+      const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.replace(`${this._prefix}login.html?returnUrl=${returnUrl}`);
+      return true;
+    }
+
+    const role = (currentUser.rolle || '').toLowerCase();
+    if (path.includes('/admin/') && role !== 'admin') {
+      alert('Access Restricted: Admin credentials required.');
+      window.location.replace(`${this._prefix}login.html`);
+      return true;
+    }
+    if (path.includes('/provider/') && role !== 'provider' && role !== 'admin') {
+      alert('Access Restricted: Provider credentials required.');
+      window.location.replace(`${this._prefix}login.html`);
+      return true;
+    }
+
+    return false;
   }
 
   detectRole() {

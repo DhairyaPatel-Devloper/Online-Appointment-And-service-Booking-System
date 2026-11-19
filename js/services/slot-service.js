@@ -24,29 +24,6 @@ window.SlotService = (function () {
      * Get slots for a provider on a specific date with live remaining booking capacity
      */
     async getSlotsByDateAndProvider(providerId, dateStr) {
-      // ── Java Servlet & JDBC Backend Delegation ────────────────────────────
-      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
-        try {
-          const raw = await window.JavaBackendService.getSlots(providerId, dateStr);
-          return (raw || []).map(s => {
-            const isAvail = s.slotStatus === true || s.slotstatus === true;
-            return {
-              slotid: s.slotId || s.slotid,
-              providerid: s.providerId || s.providerid,
-              slotdate: s.slotDate || s.slotdate,
-              slotstarttime: s.slotStartTime || s.slotstarttime,
-              slotendtime: s.slotEndTime || s.slotendtime,
-              slotcapacity: s.slotCapacity || s.slotcapacity || 2,
-              slotstatus: isAvail,
-              isAvailable: isAvail,
-              computedStatus: isAvail ? 'Available' : 'Blocked'
-            };
-          });
-        } catch (e) {
-          console.warn('Java Servlet endpoint unreachable, trying database mode:', e);
-        }
-      }
-
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 
@@ -97,14 +74,6 @@ window.SlotService = (function () {
      * Generate standard time slot grid for a provider for a date based on operating hours and duration
      */
     async generateDaySlots(providerId, dateStr, startTime = '09:00:00', endTime = '18:00:00', avgServiceTime = 30, perSlotCapacity = 2) {
-      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
-        try {
-          return await window.JavaBackendService.generateDaySlots(providerId, dateStr, startTime, endTime, avgServiceTime, perSlotCapacity);
-        } catch (e) {
-          console.warn('Java Servlet generate failed, trying database mode:', e);
-        }
-      }
-
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 
@@ -215,14 +184,6 @@ window.SlotService = (function () {
      * Update slot status (Available, Unavailable, BreakTime)
      */
     async updateSlotStatus(slotId, slotStatus) {
-      if (window.AppConfig && window.AppConfig.isJavaMode() && window.JavaBackendService) {
-        try {
-          return await window.JavaBackendService.toggleSlotStatus(slotId, slotStatus);
-        } catch (e) {
-          console.warn('Java Servlet toggle failed, trying database mode:', e);
-        }
-      }
-
       const client = getClient();
       if (!client) throw new Error('Supabase client not initialized');
 

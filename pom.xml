@@ -23,14 +23,11 @@
 
     <dependencies>
 
-        <!-- ── Servlet API (Jakarta EE 9 / Tomcat 10+) ─────────────────── -->
-        <!-- NOTE: If you are on NetBeans + Tomcat 9 or older, swap this for:
-             groupId=javax.servlet, artifactId=javax.servlet-api, version=4.0.1
-             and change all "jakarta.*" imports to "javax.*" in Servlet classes. -->
+        <!-- ── Servlet API (Java EE 7 / Servlet 3.1 for Apache Tomcat 8.5) ─ -->
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -82,6 +79,11 @@
                 <version>3.4.0</version>
                 <configuration>
                     <warName>BookWithTech</warName>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>

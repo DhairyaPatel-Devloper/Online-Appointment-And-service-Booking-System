@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Booking History & Invoices — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer" data-active="history"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Booking History</h1>
+        <p class="fs-xs text-muted mb-0">Audit your past services, download invoices, or submit customer ratings</p>
+      </div>
+      <button type="button" class="btn-outline-custom" onclick="window.print()">
+        <i class="bi bi-download"></i> Export Statement (PDF)
+      </button>
+    </div>
+
+    <!-- History Table Container -->
+    <div class="table-responsive-wrapper">
+      <table class="table-custom table-fixed table-compact">
+        <thead>
+          <tr>
+            <th>Booking Ref</th>
+            <th>Service Provider</th>
+            <th>Service Details</th>
+            <th>Date & Time</th>
+            <th>Specialist</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-6219</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Serene Sanctuary Spa</div>
+              <div class="text-xs text-muted">Metropolis North</div>
+            </td>
+            <td>Deep Tissue Massage (60 min)</td>
+            <td>Sep 12, 2026 • 03:00 PM</td>
+            <td>Chloe V.</td>
+            <td class="fw-bold text-slate-900">$85.00</td>
+            <td><span class="badge-custom badge-neutral"><i class="bi bi-check2"></i> Completed</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <a href="feedback.html?ref=BK-6219" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"><i class="bi bi-star"></i> Review</a>
+                <a href="browse-shops.html" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs">Rebook</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-5190</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Aura Luxury Salon</div>
+              <div class="text-xs text-muted">Crystal Plaza</div>
+            </td>
+            <td>Full Balayage & Gloss Treatment</td>
+            <td>Aug 28, 2026 • 11:00 AM</td>
+            <td>Sarah Jenkins</td>
+            <td class="fw-bold text-slate-900">$140.00</td>
+            <td><span class="badge-custom badge-neutral"><i class="bi bi-check2"></i> Completed</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> 5.0 Reviewed</span>
+                <a href="browse-shops.html" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs">Rebook</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Item 3 -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-4822</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">DermaGlow Clinic</div>
+              <div class="text-xs text-muted">Sector 4</div>
+            </td>
+            <td>Hydrating Botanical Facial</td>
+            <td>Aug 14, 2026 • 04:30 PM</td>
+            <td>Dr. Megan Lee</td>
+            <td class="fw-bold text-slate-900">$80.00</td>
+            <td><span class="badge-custom badge-neutral"><i class="bi bi-check2"></i> Completed</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <a href="feedback.html?ref=BK-4822" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"><i class="bi bi-star"></i> Review</a>
+                <a href="browse-shops.html" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs">Rebook</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Item 4 (Cancelled) -->
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-4102</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">Apex Dental Care</div>
+              <div class="text-xs text-muted">Plaza West</div>
+            </td>
+            <td>General Dental Checkup</td>
+            <td>Jul 19, 2026 • 09:00 AM</td>
+            <td>Dr. Vance</td>
+            <td class="fw-bold text-slate-400 text-decoration-line-through">$50.00</td>
+            <td><span class="badge-custom badge-danger">Refunded ($50)</span></td>
+            <td>
+              <a href="browse-shops.html" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs">Book Again</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    const DEMO_HISTORY_ROWS = [
+      {
+        bookingid: 6219,
+        providerid: 3,
+        shopName: 'Serene Sanctuary Spa',
+        shopAddress: 'Metropolis North',
+        serviceName: 'Deep Tissue Massage (60 min)',
+        dateTime: 'Sep 12, 2026 • 03:00 PM',
+        specialist: 'Chloe V.',
+        amount: '$85.00',
+        status: 'Completed',
+        reviewed: false
+      },
+      {
+        bookingid: 5190,
+        providerid: 1,
+        shopName: 'Aura Luxury Salon',
+        shopAddress: 'Crystal Plaza',
+        serviceName: 'Full Balayage & Gloss Treatment',
+        dateTime: 'Aug 28, 2026 • 11:00 AM',
+        specialist: 'Sarah Jenkins',
+        amount: '$140.00',
+        status: 'Completed',
+        reviewed: true,
+        rating: '5.0'
+      },
+      {
+        bookingid: 4822,
+        providerid: 4,
+        shopName: 'DermaGlow Clinic',
+        shopAddress: 'Sector 4',
+        serviceName: 'Hydrating Botanical Facial',
+        dateTime: 'Aug 14, 2026 • 04:30 PM',
+        specialist: 'Dr. Megan Lee',
+        amount: '$80.00',
+        status: 'Completed',
+        reviewed: false
+      },
+      {
+        bookingid: 4102,
+        providerid: 2,
+        shopName: 'Apex Dental Care',
+        shopAddress: 'Plaza West',
+        serviceName: 'General Dental Checkup',
+        dateTime: 'Jul 19, 2026 • 09:00 AM',
+        specialist: 'Dr. Vance',
+        amount: '$50.00',
+        status: 'Cancelled',
+        reviewed: false
+      }
+    ];
+
+    async function loadCustomerBookingHistory() {
+      const tbody = document.querySelector('table tbody');
+      if (!tbody) return;
+
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const user = window.AuthService ? window.AuthService.getCurrentUser() : null;
+
+      if (!isDb) {
+        // DEMO / STATIC MODE
+        tbody.innerHTML = DEMO_HISTORY_ROWS.map(b => `
+          <tr>
+            <td class="fw-bold fs-xs text-slate-800">#BK-${b.bookingid}</td>
+            <td>
+              <div class="fw-bold text-slate-900 fs-sm">${b.shopName}</div>
+              <div class="text-xs text-muted">${b.shopAddress}</div>
+            </td>
+            <td>${b.serviceName}</td>
+            <td>${b.dateTime}</td>
+            <td>${b.specialist}</td>
+            <td class="fw-bold text-slate-900">${b.amount}</td>
+            <td>
+              ${b.status === 'Completed' ? '<span class="badge-custom badge-neutral"><i class="bi bi-check2"></i> Completed</span>' : '<span class="badge-custom badge-danger">Refunded ($50)</span>'}
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                ${b.status === 'Completed' && !b.reviewed ? `<a href="feedback.html?id=${b.bookingid}&providerId=${b.providerid}" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"><i class="bi bi-star"></i> Review</a>` : ''}
+                ${b.status === 'Completed' && b.reviewed ? `<span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> ${b.rating} Rated</span>` : ''}
+                <a href="browse-shops.html" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs">Rebook</a>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+        return;
+      }
+
+      // LIVE SUPABASE DATABASE MODE
+      let customerId = user ? user.userid : null;
+      if (!customerId) {
+        const cookieId = window.AuthService ? window.AuthService.getCookie('bwt_user_id') : null;
+        if (cookieId) customerId = parseInt(cookieId, 10);
+      }
+
+      if (!customerId) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-5">
+              <i class="bi bi-shield-lock text-primary fs-2 d-block mb-2"></i>
+              <div class="fw-bold text-slate-900">Sign In Required for Live Database History</div>
+              <p class="fs-xs text-muted mb-3">Please authenticate, explore live records, or switch to demo mode.</p>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="../login.html" class="btn btn-sm btn-primary-custom">Sign In</a>
+                <button type="button" class="btn btn-sm btn-outline-custom" onclick="viewAsLiveCustomerHistory(1)">Explore Live History (User #1)</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Loading booking history from Supabase...</td></tr>`;
+
+      try {
+        const bookings = await window.BookingService.getCustomerBookingHistory(customerId);
+
+        if (!bookings || bookings.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No past booking history found in Supabase. <a href="browse-shops.html" class="fw-bold">Book an appointment</a></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = bookings.map(b => {
+          const shopName = b.providerdetails ? b.providerdetails.businessname : 'Service Partner';
+          const shopAddress = b.providerdetails ? (b.providerdetails.businessaddress || '') : '';
+          const slot = b.providertimeslots || {};
+          const dateStr = slot.slotdate || (b.bookingdate ? b.bookingdate.split('T')[0] : 'Past Date');
+          const timeStr = slot.slotstarttime ? slot.slotstarttime.slice(0,5) : '';
+          const amount = b.amount ? `$${parseFloat(b.amount).toFixed(2)}` : '$45.00';
+          const isCompleted = b.bookingstatus === 'Completed';
+          const statusBadge = isCompleted 
+            ? '<span class="badge-custom badge-neutral"><i class="bi bi-check2"></i> Completed</span>' 
+            : '<span class="badge-custom badge-danger">Cancelled</span>';
+
+          const hasFeedback = b.feedback && b.feedback.length > 0;
+
+          return `
+            <tr>
+              <td class="fw-bold fs-xs text-slate-800">#BK-${b.bookingid}</td>
+              <td>
+                <div class="fw-bold text-slate-900 fs-sm">${shopName}</div>
+                <div class="text-xs text-muted">${shopAddress}</div>
+              </td>
+              <td>Service Appointment</td>
+              <td>${dateStr} ${timeStr ? '• ' + timeStr : ''}</td>
+              <td>Assigned Specialist</td>
+              <td class="fw-bold text-slate-900">${amount}</td>
+              <td>${statusBadge}</td>
+              <td>
+                <div class="d-flex align-items-center gap-1">
+                  ${isCompleted && !hasFeedback ? `<a href="feedback.html?id=${b.bookingid}&providerId=${b.providerid}" class="btn btn-sm btn-outline-custom py-1 px-2 fs-xs"><i class="bi bi-star"></i> Review</a>` : ''}
+                  ${isCompleted && hasFeedback ? `<span class="badge-custom badge-success fs-xs"><i class="bi bi-star-fill text-warning"></i> ${b.feedback[0].rating}.0</span>` : ''}
+                  <a href="browse-shops.html" class="btn btn-sm btn-primary-custom py-1 px-2 fs-xs">Rebook</a>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Error loading booking history:', err);
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load booking history from database: ${err.message}</td></tr>`;
+      }
+    }
+
+    function viewAsLiveCustomerHistory(id) {
+      if (window.AuthService) {
+        window.AuthService.setCookie('bwt_user_id', String(id), 7);
+      }
+      loadCustomerBookingHistory();
+    }
+
+    window.addEventListener('datamodechange', loadCustomerBookingHistory);
+    document.addEventListener('DOMContentLoaded', loadCustomerBookingHistory);
+  </script>
+</body>
+</html>
+
+

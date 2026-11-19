@@ -4,8 +4,8 @@ import com.bookwithtech.model.Booking;
 import com.bookwithtech.service.BookingService;
 import com.bookwithtech.service.BookingServiceImpl;
 import com.google.gson.Gson;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.SQLException;

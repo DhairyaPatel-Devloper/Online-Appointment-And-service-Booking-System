@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Executive Analytics & Reports — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="admin" data-active="reports"></site-header>
+
+  <main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Executive Platform Analytics</h1>
+        <p class="fs-xs text-muted mb-0">Cross-category metrics, gross volume trajectories, and provider performance scores</p>
+      </div>
+      <button type="button" class="btn-primary-custom" onclick="window.print()">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Generate Executive PDF
+      </button>
+    </div>
+
+    <!-- Filter Configuration Bar -->
+    <div class="custom-card p-3 mb-4 bg-white">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-4">
+          <label class="form-label-custom fs-xs text-muted">Report Stream</label>
+          <select class="form-select-custom py-1 fs-sm">
+            <option value="revenue" selected>Gross Platform Revenue & Platform Fee</option>
+            <option value="category">Category Inflow Breakdown</option>
+            <option value="retention">Customer Retention Cohorts</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label-custom fs-xs text-muted">Analysis Window</label>
+          <select class="form-select-custom py-1 fs-sm">
+            <option value="30">Past 30 Days</option>
+            <option value="90">Past Quarter (90 Days)</option>
+            <option value="365" selected>Current Year (2026 YTD)</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="button" class="btn-outline-custom w-100 py-1" onclick="alert('Recalculating analytics...')">
+            <i class="bi bi-arrow-repeat"></i> Refresh Analytics
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top KPI Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-4">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#ecfdf5; color:#059669;"><i class="bi bi-graph-up"></i></div>
+          <div class="stat-card-value">$684,200</div>
+          <div class="stat-card-label">Total Platform GMV (YTD)</div>
+          <span class="stat-trend up">+31% vs 2025</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#edf7f3; color:#0d5c46;"><i class="bi bi-journal-check"></i></div>
+          <div class="stat-card-value">14,820</div>
+          <div class="stat-card-label">Completed Appointments</div>
+          <span class="stat-trend up">99.2% Completion Rate</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="stat-card-custom card-3d-tilt">
+          <div class="stat-card-icon" style="background:#fef3c7; color:#d97706;"><i class="bi bi-ticket-perforated"></i></div>
+          <div class="stat-card-value">$46.16</div>
+          <div class="stat-card-label">Average Order Value (AOV)</div>
+          <span class="stat-trend up">+12% with Add-ons</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="custom-card p-4 mb-4">
+      <h2 class="fs-5 fw-bold text-slate-900 mb-3">Gross Booking Volume by Category (2026)</h2>
+      <div style="height: 300px;">
+        <canvas id="categoryShareChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Providers Leaderboard -->
+    <div class="custom-card p-4">
+      <h2 class="fs-5 fw-bold text-slate-900 mb-3">Top Performing Providers (Revenue Leaders)</h2>
+      <div class="table-responsive">
+        <table class="table-custom table-fixed table-compact">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Provider Shop</th>
+              <th>Category</th>
+              <th>Gross Bookings</th>
+              <th>Total Revenue</th>
+              <th>Customer Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold">#1</td>
+              <td class="fw-bold text-slate-900">Aura Luxury Salon & Spa</td>
+              <td>Hair & Styling</td>
+              <td>1,482 Bookings</td>
+              <td class="fw-bold text-success">$68,910.00</td>
+              <td>★ 4.9 (184)</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">#2</td>
+              <td class="fw-bold text-slate-900">Apex Dental Care & Aesthetics</td>
+              <td>Dental Clinic</td>
+              <td>1,120 Bookings</td>
+              <td class="fw-bold text-success">$56,000.00</td>
+              <td>★ 4.9 (312)</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">#3</td>
+              <td class="fw-bold text-slate-900">Serene Sanctuary Spa</td>
+              <td>Spa & Wellness</td>
+              <td>980 Bookings</td>
+              <td class="fw-bold text-success">$49,200.00</td>
+              <td>★ 4.8 (240)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="admin"></site-footer>
+
+  <!-- Master Layout Scripts & Supabase Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        if (window.AdminService) {
+          const stats = await window.AdminService.getDashboardStats();
+          const statVals = document.querySelectorAll('.stat-card-value');
+          if (statVals.length >= 3) {
+            statVals[0].textContent = `$${stats.totalRevenue.toLocaleString()}`;
+            statVals[1].textContent = `${stats.totalBookings.toLocaleString()}`;
+            const aov = stats.totalBookings > 0 ? (stats.totalRevenue / stats.totalBookings).toFixed(2) : '45.00';
+            statVals[2].textContent = `$${aov}`;
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching dynamic report metrics:', err);
+      }
+
+      const ctx = document.getElementById('categoryShareChart');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Hair & Styling', 'Spa & Wellness', 'Dental Care', 'Dermatology & Skin', 'Fitness & Yoga'],
+            datasets: [{
+              label: 'Gross Volume ($)',
+              data: [285000, 192000, 114000, 72000, 21200],
+              backgroundColor: ['#0d5c46', '#0284c7', '#059669', '#d97706', '#111827'],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: { color: '#f1f5f9' },
+                ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+

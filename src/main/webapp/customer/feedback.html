@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Submit Rating & Review — BookWith.tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Core Design System & Shared Layout Styles -->
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/header.css">
+
+  <style>
+    .star-rating-box {
+      display: inline-flex;
+      gap: 0.5rem;
+      font-size: 2rem;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+
+    .star-rating-box i {
+      transition: all var(--transition-fast);
+    }
+
+    .star-rating-box i.hovered, .star-rating-box i.active {
+      color: #f59e0b;
+      transform: scale(1.15);
+    }
+
+    .tag-chip-pill {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-slate-700);
+      cursor: pointer;
+      background: #ffffff;
+      user-select: none;
+      transition: all var(--transition-fast);
+    }
+
+    .tag-chip-pill.selected {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER HEADER -->
+  <site-header data-role="customer" data-active="feedback"></site-header>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="custom-card p-4 p-md-5">
+          <div class="text-center mb-4">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin: 0 auto 1rem;">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin: 0;">Rate Your Experience</h1>
+            <p class="fs-xs text-muted mt-1">Your feedback helps local providers maintain premium service quality.</p>
+          </div>
+
+          <!-- Success Confirmation -->
+          <div id="feedbackSuccessAlert" class="alert alert-success text-center p-3 mb-4 rounded-3" style="display: none;">
+            <i class="bi bi-check-circle-fill fs-3 text-success d-block mb-1"></i>
+            <h4 class="fs-6 fw-bold mb-1">Review Submitted Successfully!</h4>
+            <p class="fs-xs mb-0">Thank you for helping our community with verified feedback.</p>
+          </div>
+
+          <!-- Form -->
+          <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)">
+            <!-- Select Appointment -->
+            <div class="mb-4">
+              <label class="form-label-custom">Select Completed Appointment <span class="text-danger">*</span></label>
+              <select class="form-select-custom" id="ddlAppointment" required>
+                <option value="101" selected>Aura Luxury Salon — Executive Hair Styling (Sep 24, 2026)</option>
+                <option value="102">Serene Sanctuary Spa — Deep Tissue Massage (Sep 12, 2026)</option>
+                <option value="103">Apex Dental Care — Teeth Cleaning (Jul 19, 2026)</option>
+              </select>
+            </div>
+
+            <!-- Star Rating Input -->
+            <div class="text-center mb-4 p-3 bg-light rounded-3">
+              <div class="text-xs text-muted text-uppercase fw-bold mb-2">Overall Satisfaction</div>
+              <div class="star-rating-box" id="starContainer">
+                <i class="bi bi-star-fill" data-rating="1"></i>
+                <i class="bi bi-star-fill" data-rating="2"></i>
+                <i class="bi bi-star-fill" data-rating="3"></i>
+                <i class="bi bi-star-fill" data-rating="4"></i>
+                <i class="bi bi-star-fill" data-rating="5"></i>
+              </div>
+              <div class="fs-sm fw-bold text-slate-800 mt-2" id="starDescription">5.0 — Outstanding Experience!</div>
+              <input type="hidden" id="selectedStarRating" value="5">
+            </div>
+
+            <!-- Experience Highlights Tags -->
+            <div class="mb-4">
+              <label class="form-label-custom">What did you appreciate the most?</label>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="tag-chip-pill selected" onclick="this.classList.toggle('selected')"><i class="bi bi-clock"></i> Punctual Service</span>
+                <span class="tag-chip-pill selected" onclick="this.classList.toggle('selected')"><i class="bi bi-sparkles"></i> Clean Facility</span>
+                <span class="tag-chip-pill selected" onclick="this.classList.toggle('selected')"><i class="bi bi-person-heart"></i> Friendly Specialist</span>
+                <span class="tag-chip-pill" onclick="this.classList.toggle('selected')"><i class="bi bi-tag"></i> Transparent Pricing</span>
+                <span class="tag-chip-pill" onclick="this.classList.toggle('selected')"><i class="bi bi-shield-check"></i> Great Aftercare Tips</span>
+              </div>
+            </div>
+
+            <!-- Detailed Comments -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="txtReview" class="form-label-custom mb-0">Written Review <span class="text-danger">*</span></label>
+                <span class="text-xs text-muted" id="charCounter">0/500</span>
+              </div>
+              <textarea id="txtReview" class="form-control-custom" rows="4" placeholder="Detail your experience with the specialist, salon environment, and service quality..." maxlength="500" oninput="document.getElementById('charCounter').textContent = `${this.value.length}/500`" required>The styling session was exceptional! Sarah was completely on time, recommended the ideal contour for my face shape, and the head massage was so rejuvenating. Definitely rebooking next month.</textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary-custom w-100 py-3" style="font-size: 1rem;">
+              <i class="bi bi-send-check"></i> Post Verified Review
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SINGLE SOURCE OF TRUTH MASTER FOOTER -->
+  <site-footer data-role="customer"></site-footer>
+
+  <!-- Supabase JS SDK & Services -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth-service.js"></script>
+  <script src="../js/services/user-service.js"></script>
+  <script src="../js/services/provider-service.js"></script>
+  <script src="../js/services/slot-service.js"></script>
+  <script src="../js/services/booking-service.js"></script>
+  <script src="../js/services/feedback-service.js"></script>
+  <script src="../js/services/admin-service.js"></script>
+  <script src="../js/api-service.js"></script>
+
+  <!-- Master Layout Scripts -->
+  <script src="../js/site-header.js"></script>
+  <script src="../js/site-footer.js"></script>
+
+  <script>
+    const stars = document.querySelectorAll('#starContainer i');
+    const desc = document.getElementById('starDescription');
+    const ratingInput = document.getElementById('selectedStarRating');
+
+    const descMap = {
+      1: '1.0 — Very Disappointed',
+      2: '2.0 — Needs Improvement',
+      3: '3.0 — Average Service',
+      4: '4.0 — Very Good Experience',
+      5: '5.0 — Outstanding Experience!'
+    };
+
+    function highlightStars(val) {
+      stars.forEach(s => {
+        const rating = parseInt(s.getAttribute('data-rating'));
+        s.classList.toggle('active', rating <= val);
+      });
+      desc.textContent = descMap[val];
+    }
+
+    highlightStars(5);
+
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', () => {
+        const val = parseInt(star.getAttribute('data-rating'));
+        stars.forEach(s => s.classList.toggle('hovered', parseInt(s.getAttribute('data-rating')) <= val));
+      });
+
+      star.addEventListener('mouseleave', () => {
+        stars.forEach(s => s.classList.remove('hovered'));
+      });
+
+      star.addEventListener('click', () => {
+        const val = parseInt(star.getAttribute('data-rating'));
+        ratingInput.value = val;
+        highlightStars(val);
+      });
+    });
+
+    async function loadCompletedBookingsForFeedback() {
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+      const selectEl = document.getElementById('ddlAppointment');
+      if (!selectEl) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const preselectBookingId = urlParams.get('id') || urlParams.get('ref');
+
+      if (!isDb) {
+        // STATIC / DEMO MODE
+        selectEl.innerHTML = `
+          <option value="101" data-provider-id="1" ${(!preselectBookingId || preselectBookingId==='101') ? 'selected' : ''}>Aura Luxury Salon — Executive Hair Styling (Sep 24, 2026)</option>
+          <option value="102" data-provider-id="3" ${preselectBookingId==='102' ? 'selected' : ''}>Serene Sanctuary Spa — Deep Tissue Massage (Sep 12, 2026)</option>
+          <option value="103" data-provider-id="2" ${preselectBookingId==='103' ? 'selected' : ''}>Apex Dental Care — Teeth Cleaning (Jul 19, 2026)</option>
+        `;
+        return;
+      }
+
+      // LIVE SUPABASE DATABASE MODE
+      if (!currentUser) {
+        selectEl.innerHTML = `<option value="">-- Please Sign In to Access Live Completed Bookings --</option>`;
+        return;
+      }
+
+      const customerId = currentUser.userid;
+
+      try {
+        const history = await window.BookingService.getCustomerBookingHistory(customerId);
+        const completed = (history || []).filter(b => b.bookingstatus === 'Completed');
+
+        if (completed.length > 0) {
+          selectEl.innerHTML = completed.map(b => {
+            const pName = b.providerdetails ? b.providerdetails.businessname : 'Service Provider';
+            const sDate = b.bookingdate ? b.bookingdate.split('T')[0] : 'Past Appointment';
+            const isSel = preselectBookingId && (String(b.bookingid) === String(preselectBookingId) || String(preselectBookingId).includes(String(b.bookingid)));
+            return `<option value="${b.bookingid}" data-provider-id="${b.providerid}" ${isSel ? 'selected' : ''}>${pName} — Booking #${b.bookingid} (${sDate})</option>`;
+          }).join('');
+        } else {
+          selectEl.innerHTML = `<option value="">No completed bookings available to review in live DB</option>`;
+        }
+      } catch (e) {
+        console.warn('Could not load completed bookings from live DB:', e);
+      }
+    }
+
+    async function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const isDb = window.AppConfig ? window.AppConfig.isDatabaseMode() : false;
+      const selectEl = document.getElementById('ddlAppointment');
+      const selectedOption = selectEl.options[selectEl.selectedIndex];
+      const bookingId = parseInt(selectEl.value, 10);
+      const providerId = selectedOption ? parseInt(selectedOption.dataset.providerId || '1', 10) : 1;
+      const rating = parseInt(ratingInput.value, 10) || 5;
+      const comment = document.getElementById('txtReview').value.trim();
+
+      const currentUser = window.AuthService ? window.AuthService.getCurrentUser() : null;
+      const customerId = currentUser ? currentUser.userid : 1;
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
+
+      if (!isDb) {
+        // Demo Mode simulated review submission
+        setTimeout(() => {
+          document.getElementById('feedbackForm').style.display = 'none';
+          document.getElementById('feedbackSuccessAlert').style.display = 'block';
+          if (window.AppConfig) window.AppConfig.showToast('✅ Demo review posted successfully!', 'success');
+          setTimeout(() => {
+            window.location.href = 'my-bookings.html';
+          }, 1500);
+        }, 500);
+        return;
+      }
+
+      // Live Supabase DB Mode submission
+      if (!bookingId) {
+        alert('Please select a valid completed booking to review.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send-check"></i> Post Verified Review';
+        return;
+      }
+
+      try {
+        await window.FeedbackService.submitFeedback({
+          bookingId,
+          customerId,
+          providerId,
+          rating,
+          comment
+        });
+
+        document.getElementById('feedbackForm').style.display = 'none';
+        document.getElementById('feedbackSuccessAlert').style.display = 'block';
+        if (window.AppConfig) {
+          window.AppConfig.showToast('🟢 Review written to Supabase feedback table.', 'success');
+        }
+
+        setTimeout(() => {
+          window.location.href = 'my-bookings.html';
+        }, 1500);
+      } catch (err) {
+        alert(err.message || 'Error submitting feedback. You may have already reviewed this booking.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send-check"></i> Post Verified Review';
+      }
+    }
+
+    window.addEventListener('datamodechange', loadCompletedBookingsForFeedback);
+    document.addEventListener('DOMContentLoaded', loadCompletedBookingsForFeedback);
+  </script>
+</body>
+</html>
+
