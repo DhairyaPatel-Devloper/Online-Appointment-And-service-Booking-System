@@ -580,7 +580,7 @@
         <div class="col-md-6 shop-item-card" data-rating="${p.rating || 5}" data-category="${p.category || 'all'}">
           <div class="shop-glance-card">
             <div class="shop-banner-box">
-              <img src="${p.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80'}" alt="${p.businessName}" class="shop-card-banner">
+              <img src="${p.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80'}" alt="${p.businessName}" class="shop-card-banner" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80';">
               <span class="badge-custom badge-neutral badge-float-left" style="background: rgba(255,255,255,0.92); font-weight:700;">
                 <i class="bi bi-patch-check-fill text-primary"></i> Verified Business
               </span>

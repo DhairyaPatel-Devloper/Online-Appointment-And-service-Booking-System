@@ -10,6 +10,38 @@ window.ProviderService = (function () {
     return window.SupabaseClient ? window.SupabaseClient.client : window.db;
   }
 
+  const DEFAULT_BANNERS = {
+    salon: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80',
+    spa: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=700&q=80',
+    dental: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=700&q=80',
+    skin: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=700&q=80',
+    barber: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=700&q=80',
+    default: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80'
+  };
+
+  function resolveBannerImage(imgSrc, businessName = '') {
+    if (imgSrc && (imgSrc.startsWith('http://') || imgSrc.startsWith('https://'))) {
+      return imgSrc;
+    }
+    const name = ((imgSrc || '') + ' ' + (businessName || '')).toLowerCase();
+    if (name.includes('dental') || name.includes('tooth') || name.includes('apex') || name.includes('clinic')) {
+      return DEFAULT_BANNERS.dental;
+    }
+    if (name.includes('spa') || name.includes('massage') || name.includes('serene')) {
+      return DEFAULT_BANNERS.spa;
+    }
+    if (name.includes('derma') || name.includes('skin') || name.includes('glow')) {
+      return DEFAULT_BANNERS.skin;
+    }
+    if (name.includes('barber') || name.includes('hair') || name.includes('cut') || name.includes('elite')) {
+      return DEFAULT_BANNERS.barber;
+    }
+    if (name.includes('salon') || name.includes('aura') || name.includes('beauty')) {
+      return DEFAULT_BANNERS.salon;
+    }
+    return DEFAULT_BANNERS.default;
+  }
+
   return {
     /**
      * Get all approved providers for customer browsing with joined user info, images, and rating aggregates
@@ -81,8 +113,12 @@ window.ProviderService = (function () {
       const enriched = providers.map(p => {
         const ratings = feedbackByProvider[p.providerid] || [];
         const avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 5.0;
-        const pImages = imagesByProvider[p.providerid] || [];
-        const bannerImage = pImages.length > 0 ? pImages[0].imagesource : 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&auto=format&fit=crop&q=80';
+        const pImages = (imagesByProvider[p.providerid] || []).map(img => ({
+          ...img,
+          imagesource: resolveBannerImage(img.imagesource, p.businessname)
+        }));
+        const rawSource = pImages.length > 0 ? pImages[0].imagesource : null;
+        const bannerImage = resolveBannerImage(rawSource, p.businessname);
 
         return {
           id: p.providerid,
@@ -212,11 +248,18 @@ window.ProviderService = (function () {
       const ratings = (feedback || []).map(f => f.rating);
       const avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 5.0;
 
+      const resolvedImages = (images || []).map(img => ({
+        ...img,
+        imagesource: resolveBannerImage(img.imagesource, provider.businessname)
+      }));
+      const banner = resolvedImages.length > 0 ? resolvedImages[0].imagesource : resolveBannerImage(null, provider.businessname);
+
       return {
         ...provider,
         id: provider.providerid,
         name: provider.businessname,
-        images: images || [],
+        image: banner,
+        images: resolvedImages,
         feedback: feedback || [],
         rating: parseFloat(avgRating),
         reviewsCount: (feedback || []).length
